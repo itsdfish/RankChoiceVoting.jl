@@ -7,8 +7,8 @@ Returns the id of the winning candiate for an instant runoff election.
 - `system`: an instant runoff system object
 """
 function evaluate_winner(system::InstantRunOff)
-    counts = copy(system.counts)
-    uranks = copy(system.uranks)
+    counts = deepcopy(get_counts(system))
+    uranks = deepcopy(get_uranks(system))
     winner_idx = -100
     n_votes = sum(counts)
     max_iter = length(uranks[1]) - 1
@@ -21,7 +21,7 @@ function evaluate_winner(system::InstantRunOff)
         remove_candidate!.(uranks, candidates[loser_idx])
         deleteat!(candidates, loser_idx)
     end
-    return winner
+    return candidates[winner_idx]
 end
 
 

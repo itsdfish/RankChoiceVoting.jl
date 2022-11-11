@@ -42,3 +42,6 @@ function count_top_ranks(counts, uranks, id)
     end
     return cnt
 end
+
+get_counts(system) = system.counts
+get_uranks(system) = system.uranks

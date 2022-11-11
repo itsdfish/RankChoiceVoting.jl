@@ -60,3 +60,20 @@ end
         @test winner == :d
     end
 end
+
+@safetestset "reversal symmetry" begin
+    @safetestset "instant runoff" begin
+        using RankChoiceVoting
+        using Test
+
+        rankings = Vector{Vector{Symbol}}()
+        push!(rankings, [[:a,:b,:c] for _ ∈ 1:4]...)
+        push!(rankings, [[:b,:c,:a] for _ ∈ 1:3]...)
+        push!(rankings, [[:c,:a,:b] for _ ∈ 1:2]...)
+        
+        system = InstantRunOff(rankings)
+        criteria = ReversalSymmetry()
+        violations = count_violations(system, criteria)
+        @test violations == 1
+    end
+end

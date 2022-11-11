@@ -3,6 +3,8 @@ module RankChoiceVoting
     export evaluate_winner
     export VotingSystem
     export InstantRunOff
+    export ReversalSymmetry
+    export count_violations
 
     include("structs.jl")
     include("criteria.jl")

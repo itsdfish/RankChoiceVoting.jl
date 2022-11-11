@@ -5,23 +5,24 @@ cd(@__DIR__)
 using Pkg 
 Pkg.activate("..")
 using Revise, Random, RankChoiceVoting
+cnt = 0
+for _ in 1:1000
+    rankings = [shuffle(1:4) for _ ∈ 1:1000]
+    system = InstantRunOff(rankings)
+    criteria = ReversalAsymmetry()
+    cnt += count_violations(system, criteria)
 
-rankings = [shuffle(1:4) for _ ∈ 1:1000]
-system = InstantRunOff(rankings)
-evaluate_winner(system)
-
-using RankChoiceVoting: tally
-using RankChoiceVoting: count_top_ranks
-counts,uranks = tally(rankings)
+end
 
 
 rankings = Vector{Vector{Symbol}}()
-push!(rankings, [[:d,:c,:a,:e,:b] for _ ∈ 1:9]...)
-push!(rankings, [[:b,:e,:a,:c,:d] for _ ∈ 1:5]...)
-push!(rankings, [[:e,:a,:d,:b,:c] for _ ∈ 1:2]...)
-push!(rankings, [[:b,:c,:a,:d,:e] for _ ∈ 1:5]...)
-push!(rankings, [[:c,:a,:d,:b,:e] for _ ∈ 1:8]...)
-push!(rankings, [[:b,:d,:c,:a,:e] for _ ∈ 1:6]...)
+push!(rankings, [[:a,:b,:c] for _ ∈ 1:4]...)
+push!(rankings, [[:b,:c,:a] for _ ∈ 1:3]...)
+push!(rankings, [[:c,:a,:b] for _ ∈ 1:2]...)
 
 system = InstantRunOff(rankings)
-winner = evaluate_winner(system, counts, uranks)
+criteria = ReversalSymmetry()
+winner = count_violations(system, criteria)
+
+@code_warntype evaluate_winner(system)
+@code_warntype count_violations(system, criteria)

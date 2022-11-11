@@ -9,9 +9,9 @@ An instant runoff voting system object.
 - `uranks`: a vector of unique rankings. Each ranking is a vector in which index represents rank and value represents candidate id.
 - `counts`: a vector of frequency counts corresponding to each unique ranking 
 """
-mutable struct InstantRunOff{T} <: VotingSystem
+mutable struct InstantRunOff{T,I<:Integer} <: VotingSystem
     uranks::Vector{T}
-    counts::Vector{<:Integer}
+    counts::Vector{I}
 end
 
 """
@@ -25,4 +25,13 @@ A constructor for an instant runoff voting system
 function InstantRunOff(rankings)
     counts, uranks = tally(rankings)
     return InstantRunOff(uranks, counts)
+end
+
+abstract type Criteria end
+
+"""
+    ReversalAsymmetry <: Criteria
+"""
+mutable struct ReversalSymmetry <: Criteria
+
 end
