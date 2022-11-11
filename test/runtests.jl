@@ -29,7 +29,6 @@ end
     using RankChoiceVoting: count_top_ranks
     using RankChoiceVoting: tally
 
-
     rankings = [[1,2,3],[1,2,3],[2,3,1]]
     counts,uranks = tally(rankings)
 
