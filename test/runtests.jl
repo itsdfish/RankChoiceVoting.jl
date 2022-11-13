@@ -42,30 +42,89 @@ end
     @test top_count == 0
 end
 
-@safetestset "redistribute!" begin
+@safetestset "head_to_head" begin 
     using RankChoiceVoting
-    using RankChoiceVoting: redistribute!
-    using RankChoiceVoting: add_zero_counts!
+    using RankChoiceVoting: head_to_head
     using Test
     using Random
 
+    Random.seed!(602)
+
     rankings = Vector{Vector{Symbol}}()
-    push!(rankings, [[:a,:b,:c] for _ ∈ 1:37]...)
-    push!(rankings, [[:b,:c,:a] for _ ∈ 1:22]...)
-    push!(rankings, [[:b,:a,:c] for _ ∈ 1:12]...)
-    push!(rankings, [[:c,:a,:b] for _ ∈ 1:29]...)
+    push!(rankings, [[:a,:b,:c] for _ ∈ 1:10]...)
+    push!(rankings, [[:b,:c,:a] for _ ∈ 1:5]...)
+    push!(rankings, [[:b,:a,:c] for _ ∈ 1:1]...)
+    push!(rankings, [[:c,:a,:b] for _ ∈ 1:2]...)
 
     system = InstantRunOff(rankings)
-    system = deepcopy(system)
-    add_zero_counts!(system)
-    winner = evaluate_winner(system)
-    win_ind = map(x -> x[1] == winner, system.uranks)
+    winner = head_to_head(system, :a, :b)
+    @test winner == :a
+    winner = head_to_head(system, :b, :a)
+    @test winner == :a
+    @test winner == :a
+    winner = head_to_head(system, :c, :a)
+    @test winner == :a
+end
 
-    _system = deepcopy(system)
-    redistribute!(_system, win_ind)
+@safetestset "redistribute!" begin
+    @safetestset "1" begin 
+        using RankChoiceVoting
+        using RankChoiceVoting: redistribute!
+        using RankChoiceVoting: add_zero_counts!
+        using Test
+        using Random
+
+        rankings = Vector{Vector{Symbol}}()
+        push!(rankings, [[:a,:b,:c] for _ ∈ 1:37]...)
+        push!(rankings, [[:b,:c,:a] for _ ∈ 1:22]...)
+        push!(rankings, [[:b,:a,:c] for _ ∈ 1:12]...)
+        push!(rankings, [[:c,:a,:b] for _ ∈ 1:29]...)
     
-    @test sum(system.counts) == sum(_system.counts)
-    @test all(system.counts[win_ind] .≥ system.counts[win_ind])
+        system = InstantRunOff(rankings)
+        system = deepcopy(system)
+        add_zero_counts!(system)
+        winner = evaluate_winner(system)
+        win_ind = map(x -> x[1] == winner, system.uranks)
+    
+        _system = deepcopy(system)
+        redistribute!(_system, win_ind)
+        
+        @test sum(system.counts) == sum(_system.counts)
+        @test all(system.counts[win_ind] .≥ system.counts[win_ind])
+        @test all(system.counts[win_ind .≠ true] .≤ system.counts[win_ind .≠ true])
+    end
+
+    @safetestset "2" begin 
+        using RankChoiceVoting
+        using RankChoiceVoting: redistribute!
+        using RankChoiceVoting: add_zero_counts!
+        using Test
+        using Random
+    
+        Random.seed!(55)
+
+        rankings = Vector{Vector{Symbol}}()
+        push!(rankings, [[:a,:b,:c] for _ ∈ 1:10]...)
+        push!(rankings, [[:b,:c,:a] for _ ∈ 1:5]...)
+        push!(rankings, [[:b,:a,:c] for _ ∈ 1:5]...)
+        push!(rankings, [[:c,:a,:b] for _ ∈ 1:5]...)
+        push!(rankings, [[:c,:b,:a] for _ ∈ 1:0]...)
+        push!(rankings, [[:a,:c,:b] for _ ∈ 1:0]...)
+    
+        system = InstantRunOff(rankings)
+        system = deepcopy(system)
+        add_zero_counts!(system)
+        winner = evaluate_winner(system)
+        win_ind = map(x -> x[1] == winner, system.uranks)
+    
+        for _ ∈ 1:1000
+            _system = deepcopy(system)
+            redistribute!(_system, win_ind)
+            @test sum(system.counts) == sum(_system.counts)
+            @test all(system.counts[win_ind] .≥ system.counts[win_ind])
+            @test all(system.counts[win_ind .≠ true] .≤ system.counts[win_ind .≠ true])
+        end
+    end
 end
 
 @safetestset "instant runoff" begin
@@ -100,7 +159,7 @@ end
         system = InstantRunOff(rankings)
         criteria = ReversalSymmetry()
         violations = count_violations(system, criteria)
-        @test_skip violations == 1
+        @test violations == 1
     end
 end
 
@@ -127,5 +186,60 @@ end
         system = InstantRunOff(rankings)
         winner2 = evaluate_winner(system)
         @test winner1 ≠ winner2 
+    end
+
+    
+    @safetestset "instant runoff test case" begin
+        using RankChoiceVoting
+        using Test
+        using Random
+
+        Random.seed!(6951)
+
+        rankings = Vector{Vector{Symbol}}()
+        push!(rankings, [[:a,:b,:c] for _ ∈ 1:37]...)
+        push!(rankings, [[:b,:c,:a] for _ ∈ 1:22]...)
+        push!(rankings, [[:b,:a,:c] for _ ∈ 1:12]...)
+        push!(rankings, [[:c,:a,:b] for _ ∈ 1:29]...)
+
+        system = InstantRunOff(rankings)
+        criteria = Monotonicity()
+        violations = count_violations(system, criteria)
+        @test_skip violations > 0
+    end
+end
+
+@safetestset "condorcet" begin
+    @safetestset "instant runoff 1" begin
+        using RankChoiceVoting
+        using Test
+
+        rankings = Vector{Vector{Symbol}}()
+        push!(rankings, [[:a,:b,:c] for _ ∈ 1:37]...)
+        push!(rankings, [[:b,:c,:a] for _ ∈ 1:22]...)
+        push!(rankings, [[:b,:a,:c] for _ ∈ 1:12]...)
+        push!(rankings, [[:c,:a,:b] for _ ∈ 1:29]...)
+
+        system = InstantRunOff(rankings)
+        criteria = Condorcet()
+        violations = count_violations(system, criteria)
+        @test violations == 0
+    end
+
+    @safetestset "instant runoff 2" begin
+        using RankChoiceVoting
+        using Test
+
+        rankings = Vector{Vector{Symbol}}()
+        push!(rankings, [[:a,:c,:b,:d] for _ ∈ 1:10]...)
+        push!(rankings, [[:d,:b,:a,:c] for _ ∈ 1:7]...)
+        push!(rankings, [[:b,:c,:a,:d] for _ ∈ 1:5]...)
+        push!(rankings, [[:c,:d,:a,:b] for _ ∈ 1:5]...)
+        push!(rankings, [[:b,:c,:d,:a] for _ ∈ 1:4]...)
+
+        system = InstantRunOff(rankings)
+        criteria = Condorcet()
+        violations = count_violations(system, criteria)
+        @test violations == 1
     end
 end

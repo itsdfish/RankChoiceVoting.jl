@@ -8,9 +8,11 @@ module RankChoiceVoting
     export InstantRunOff
     export ReversalSymmetry
     export Monotonicity
+    export Condorcet
 
     include("common.jl")
     include("instant_runoff.jl")
     include("monotonicity.jl")
     include("reversalsymmetry.jl")
+    include("condorcet.jl")
 end

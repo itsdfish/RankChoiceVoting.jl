@@ -1,6 +1,6 @@
 # RankChoiceVoting.jl (Work in progress)
 
-This package provides a framework for simulating and evaluating rank choice voting systems. Rank choice voting systems allow voters to order candidates according to preference, aggregate the votes, and select a winner. Interestingly, Arrow's impossibility theorem demonstrates that it is impossible to design a rank choice voting system can satisfy a set of fairness criteria under all conditions. What this means is that every rank choice voting system is flawed to some degree.  
+This package provides a framework for simulating and evaluating rank choice voting systems. Rank choice voting systems allow voters to order candidates according to preference, aggregate the votes, and select a winner. Interestingly, Arrow's impossibility theorem demonstrates that it is impossible to design a rank choice voting system that can satisfy a set of fairness criteria under all conditions. What this means is that every rank choice voting system is flawed to some degree.  
 
 Although Arrow's impossibility theorem proves that all rank choice voting systems are imperfect, many interesting questions remain unanswered by the theorem. For example, how prevalent are the violations of fairness critera and under what conditions are they violated? This package is designed to help answer questions of this nature.
 

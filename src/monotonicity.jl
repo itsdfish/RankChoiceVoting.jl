@@ -28,7 +28,9 @@ function count_violations(system::VotingSystem, criteria::Monotonicity; n_reps=1
     for _ ∈ 1:n_reps
         _system = deepcopy(system)
         redistribute!(_system, win_ind)
-        println(_system.counts)
+        # if sum(abs.(_system.counts .- [47,22,2,29,0,0]))  < 50
+        #     println(_system.counts)
+        # end
         new_winner = evaluate_winner(_system)
         cnt += winner ≠ new_winner ? 1 : 0
     end
