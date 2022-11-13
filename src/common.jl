@@ -1,3 +1,8 @@
+abstract type VotingSystem end
+
+abstract type Criterion end
+
+
 """
     remove_candidate!(ranking, id)
 
@@ -41,6 +46,41 @@ function count_top_ranks(counts, uranks, id)
         cnt += uranks[i][1] == id ? counts[i] : 0
     end
     return cnt
+end
+
+function redistribute!(system, win_ind)
+    counts = get_counts(system)
+    n = length(counts)
+    n_w = sum(win_ind)
+    for i ∈ 1:n 
+        if !win_ind[i]
+            total = counts[i]
+            new_vals = rand(Multinomial(total, n_w + 1))
+            counts[i] = new_vals[1]
+            cnt = 2
+            j = 1
+            while cnt ≤ (n_w + 1)
+                if win_ind[j] 
+                    counts[j] += new_vals[cnt]
+                    cnt += 1
+                end
+                j += 1
+            end
+        end
+    end
+    return nothing
+end
+
+function add_zero_counts!(system)
+    (;counts,uranks) = system 
+    all_uranks = permutations(uranks[1])
+    for r ∈ all_uranks 
+        if r ∉ uranks 
+            push!(uranks, r)
+            push!(counts, 0)
+        end
+    end
+    return nothing 
 end
 
 get_counts(system) = system.counts
