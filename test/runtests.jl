@@ -91,7 +91,6 @@ end
         
         @test sum(system.counts) == sum(_system.counts)
         @test all(system.counts[win_ind] .≥ system.counts[win_ind])
-        @test all(system.counts[win_ind .≠ true] .≤ system.counts[win_ind .≠ true])
     end
 
     @safetestset "2" begin 
@@ -147,7 +146,7 @@ end
 end
 
 @safetestset "reversal symmetry" begin
-    @safetestset "instant runoff" begin
+    @safetestset "instant runoff 1" begin
         using RankChoiceVoting
         using Test
 
@@ -160,6 +159,23 @@ end
         criteria = ReversalSymmetry()
         violations = count_violations(system, criteria)
         @test violations == 1
+        @test !satisfies(system, criteria)
+    end
+
+    @safetestset "instant runoff 2" begin
+        using RankChoiceVoting
+        using Test
+
+        rankings = Vector{Vector{Symbol}}()
+        push!(rankings, [[:a,:b,:c] for _ ∈ 1:10]...)
+        push!(rankings, [[:b,:c,:a] for _ ∈ 1:3]...)
+        push!(rankings, [[:c,:a,:b] for _ ∈ 1:2]...)
+
+        system = InstantRunOff(rankings)
+        criteria = ReversalSymmetry()
+        violations = count_violations(system, criteria)
+        @test violations == 0
+        @test satisfies(system, criteria)
     end
 end
 
@@ -187,9 +203,8 @@ end
         winner2 = evaluate_winner(system)
         @test winner1 ≠ winner2 
     end
-
     
-    @safetestset "instant runoff test case" begin
+    @safetestset "instant runoff" begin
         using RankChoiceVoting
         using Test
         using Random
@@ -205,7 +220,8 @@ end
         system = InstantRunOff(rankings)
         criteria = Monotonicity()
         violations = count_violations(system, criteria)
-        @test_skip violations > 0
+        @test violations > 0
+        @test !satisfies(system, criteria)
     end
 end
 
@@ -224,9 +240,11 @@ end
         criteria = Condorcet()
         violations = count_violations(system, criteria)
         @test violations == 0
+        @test satisfies(system, criteria)
     end
 
     @safetestset "instant runoff 2" begin
+        #https://math.hawaii.edu/~marriott/teaching/summer2013/math100/violations.pdf
         using RankChoiceVoting
         using Test
 
@@ -241,5 +259,6 @@ end
         criteria = Condorcet()
         violations = count_violations(system, criteria)
         @test violations == 1
+        @test !satisfies(system, criteria)
     end
 end

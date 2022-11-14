@@ -4,6 +4,7 @@ module RankChoiceVoting
     using Distributions
     export evaluate_winner
     export count_violations
+    export satisfies
     export VotingSystem
     export InstantRunOff
     export ReversalSymmetry

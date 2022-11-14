@@ -50,25 +50,25 @@ end
 
 function redistribute!(system, win_ind)
     counts = get_counts(system)
+    uranks = get_uranks(system)
     n = length(counts)
-    n_w = sum(win_ind)
     for i ∈ 1:n 
-        if !win_ind[i]
-            total = counts[i]
-            new_vals = rand(Multinomial(total, n_w + 1))
-            counts[i] = new_vals[1]
-            cnt = 2
-            j = 1
-            while cnt ≤ (n_w + 1)
-                if win_ind[j] 
-                    counts[j] += new_vals[cnt]
-                    cnt += 1
-                end
-                j += 1
-            end
+        if win_ind[i]
+            swapped_rank = swap(uranks[i])
+            cidx = findfirst(x -> x == swapped_rank, uranks)
+            total = counts[cidx]
+            Δ = rand(0:total)
+            counts[cidx] -= Δ 
+            counts[i] += Δ 
         end
     end
     return nothing
+end
+
+function swap(urank)
+    r = urank[:]
+    reverse!(@view r[1:2])
+    return r
 end
 
 function add_zero_counts!(system)

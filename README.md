@@ -44,9 +44,9 @@ system = InstantRunOff(rankings)
 winner = evaluate_winner(system)
 ```
 
-## Counting Violations
+## Criteria Satisfaction
 
-The function `count_violations` will count the number of violations of a fairness criterion in a set of ranked choice votes under a specified voting system. Depending on the fairness criterion, the maximum number of violations can be greater than 1. 
+The function `satisfies` tests whether a voting system satisfies a criterion for a specific set of rank choice votes. In cases, where there are more than one possible violation (e.g., monotonicity), a Monte Carlo procedure is used to explore the space and true is returns as soon as a violation is found. 
 
 ### Example: a violation of reversal symmetry
 
@@ -100,9 +100,13 @@ evaluate_winner(system)
 In agreement with the worked example above, the result is candidate `a`. In RankChoiceVoting.jl, you can count the number of volations using the function `count_violations`:
 ```julia 
 criteria = ReversalSymmetry()
-violations = count_violations(system, criteria)
+violations = satisfies(system, criteria)
 ```
-which yields a value of 1. For reversal symmetry, the maximum number of violations is 1 (there is only one way to reverse the rank ordering for each person). 
+which yields true for this example.  
+## Counting Violations
+
+The function `count_violations` will count the number of violations of a fairness criterion in a set of ranked choice votes under a specified voting system. Depending on the fairness criterion, the maximum number of violations can be greater than 1. 
+
 # References
 
 lô Gueye, A. (2014). Failures of reversal symmetry under two common voting rules. Economics Bulletin, 34(3), 1970-1975.
