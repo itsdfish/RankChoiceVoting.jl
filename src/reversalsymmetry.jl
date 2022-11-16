@@ -8,7 +8,17 @@ mutable struct ReversalSymmetry <: Criterion
 
 end
 
-function satisfies(system::VotingSystem, criteria::ReversalSymmetry)
+"""
+    satisfies(system::VotingSystem, criteria::ReversalSymmetry; _...)
+
+Tests whether a voting system satisfies the reversal symmetry criterion.
+
+# Arguments
+
+- `system::VotingSystem`: a voting system object
+- `criteria::ReversalSymmetry`: condorcet criterion object 
+"""
+function satisfies(system::VotingSystem, criteria::ReversalSymmetry; kwargs...)
     winner = evaluate_winner(system)
     _system = deepcopy(system)
     reverse!.(_system.uranks)
@@ -16,6 +26,16 @@ function satisfies(system::VotingSystem, criteria::ReversalSymmetry)
     return winner ≠ _winner
 end
 
-function count_violations(system::VotingSystem, criteria::ReversalSymmetry)
+"""
+    count_violations(system::VotingSystem, criteria::ReversalSymmetry; _...)
+
+Counts the number of violations of the reversal symmetry criterion for a given voting system.
+
+# Arguments
+
+- `system::VotingSystem`: a voting system object
+- `criteria::ReversalSymmetry`: reversal symmetry criterion object 
+"""
+function count_violations(system::VotingSystem, criteria::ReversalSymmetry; _...)
     return satisfies(system, criteria) ? 0 : 1
 end

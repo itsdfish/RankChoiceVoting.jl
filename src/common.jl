@@ -48,29 +48,15 @@ function count_top_ranks(counts, uranks, id)
     return cnt
 end
 
-function redistribute!(system, win_ind)
-    counts = get_counts(system)
-    uranks = get_uranks(system)
-    n = length(counts)
-    for i ∈ 1:n 
-        if win_ind[i]
-            swapped_rank = swap(uranks[i])
-            cidx = findfirst(x -> x == swapped_rank, uranks)
-            total = counts[cidx]
-            Δ = rand(0:total)
-            counts[cidx] -= Δ 
-            counts[i] += Δ 
-        end
-    end
-    return nothing
-end
+"""
+    add_zero_counts!(system)
 
-function swap(urank)
-    r = urank[:]
-    reverse!(@view r[1:2])
-    return r
-end
+Adds rank orders which have zero votes.
 
+# Arguments
+
+- `system`: a voting system object
+"""
 function add_zero_counts!(system)
     (;counts,uranks) = system 
     all_uranks = permutations(uranks[1])
