@@ -10,10 +10,14 @@ module RankChoiceVoting
     export ReversalSymmetry
     export Monotonicity
     export Condorcet
+    export Borda
+    export Majority
 
     include("common.jl")
-    include("instant_runoff.jl")
-    include("monotonicity.jl")
-    include("reversalsymmetry.jl")
-    include("condorcet.jl")
+    include("systems/instant_runoff.jl")
+    include("systems/Borda_count.jl")
+    include("criteria/monotonicity.jl")
+    include("criteria/reversalsymmetry.jl")
+    include("criteria/condorcet.jl")
+    include("criteria/majority.jl")
 end

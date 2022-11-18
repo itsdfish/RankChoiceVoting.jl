@@ -18,7 +18,7 @@ end
 
 A constructor for an instant runoff voting system
 
-#Arguments
+# Arguments
 - `rankings`: a vector of rankings. Each ranking is a vector in which index represents rank and value represents candidate id.
 """
 function InstantRunOff(rankings)

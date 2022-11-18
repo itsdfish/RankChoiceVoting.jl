@@ -19,13 +19,18 @@ Tests whether a voting system satisfies the monotonicity criterion.
 
 - `system::VotingSystem`: a voting system object
 - `criteria::Monotonicity`: monotonicity criterion object 
+
+# Keywords
+
+- `max_reps=1000`: maximum number of Monte Carlo simulations to perform while searching 
+for a violation
 """
-function satisfies(system::VotingSystem, criteria::Monotonicity; n_reps=1000, _...)
+function satisfies(system::VotingSystem, criteria::Monotonicity; max_reps=1000, _...)
     system = deepcopy(system)
     add_zero_counts!(system)
     winner = evaluate_winner(system)
     win_ind = map(x -> x[1] == winner, system.uranks)
-    for _ ∈ 1:n_reps
+    for _ ∈ 1:max_reps
         _system = deepcopy(system)
         redistribute!(_system, win_ind)
         new_winner = evaluate_winner(_system)
@@ -46,15 +51,15 @@ Counts the number of violations of the monotonicity criterion for a given voting
 
 # Keywords
 
-- `max_reps`: maximum number of Monte Carlo simulations to perform
+- `n_reps=1000`: maximum number of Monte Carlo simulations to perform
 """
-function count_violations(system::VotingSystem, criteria::Monotonicity; max_reps=1000, _...)
+function count_violations(system::VotingSystem, criteria::Monotonicity; n_reps=1000, _...)
     system = deepcopy(system)
     add_zero_counts!(system)
     winner = evaluate_winner(system)
     win_ind = map(x -> x[1] == winner, system.uranks)
     cnt = 0
-    for _ ∈ 1:max_reps
+    for _ ∈ 1:n_reps
         _system = deepcopy(system)
         redistribute!(_system, win_ind)
         new_winner = evaluate_winner(_system)
@@ -108,4 +113,34 @@ function swap(urank; idx=1:2)
     r = urank[:]
     reverse!(@view r[idx])
     return r
+end
+
+"""
+    satisfies(system::Borda, criteria::Monotonicity; _...)
+
+Tests whether the Borda count system satisfies the monotonicity criterion.
+The value returned is true because the Borda count system always satisfies monotonicity.
+
+# Arguments
+
+- `system::Borda`: a voting system object
+- `criteria::Monotonicity`: monotonicity criterion object 
+"""
+function satisfies(system::Borda, criteria::Monotonicity; _...)
+    return true
+end
+
+"""
+    count_violations(system::Borda, criteria::Monotonicity; _...)
+
+Counts the number of violations of the monotonicity criterion for the Borda count system.
+The value returned is zero because the Borda count system always satisfies monotonicity.
+
+# Arguments
+
+- `system::Borda`: a voting system object
+- `criteria::Monotonicity`: condorcet criterion object 
+"""
+function count_violations(system::Borda, criteria::Monotonicity; _...)
+    return 0
 end

@@ -39,3 +39,32 @@ Counts the number of violations of the reversal symmetry criterion for a given v
 function count_violations(system::VotingSystem, criteria::ReversalSymmetry; _...)
     return satisfies(system, criteria) ? 0 : 1
 end
+
+"""
+    satisfies(system::Borda, criteria::ReversalSymmetry; _...)
+
+Tests whether the Borda count satisfies the reversal symmetry criterion. A value of true is always returned.
+
+# Arguments
+
+- `system::Borda`: a voting system object
+- `criteria::ReversalSymmetry`: condorcet criterion object 
+"""
+function satisfies(system::Borda, criteria::ReversalSymmetry; kwargs...)
+    return true
+end
+
+"""
+    count_violations(system::Borda, criteria::ReversalSymmetry; _...)
+
+Counts the number of violations of the reversal symmetry criterion for the Borda count. A value of zero is 
+always returned
+
+# Arguments
+
+- `system::Borda`: a voting system object
+- `criteria::ReversalSymmetry`: reversal symmetry criterion object 
+"""
+function count_violations(system::Borda, criteria::ReversalSymmetry; _...)
+    return 0
+end
