@@ -12,12 +12,14 @@ module RankChoiceVoting
     export Condorcet
     export Borda
     export Majority
+    export Consistency
 
     include("common.jl")
     include("systems/instant_runoff.jl")
-    include("systems/Borda_count.jl")
+    include("systems/Borda.jl")
     include("criteria/monotonicity.jl")
     include("criteria/reversalsymmetry.jl")
     include("criteria/condorcet.jl")
     include("criteria/majority.jl")
+    include("criteria/consistency.jl")
 end

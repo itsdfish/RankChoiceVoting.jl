@@ -50,10 +50,10 @@
 
         rankings = map(_ -> shuffle([:a,:b,:c]), 1:100)
         system = Borda(rankings)
-        criteria = Monotonicity()
-        violations = count_violations(system, criteria)
+        criterion = Monotonicity()
+        violations = count_violations(system, criterion)
         # Borda always satisfies Monotonicity
         @test violations == 0
-        @test satisfies(system, criteria)
+        @test satisfies(system, criterion)
     end
 end
