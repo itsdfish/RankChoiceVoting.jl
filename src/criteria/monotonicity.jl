@@ -26,6 +26,11 @@ Tests whether a voting system satisfies the monotonicity criterion.
 for a violation
 """
 function satisfies(system::VotingSystem, criteria::Monotonicity; max_reps=1000, _...)
+    return _satisfies(system, criteria; max_reps)
+end
+
+# used for testing
+function _satisfies(system::VotingSystem, criteria::Monotonicity; max_reps=1000, _...)
     system = deepcopy(system)
     add_zero_counts!(system)
     winner = evaluate_winner(system)
@@ -142,5 +147,35 @@ The value returned is zero because the Borda count system always satisfies monot
 - `criteria::Monotonicity`: condorcet criterion object 
 """
 function count_violations(system::Borda, criteria::Monotonicity; _...)
+    return 0
+end
+
+"""
+    satisfies(system::Bucklin, criteria::Monotonicity; _...)
+
+Tests whether the Bucklin voting system satisfies the monotonicity criterion.
+The value returned is true because the Bucklin voting system always satisfies monotonicity.
+
+# Arguments
+
+- `system::Bucklin`: a voting system object
+- `criteria::Monotonicity`: monotonicity criterion object 
+"""
+function satisfies(system::Bucklin, criteria::Monotonicity; _...)
+    return true
+end
+
+"""
+    count_violations(system::Bucklin, criteria::Monotonicity; _...)
+
+Counts the number of violations of the monotonicity criterion for the Bucklin voting system.
+The value returned is zero because the Bucklin voting system always satisfies monotonicity.
+
+# Arguments
+
+- `system::Bucklin`: a voting system object
+- `criteria::Monotonicity`: condorcet criterion object 
+"""
+function count_violations(system::Bucklin, criteria::Monotonicity; _...)
     return 0
 end

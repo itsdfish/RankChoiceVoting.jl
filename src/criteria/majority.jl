@@ -9,17 +9,17 @@ mutable struct Majority <: Criterion
 end
 
 """
-    satisfies(system::VotingSystem, criteria::Majority; _...)
+    satisfies(system::VotingSystem, criterion::Majority; _...)
 
 Tests whether a voting system satisfies the majority criterion.
 
 # Arguments
 
 - `system::VotingSystem`: a voting system object
-- `criteria::Majority`: majority criterion object 
+- `criterion::Majority`: majority criterion object 
 
 """
-function satisfies(system::VotingSystem, criteria::Majority; _...)
+function satisfies(system::VotingSystem, criterion::Majority; _...)
     winner_id = evaluate_winner(system)
     majority_id = get_majority_id(system)
     isempty(majority_id) ? (return true) : nothing
@@ -27,17 +27,17 @@ function satisfies(system::VotingSystem, criteria::Majority; _...)
 end
 
 """
-    count_violations(system::VotingSystem, criteria::Majority; _...)
+    count_violations(system::VotingSystem, criterion::Majority; _...)
 
 Counts the number of violations of the majority criterion for a given voting system.
 
 # Arguments
 
 - `system::VotingSystem`: a voting system object
-- `criteria::Majority`: majority criterion object 
+- `criterion::Majority`: majority criterion object 
 """
-function count_violations(system::VotingSystem, criteria::Majority; _...)
-    return satisfies(system, criteria) ? 0 : 1
+function count_violations(system::VotingSystem, criterion::Majority; _...)
+    return satisfies(system, criterion) ? 0 : 1
 end
 
 get_majority_id(system) = get_majority_id(system.counts, system.uranks)
@@ -57,22 +57,23 @@ function get_majority_id(counts, uranks::Vector{Vector{T}}) where {T}
 end
 
 """
-    satisfies(system::InstantRunOff, criteria::Majority; _...)
+    satisfies(system::InstantRunOff, criterion::Majority; _...)
 
 Tests whether the instant runoff voting system satisfies the majority criterion. The instant run off voting system 
 always satisifes the majority criterion. 
+
 # Arguments
 
 - `system::InstantRunOff`: a voting system object
-- `criteria::Majority`: majority criterion object 
+- `criterion::Majority`: majority criterion object 
 
 """
-function satisfies(system::InstantRunOff, criteria::Majority; _...)
+function satisfies(system::InstantRunOff, criterion::Majority; _...)
     return true
 end
 
 """
-    count_violations(system::InstantRunOff, criteria::Majority; n_reps=1000, _...)
+    count_violations(system::InstantRunOff, criterion::Majority; _...)
 
 Counts the number of violations of the majority criterion for the instant runoff voting system.
 The number of violations is always zero for the instant runoff voting system. 
@@ -80,8 +81,39 @@ The number of violations is always zero for the instant runoff voting system.
 # Arguments
 
 - `system::InstantRunOff`: a voting system object
-- `criteria::Majority`: majority criterion object 
+- `criterion::Majority`: majority criterion object 
 """
-function count_violations(system::InstantRunOff, criteria::Majority; _...)
+function count_violations(system::InstantRunOff, criterion::Majority; _...)
+    return 0
+end
+
+"""
+    satisfies(system::Bucklin, criterion::Majority; _...)
+
+Tests whether the Bucklin voting system satisfies the majority criterion. The Bucklin voting system 
+always satisifes the majority criterion. 
+
+# Arguments
+
+- `system::Bucklin`: a voting system object
+- `criterion::Majority`: majority criterion object 
+
+"""
+function satisfies(system::Bucklin, criterion::Majority; _...)
+    return true
+end
+
+"""
+    count_violations(system::Bucklin, criterion::Majority; _...)
+
+Counts the number of violations of the majority criterion for the Bucklin voting system.
+The number of violations is always zero for the Bucklin voting system. 
+
+# Arguments
+
+- `system::Bucklin`: a voting system object
+- `criterion::Majority`: majority criterion object 
+"""
+function count_violations(system::Bucklin, criterion::Majority; _...)
     return 0
 end

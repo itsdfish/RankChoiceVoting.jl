@@ -9,16 +9,16 @@ mutable struct Condorcet <: Criterion
 end
 
 """
-    satisfies(system::VotingSystem, criteria::Condorcet; _...)
+    satisfies(system::VotingSystem, criterion::Condorcet; _...)
 
 Tests whether a voting system satisfies the Condorcet criterion.
 
 # Arguments
 
 - `system::VotingSystem`: a voting system object
-- `criteria::Condorcet`: condorcet criterion object 
+- `criterion::Condorcet`: condorcet criterion object 
 """
-function satisfies(system::VotingSystem, criteria::Condorcet; _...)
+function satisfies(system::VotingSystem, criterion::Condorcet; _...)
     system = deepcopy(system)
     (;counts,uranks) = system
     candidates = uranks[1]
@@ -35,17 +35,17 @@ function satisfies(system::VotingSystem, criteria::Condorcet; _...)
 end
 
 """
-    count_violations(system::VotingSystem, criteria::Condorcet; _...)
+    count_violations(system::VotingSystem, criterion::Condorcet; _...)
 
 Counts the number of violations of the Condorcet for a given voting system.
 
 # Arguments
 
 - `system::VotingSystem`: a voting system object
-- `criteria::Condorcet`: condorcet criterion object 
+- `criterion::Condorcet`: condorcet criterion object 
 """
-function count_violations(system::VotingSystem, criteria::Condorcet; _...)
-    return satisfies(system, criteria) ? 0 : 1
+function count_violations(system::VotingSystem, criterion::Condorcet; _...)
+    return satisfies(system, criterion) ? 0 : 1
 end
 
 """

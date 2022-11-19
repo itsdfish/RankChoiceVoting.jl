@@ -43,13 +43,46 @@
         @test !satisfies(system, criteria)
     end
 
-    @safetestset "Borda count" begin
+    @safetestset "Borda 1" begin
         using RankChoiceVoting
         using Test
         using Random
 
         rankings = map(_ -> shuffle([:a,:b,:c]), 1:100)
         system = Borda(rankings)
+        criterion = Monotonicity()
+        violations = count_violations(system, criterion)
+        # Borda always satisfies Monotonicity
+        @test violations == 0
+        @test satisfies(system, criterion)
+    end
+
+    @safetestset "Borda 2" begin
+        using RankChoiceVoting
+        using Test
+        using Random
+        using RankChoiceVoting: violates
+        using RankChoiceVoting: _satisfies
+
+        Random.seed!(8554)
+        criterion = Monotonicity()
+        candidates = [:a,:b,:c]
+
+        for _ ∈ 1:100
+            n = rand(50:500)
+            rankings = map(_ -> shuffle(candidates), 1:n)
+            system = Borda(rankings)
+            @test _satisfies(system, criterion)
+        end
+    end
+
+    @safetestset "Bucklin" begin
+        using RankChoiceVoting
+        using Test
+        using Random
+
+        rankings = map(_ -> shuffle([:a,:b,:c]), 1:100)
+        system = Bucklin(rankings)
         criterion = Monotonicity()
         violations = count_violations(system, criterion)
         # Borda always satisfies Monotonicity

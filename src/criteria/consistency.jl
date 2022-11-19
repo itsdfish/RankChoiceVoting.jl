@@ -1,34 +1,40 @@
 """
 Consistency <: Criterion
 
-A Consistency criterion object. The Condorcet criterion states that a candiate who wins all
-pairwise elections must also win the election using a given voting system.
+A Consistency criterion object. According to the consistency criterion, if the votes are split into disjoint subsets, and 
+the same candidate wins each subset, the system must select the same winner for the whole set of votes.
 """
 mutable struct Consistency <: Criterion
 
 end
 
 """
-    satisfies(system::VotingSystem, criteria::Consistency; n_max=1000, _...)
+    satisfies(system::VotingSystem, criterion::Consistency; n_max=1000, _...)
 
 Tests whether a voting system satisfies the Consistency criterion.
 
 # Arguments
 
 - `system::VotingSystem`: a voting system object
-- `criteria::Consistency`: consistency criterion object 
+- `criterion::Consistency`: consistency criterion object 
 
 # Keywords
 
 - `n_max`: maximum Monte Carlo simulations to perform 
 """
-function satisfies(system::VotingSystem, criteria::Consistency; n_max=1000, _...) 
+function satisfies(system::VotingSystem, criterion::Consistency; n_max=1000, _...) 
+    return _satisfies(system, criterion)
+end
+
+# for testing
+function _satisfies(system::VotingSystem, criterion::Consistency; n_max=1000, _...) 
     winner = evaluate_winner(system)
     for i ∈ 1:n_max 
         violates(system, winner) ? (return false) : nothing 
     end
     return true 
 end
+
 
 function violates(system::V, winner) where {V<:VotingSystem}
     system = deepcopy(system)
@@ -48,20 +54,20 @@ function random_split(counts)
 end
 
 """
-    count_violations(system::VotingSystem, criteria::Consistency; n_rep=1000, _...)
+    count_violations(system::VotingSystem, criterion::Consistency; n_rep=1000, _...)
 
 Counts the number of violations of the consistency criterion for a given voting system.
 
 # Arguments
 
 - `system::VotingSystem`: a voting system object
-- `criteria::Consistency`: condorcet criterion object 
+- `criterion::Consistency`: condorcet criterion object 
 
 # Keywords
 
 - `n_rep`: number of Monte Carlo simulations to perform 
 """
-function count_violations(system::VotingSystem, criteria::Consistency; n_reps=1000, _...)
+function count_violations(system::VotingSystem, criterion::Consistency; n_reps=1000, _...)
     winner = evaluate_winner(system)
     cnt = 0
     for i ∈ 1:n_reps 

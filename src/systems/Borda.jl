@@ -14,7 +14,7 @@ mutable struct Borda{T,I<:Integer} <: VotingSystem
 end
 
 """
-Borda(rankings)
+    Borda(rankings)
 
 A constructor for a Borda count voting system
 
@@ -34,7 +34,7 @@ Returns the id of the winning candiate in Borda count election.
 
 # Arguments
 
-- `system`: an instant runoff system object
+- `system`: a Borda voting system object
 """
 function evaluate_winner(system::Borda)
     scores = score_borda(system)
@@ -44,8 +44,6 @@ end
 function score_borda(system::Borda)
     counts = deepcopy(get_counts(system))
     uranks = deepcopy(get_uranks(system))
-    winner_idx = -100
-    n_votes = sum(counts)
     candidates = uranks[1]
     scores = Dict(c => 0 for c ∈ candidates)
     n_candidates = length(candidates)

@@ -1,12 +1,54 @@
 # RankChoiceVoting.jl (Work in progress)
 
-This package provides a framework for simulating and evaluating rank choice voting systems. Rank choice voting systems allow voters to order candidates according to preference, aggregate the votes, and select a winner. Interestingly, Arrow's impossibility theorem demonstrates that it is impossible to design a rank choice voting system that can satisfy a set of fairness criteria under all conditions. What this means is that every rank choice voting system is flawed to some degree.  
+This package provides a framework for simulating and evaluating rank choice voting systems. 
 
-Although Arrow's impossibility theorem proves that all rank choice voting systems are imperfect, many interesting questions remain unanswered by the theorem. For example, how prevalent are the violations of fairness critera and under what conditions are they violated? This package is designed to help answer questions of this nature.
+# Rank Choice Voting Systems 
+
+Rank choice voting systems allow voters to order candidates according to preference rather than providing a single selection of the most preferred candidate. Rank choice voting is potentially useful because it provides additional information beyond the most prefered candidate which can be incorporated into the electoral process. Each rank choice voting system specifies its own rule for aggregating individual rankings into a societial ranking from which a winner is selected. Importantly, the rules can provide different election outcomes. 
+
+## Limitations
+
+Interestingly, Arrow's impossibility theorem demonstrates that it is impossible to design a rank choice voting system that can satisfy a set of fairness criteria under all conditions. What this means is that every rank choice voting system is flawed to some degree. Although insightful, many interesting questions remain unanswered by Arrow's impossibility theorem. For example, how prevalent are the violations of fairness critera and under what conditions are they violated? This package is designed to help answer questions of this nature.
+
+## Example
+
+As an example, suppose we want to know chance of violating the Condorcet criterion for the 
+instant runoff system and the Borda count system. The Condorcet criterion states that if a candidate wins each head-to-head competition, then the election system should select that candidate. The figure below shows the chance of violating the Condorcet criterion at different points in two-dimensional belief space where candidates (red dots) exhibit a one to one trade-off along both dimensions. Black indicates 0% chance and yellow indicates 65% chance.  Notably, the violations tend to occur near the identity line for both systems, but the instant runoff system has a much higher chance of violating the Condorcet criterion.  
+
+<img src="resources/Condorcet.png" alt="drawing" width="600" height = "500"/>
+
+# API Overview 
+
+As described below, the API consists of voting system objects and fairness criterion objects. Various functions allow the user to determine a winner and to check for violations of a specific criterion for a given set of ranked preferences. 
+
+## Voting Systems 
+
+The following voting systems are currently implimented:
+
+- Borda Count
+- Bucklin 
+- instant runoff
+
+## Fairness Criteria
+
+The following fairness criteria are currently implimented: 
+
+- condorcet
+- consistency
+- majority
+- monotonicity
+- reversal symmetry
+
+# Functions 
+
+The package provides the following functions:
+
+- evaluate_winner
+- satisfies
+- count_violations
 
 # API
 
-As described below, the API consists of voting system objects and fairness criterion objects. Various functions allow the user to determine a winner and to check for violations of a specific criterion for a given set of ranked preferences. 
 ## Voting Systems
 
 All voting systems are a subtype of an abstract type called `VotingSystem`. Each voting system has a minimum of two fields: a vector of unique rankings called `uranks`, and the corresponding counts called `counts`. The following example is for the instant runoff voting system:
@@ -19,7 +61,6 @@ end
 ```
 
 ## Fairness Criteria
-
 
 The API also consists of objects representing a fairness criteria. Each fairness criterion is a subtype of an abstract type called `Criterion`. As an example consider, the criterion reversal symmetry, according to which a winning candidate cannot also win if each voters preferences are reversed (e.g., [1,2,3] -> [3,2,1]). In RankChoiceVoting.jl, the object for the reversal symmetry criterion is defined as follows:
 

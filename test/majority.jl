@@ -65,4 +65,21 @@
         @test satisfies(system, criterion)
         @test count_violations(system, criterion) == 0
     end
+
+    @safetestset "Bucklin 1" begin
+        using RankChoiceVoting
+        using Test
+
+        rankings = Vector{Vector{Symbol}}()
+        push!(rankings, [[:s,:t,:o,:p] for _ ∈ 1:20]...)
+        push!(rankings, [[:t,:p,:o,:s] for _ ∈ 1:2]...)
+        push!(rankings, [[:p,:t,:o,:s] for _ ∈ 1:1]...)
+        push!(rankings, [[:o,:t,:p,:s] for _ ∈ 1:2]...)
+        
+        system = Bucklin(rankings)
+        criterion = Majority()
+
+        @test satisfies(system, criterion)
+        @test count_violations(system, criterion) == 0
+    end
 end

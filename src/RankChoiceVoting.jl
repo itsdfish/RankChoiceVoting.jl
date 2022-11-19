@@ -7,6 +7,7 @@ module RankChoiceVoting
     export satisfies
     export VotingSystem
     export InstantRunOff
+    export Bucklin
     export ReversalSymmetry
     export Monotonicity
     export Condorcet
@@ -17,6 +18,7 @@ module RankChoiceVoting
     include("common.jl")
     include("systems/instant_runoff.jl")
     include("systems/Borda.jl")
+    include("systems/Bucklin.jl")
     include("criteria/monotonicity.jl")
     include("criteria/reversalsymmetry.jl")
     include("criteria/condorcet.jl")
