@@ -60,7 +60,7 @@ end
         #https://math.hawaii.edu/~marriott/teaching/summer2013/math100/violations.pdf
         using RankChoiceVoting
         using Test
-        using RankChoiceVoting: _satisfies
+        using RankChoiceVoting: Fails
         using Random
 
         candidates = [:a,:c,:b,:d] 
@@ -70,7 +70,7 @@ end
             rankings = [shuffle(candidates) for _ ∈ 1:n]
             system = InstantRunOff(rankings)
             criteria = CondorcetLoser()
-            @test _satisfies(system, criteria)
+            @test satisfies(Fails(), system, criteria)
         end
     end
 

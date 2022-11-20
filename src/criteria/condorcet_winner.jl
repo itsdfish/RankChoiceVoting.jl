@@ -18,7 +18,7 @@ Tests whether a voting system satisfies the Condorcet winner criterion.
 - `system::VotingSystem`: a voting system object
 - `criterion::CondorcetWinner`: condorcet criterion object 
 """
-function satisfies(system::VotingSystem{T,I}, criterion::CondorcetWinner; _...) where {T,I}
+function satisfies(::Fails, system::VotingSystem{T,I}, criterion::CondorcetWinner; _...) where {T,I}
     system = deepcopy(system)
     (;counts,uranks) = system
     candidates = uranks[1]
@@ -44,8 +44,8 @@ Counts the number of violations of the Condorcet for a given voting system.
 - `system::VotingSystem`: a voting system object
 - `criterion::CondorcetWinner`: condorcet criterion object 
 """
-function count_violations(system::VotingSystem, criterion::CondorcetWinner; _...)
-    return satisfies(system, criterion) ? 0 : 1
+function count_violations(T, system::VotingSystem, criterion::CondorcetWinner; _...)
+    return satisfies(T, system, criterion) ? 0 : 1
 end
 
 """

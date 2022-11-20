@@ -32,7 +32,8 @@ The following voting systems are currently implimented:
 
 The following fairness criteria are currently implimented: 
 
-- condorcet
+- Condorcet winner
+- Condorcet loser
 - consistency
 - majority
 - monotonicity

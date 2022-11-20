@@ -4,6 +4,33 @@ abstract type Criterion end
 
 abstract type Condorcet <: Criterion end
 
+struct Holds end
+
+struct Fails end 
+
+property(::VotingSystem, ::Criterion) = Fails()
+satisfies(s::VotingSystem, c::Criterion; kwargs...) = satisfies(property(s, c), s, c; kwargs...)
+count_violations(s::VotingSystem, c::Criterion; kwargs...) = count_violations(property(s, c), s, c; kwargs...)
+
+"""
+    satisfies(system::InstantRunOff, criterion::CondorcetLoser; _...)
+
+Tests whether the instant runoff system satisfies the Condorcet loser criterion. Always returns 
+true. 
+
+# Arguments
+
+- `system::InstantRunOff`: an instant runoff voting system object
+- `criterion::CondorcetLoser`: condorcet loser criterion object 
+"""
+function satisfies(::Holds, system::VotingSystem, criterion::Criterion; _...)
+    return true
+end
+
+function count_violations(::Holds, system::VotingSystem, criterion::Criterion; _...)
+    return 0
+end
+
 """
     remove_candidate!(ranking, id)
 

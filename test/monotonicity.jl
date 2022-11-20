@@ -62,7 +62,7 @@
         using Test
         using Random
         using RankChoiceVoting: violates
-        using RankChoiceVoting: _satisfies
+        using RankChoiceVoting: Fails
 
         Random.seed!(8554)
         criterion = Monotonicity()
@@ -72,7 +72,7 @@
             n = rand(50:500)
             rankings = map(_ -> shuffle(candidates), 1:n)
             system = Borda(rankings)
-            @test _satisfies(system, criterion)
+            @test satisfies(Fails(), system, criterion)
         end
     end
 

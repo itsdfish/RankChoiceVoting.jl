@@ -18,7 +18,7 @@ Tests whether a voting system satisfies the reversal symmetry criterion.
 - `system::VotingSystem`: a voting system object
 - `criterion::ReversalSymmetry`: condorcet criterion object 
 """
-function satisfies(system::VotingSystem, criterion::ReversalSymmetry; kwargs...)
+function satisfies(::Fails, system::VotingSystem, criterion::ReversalSymmetry; kwargs...)
     winner = evaluate_winner(system)
     _system = deepcopy(system)
     reverse!.(_system.uranks)
@@ -36,35 +36,8 @@ Counts the number of violations of the reversal symmetry criterion for a given v
 - `system::VotingSystem`: a voting system object
 - `criterion::ReversalSymmetry`: reversal symmetry criterion object 
 """
-function count_violations(system::VotingSystem, criterion::ReversalSymmetry; _...)
-    return satisfies(system, criterion) ? 0 : 1
+function count_violations(T::Fails, system::VotingSystem, criterion::ReversalSymmetry; _...)
+    return satisfies(T, system, criterion) ? 0 : 1
 end
 
-"""
-    satisfies(system::Borda, criterion::ReversalSymmetry; _...)
-
-Tests whether the Borda count satisfies the reversal symmetry criterion. A value of true is always returned.
-
-# Arguments
-
-- `system::Borda`: a voting system object
-- `criterion::ReversalSymmetry`: condorcet criterion object 
-"""
-function satisfies(system::Borda, criterion::ReversalSymmetry; kwargs...)
-    return true
-end
-
-"""
-    count_violations(system::Borda, criterion::ReversalSymmetry; _...)
-
-Counts the number of violations of the reversal symmetry criterion for the Borda count. A value of zero is 
-always returned
-
-# Arguments
-
-- `system::Borda`: a voting system object
-- `criterion::ReversalSymmetry`: reversal symmetry criterion object 
-"""
-function count_violations(system::Borda, criterion::ReversalSymmetry; _...)
-    return 0
-end
+property(::Borda, ::ReversalSymmetry) = Holds()

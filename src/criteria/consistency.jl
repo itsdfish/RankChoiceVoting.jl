@@ -22,19 +22,13 @@ Tests whether a voting system satisfies the Consistency criterion.
 
 - `n_max`: maximum Monte Carlo simulations to perform 
 """
-function satisfies(system::VotingSystem, criterion::Consistency; n_max=1000, _...) 
-    return _satisfies(system, criterion)
-end
-
-# for testing
-function _satisfies(system::VotingSystem, criterion::Consistency; n_max=1000, _...) 
+function satisfies(::Fails, system::VotingSystem, criterion::Consistency; n_max=1000, _...) 
     winner = evaluate_winner(system)
     for i ∈ 1:n_max 
         violates(system, winner) ? (return false) : nothing 
     end
     return true 
 end
-
 
 function violates(system::V, winner) where {V<:VotingSystem}
     system = deepcopy(system)
@@ -67,7 +61,7 @@ Counts the number of violations of the consistency criterion for a given voting 
 
 - `n_rep`: number of Monte Carlo simulations to perform 
 """
-function count_violations(system::VotingSystem, criterion::Consistency; n_reps=1000, _...)
+function count_violations(::Fails, system::VotingSystem, criterion::Consistency; n_reps=1000, _...)
     winner = evaluate_winner(system)
     cnt = 0
     for i ∈ 1:n_reps 
@@ -75,3 +69,5 @@ function count_violations(system::VotingSystem, criterion::Consistency; n_reps=1
     end
     return cnt 
 end
+
+property(::Borda, ::Consistency) = Holds()
