@@ -4,22 +4,21 @@ This package provides a framework for simulating and evaluating rank choice voti
 
 # Rank Choice Voting Systems 
 
-Rank choice voting systems allow voters to order candidates according to preference rather than providing a single selection of the most preferred candidate. Rank choice voting is potentially useful because it provides additional information beyond the most prefered candidate which can be incorporated into the electoral process. Each rank choice voting system specifies its own rule for aggregating individual rankings into a societial ranking from which a winner is selected. Importantly, the rules can provide different election outcomes. 
+Rank choice voting systems allow voters to order candidates according to preference rather than providing a single selection of the most preferred candidate. Each rank choice voting system specifies a rule for aggregating individual rankings into a societial ranking from which a winner is selected. Importantly, the rules can provide different election outcomes. 
 
 ## Limitations
 
-Interestingly, Arrow's impossibility theorem demonstrates that it is impossible to design a rank choice voting system that can satisfy a set of fairness criteria under all conditions. What this means is that every rank choice voting system is flawed to some degree. Although insightful, many interesting questions remain unanswered by Arrow's impossibility theorem. For example, how prevalent are the violations of fairness critera and under what conditions are they violated? This package is designed to help answer questions of this nature.
+Interestingly, Arrow's impossibility theorem demonstrates that it is impossible to design a rank choice voting system that can satisfy a set of fairness criteria in all possible elections. What this means is that every rank choice voting system is flawed to some degree, and may lead to undesirable behavior in some situations. Although insightful, many interesting questions remain unanswered by Arrow's impossibility theorem. For example, how prevalent are violations of fairness critera, and under what conditions are they violated? This package is designed to help answer questions of this nature.
 
 ## Example
 
-As an example, suppose we want to know chance of violating the Condorcet criterion for the 
-instant runoff system and the Borda count system. The Condorcet criterion states that if a candidate wins each head-to-head competition, then the election system should select that candidate. The figure below shows the chance of violating the Condorcet criterion at different points in two-dimensional belief space where candidates (red dots) exhibit a one to one trade-off along both dimensions. Black indicates 0% chance and yellow indicates 65% chance.  Notably, the violations tend to occur near the identity line for both systems, but the instant runoff system has a much higher chance of violating the Condorcet criterion.  
+Prior research has established that the instant runoff and the Borda voting systems can violate the Condorcet criterion which states that if a candidate wins each head-to-head competition, then the election system should select that candidate. Suppose, however, that we are interested in comparing conditions and degree to which the instant runoff and Borda count violate the Condorcet criterion. The figure below shows the chance of violating the Condorcet criterion at different points in two-dimensional belief space. Candidates are represented as red dots within the belief space and exhibit a one to one trade-off along both dimensions. The chance of a violation is color coded such that black indicates a 0% chance and yellow indicates a 65% chance. Notably, the violations tend to occur near the identity line for both systems, but the instant runoff system has a much higher chance of violating the Condorcet criterion.  
 
 <img src="resources/Condorcet.png" alt="drawing" width="600" height = "500"/>
 
 # API Overview 
 
-As described below, the API consists of voting system objects and fairness criterion objects. Various functions allow the user to determine a winner and to check for violations of a specific criterion for a given set of ranked preferences. 
+As described below, the API consists of voting system objects and fairness criterion objects. Various functions allow the user to determine a winner and to determine whether a voting system violates a fairness criterion for a given set of rankings. 
 
 ## Voting Systems 
 
@@ -55,7 +54,7 @@ All voting systems are a subtype of an abstract type called `VotingSystem`. Each
 
 ```julia
 mutable struct InstantRunOff{T,I<:Integer} <: VotingSystem
-    uranks::Vector{T}
+    uranks::Vector{Vector{T}}
     counts::Vector{I}
 end
 ```
@@ -138,7 +137,7 @@ The winner of the election under an instant runoff voting system can be determin
 ```julia
 evaluate_winner(system)
 ```
-In agreement with the worked example above, the result is candidate `a`. In RankChoiceVoting.jl, you can count the number of volations using the function `count_violations`:
+In agreement with the worked example above, the result is candidate `a`. In RankChoiceVoting.jl, the function `satisfies` determines whether a voting system complies with a given criterion for the provided rankings. This can be achieved with the following code:
 ```julia 
 criteria = ReversalSymmetry()
 violations = satisfies(system, criteria)

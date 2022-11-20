@@ -1,7 +1,8 @@
-abstract type VotingSystem end
+abstract type VotingSystem{T,I} end
 
 abstract type Criterion end
 
+abstract type Condorcet <: Criterion end
 
 """
     remove_candidate!(ranking, id)

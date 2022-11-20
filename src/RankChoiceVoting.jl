@@ -10,7 +10,8 @@ module RankChoiceVoting
     export Bucklin
     export ReversalSymmetry
     export Monotonicity
-    export Condorcet
+    export CondorcetWinner
+    export CondorcetLoser
     export Borda
     export Majority
     export Consistency
@@ -21,7 +22,8 @@ module RankChoiceVoting
     include("systems/Bucklin.jl")
     include("criteria/monotonicity.jl")
     include("criteria/reversalsymmetry.jl")
-    include("criteria/condorcet.jl")
+    include("criteria/condorcet_winner.jl")
+    include("criteria/condorcet_loser.jl")
     include("criteria/majority.jl")
     include("criteria/consistency.jl")
 end

@@ -1,5 +1,5 @@
 """
-    InstantRunOff{T,I<:Integer} <: VotingSystem
+    InstantRunOff{T,I<:Integer} <: VotingSystem{T,I}
 
 An instant runoff voting system object.
 
@@ -8,8 +8,8 @@ An instant runoff voting system object.
 - `uranks`: a vector of unique rankings. Each ranking is a vector in which index represents rank and value represents candidate id.
 - `counts`: a vector of frequency counts corresponding to each unique ranking 
 """
-mutable struct InstantRunOff{T,I<:Integer} <: VotingSystem
-    uranks::Vector{T}
+mutable struct InstantRunOff{T,I<:Integer} <: VotingSystem{T,I}
+    uranks::Vector{Vector{T}}
     counts::Vector{I}
 end
 
