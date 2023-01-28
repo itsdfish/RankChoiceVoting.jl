@@ -17,13 +17,12 @@ Tests whether a voting system satisfies the majority criterion.
 
 - `system::VotingSystem`: a voting system object
 - `criterion::Majority`: majority criterion object 
-
 """
 function satisfies(::Fails, system::VotingSystem, criterion::Majority; _...)
     winner_id = evaluate_winner(system)
     majority_id = get_majority_id(system)
     isempty(majority_id) ? (return true) : nothing
-    return winner_id == majority_id[1] ? true : false
+    return winner_id ∈ majority_id ? true : false
 end
 
 """

@@ -14,6 +14,7 @@ module RankChoiceVoting
     export CondorcetLoser
     export Borda
     export Majority
+    export MutualMajority
     export Consistency
 
     include("common.jl")
@@ -26,4 +27,5 @@ module RankChoiceVoting
     include("criteria/condorcet_loser.jl")
     include("criteria/majority.jl")
     include("criteria/consistency.jl")
+    include("criteria/mutual_majority.jl")
 end

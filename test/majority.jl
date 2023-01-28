@@ -1,4 +1,3 @@
-
 @safetestset "majority" begin
     @safetestset "get_majority_id 1" begin
         using RankChoiceVoting

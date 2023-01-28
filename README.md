@@ -36,6 +36,7 @@ The following fairness criteria are currently implimented:
 - Condorcet loser
 - consistency
 - majority
+- mutual majority
 - monotonicity
 - reversal symmetry
 
