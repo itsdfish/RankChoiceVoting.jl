@@ -66,7 +66,7 @@ end
         candidates = [:a,:c,:b,:d] 
 
         for _ ∈ 1:100
-            n = rand(100:500)
+            n = rand(10:100)
             rankings = [shuffle(candidates) for _ ∈ 1:n]
             system = InstantRunOff(rankings)
             criteria = CondorcetLoser()

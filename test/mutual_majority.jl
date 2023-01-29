@@ -65,7 +65,6 @@
         push!(rankings, [[:p,:t,:o,:s] for _ ∈ 1:10]...)
         push!(rankings, [[:o,:t,:p,:s] for _ ∈ 1:14]...)
         
-        
         system = Borda(rankings)
         criterion = MutualMajority()
         @test !satisfies(system, criterion)
@@ -118,6 +117,24 @@
             rankings = [[1,2,3] for _ ∈ 1:n]
             shuffle!.(rankings)
             system = Bucklin(rankings)
+            criterion = MutualMajority()
+            @test satisfies(Fails(), system, criterion)
+            @test count_violations(Fails(), system, criterion) == 0
+        end
+    end
+
+    @safetestset "InstantRunOff" begin
+        using RankChoiceVoting
+        using RankChoiceVoting: Fails
+        using Random
+        using Test
+
+        Random.seed!(5200)        
+        for _ ∈ 1:25
+            n = rand(10:100)
+            rankings = [[1,2,3] for _ ∈ 1:n]
+            shuffle!.(rankings)
+            system = InstantRunOff(rankings)
             criterion = MutualMajority()
             @test satisfies(Fails(), system, criterion)
             @test count_violations(Fails(), system, criterion) == 0

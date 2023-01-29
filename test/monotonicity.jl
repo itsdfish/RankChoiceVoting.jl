@@ -48,13 +48,18 @@
         using Test
         using Random
 
-        rankings = map(_ -> shuffle([:a,:b,:c]), 1:100)
-        system = Borda(rankings)
-        criterion = Monotonicity()
-        violations = count_violations(system, criterion)
-        # Borda always satisfies Monotonicity
-        @test violations == 0
-        @test satisfies(system, criterion)
+        Random.seed!(1231)
+        for _ ∈ 1:25
+            n = rand(10:100)
+            rankings = [[1,2,3] for _ ∈ 1:n]
+            shuffle!.(rankings)
+            system = Borda(rankings)
+            criterion = Monotonicity()
+            violations = count_violations(system, criterion)
+            # Borda always satisfies Monotonicity
+            @test violations == 0
+            @test satisfies(system, criterion)
+        end
     end
 
     @safetestset "Borda 2" begin
@@ -81,12 +86,17 @@
         using Test
         using Random
 
-        rankings = map(_ -> shuffle([:a,:b,:c]), 1:100)
-        system = Bucklin(rankings)
-        criterion = Monotonicity()
-        violations = count_violations(system, criterion)
-        # Borda always satisfies Monotonicity
-        @test violations == 0
-        @test satisfies(system, criterion)
+        Random.seed!(9854)
+        for _ ∈ 1:25
+            n = rand(10:100)
+            rankings = [[1,2,3] for _ ∈ 1:n]
+            shuffle!.(rankings)
+            system = Bucklin(rankings)
+            criterion = Monotonicity()
+            violations = count_violations(system, criterion)
+            # Borda always satisfies Monotonicity
+            @test violations == 0
+            @test satisfies(system, criterion)
+        end
     end
 end

@@ -16,6 +16,7 @@ module RankChoiceVoting
     export Majority
     export MutualMajority
     export Consistency
+    export Independence
 
     include("common.jl")
     include("systems/instant_runoff.jl")
@@ -28,4 +29,5 @@ module RankChoiceVoting
     include("criteria/majority.jl")
     include("criteria/consistency.jl")
     include("criteria/mutual_majority.jl")
+    include("criteria/independence_irrelevant_alternatives.jl")
 end

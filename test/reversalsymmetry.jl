@@ -36,12 +36,16 @@
         using Test
         using Random
 
-        rankings = map(_ -> shuffle([:a,:b,:c]), 1:100)
-        system = Borda(rankings)
-        criteria = ReversalSymmetry()
-        violations = count_violations(system, criteria)
-        # Borda always satisfies reversal symmetry
-        @test violations == 0
-        @test satisfies(system, criteria)
+        Random.seed!(5601)
+        for _ ∈ 1:25
+            n = rand(10:100)
+            rankings = map(_ -> shuffle([:a,:b,:c]), 1:n)
+            system = Borda(rankings)
+            criteria = ReversalSymmetry()
+            violations = count_violations(system, criteria)
+            # Borda always satisfies reversal symmetry
+            @test violations == 0
+            @test satisfies(system, criteria)
+        end
     end
 end
