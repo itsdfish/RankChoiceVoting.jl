@@ -42,8 +42,8 @@ function evaluate_winner(system::Borda)
 end
 
 function score_borda(system::Borda)
-    counts = deepcopy(get_counts(system))
-    uranks = deepcopy(get_uranks(system))
+    counts = get_counts(system)
+    uranks = get_uranks(system)
     candidates = uranks[1]
     scores = Dict(c => 0 for c ∈ candidates)
     n_candidates = length(candidates)

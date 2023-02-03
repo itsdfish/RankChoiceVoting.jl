@@ -38,82 +38,53 @@ function count_violations(T::Fails, system::VotingSystem, criterion::MutualMajor
     return satisfies(T, system, criterion) ? 0 : 1
 end
 
-get_majority_set(system) = get_majority_set(system.counts, system.uranks)
+get_top_sets(uranks, r) = map(x -> Set(x[1:r]), uranks)
 
 """
-    rank_preferred(rank, idx)
+    find_majority_set(top_sets::Vector{Set{T}}, counts) where {T}
 
-    Returns true if the set is preferred in a specific ranking (e.g., [:a,:c,:b]) and false otherwise.
+Return the majority set for a given vector of top sets.
 
-    Example: if idx = [:a,:b]  and rank = [:a,:c,:b,:d], the return value is false because :c is preferred to 
-    :b.   
-    # Arguments
-    
-    - `rank`: a vector of candidates ordered from most to least preferred 
-    - `idx`: a vector of indicies for a possible set of strickly preferred candidates 
+- `top_sets::Vector{Set{T}}`: the top ranked candidates of a given size
+- `uranks`: a vector of unique rankings. Each ranking is a vector in which index represents rank and value represents candidate id.
 """
-function rank_preferred(rank, idx)
-    n = length(idx)
-    return Set(idx) == Set(rank[1:n])
-end
-
-"""
-    set_preferred(counts, uranks, idx)
-
-Returns true if the set is preferred and false otherwise. A set 'idx' is preferred if 
-more than half of voters strickly prefer 'idx' to candidates not in 'idx'. 
-
-"""
-function set_preferred(counts, uranks, idx)
-    # half of n voters 
+function find_majority_set(top_sets::Vector{Set{T}}, counts) where {T}
     n_half = sum(counts) / 2
-    # count for preffered 
-    n_preffered = 0
-    # count for not preferred 
-    n_not_preferred = 0
-    # loop over the unique ranks until either more than half prefer idx 
-    # or more than half do not prefer idx. There is no reason to loop through 
-    # all unique vectors 
-    for i ∈ 1:length(uranks)
-        # determine whether current idx is preffered or not in the current rank
-        if rank_preferred(uranks[i], idx)
-            n_preffered += counts[i]
-        else
-            n_not_preferred += counts[i]
-        end
-        # try to terminate early 
-        if n_preffered > n_half
-            return true 
-        elseif n_not_preferred > n_half
-            return false
+    usets = unique(top_sets)
+    for uset ∈ usets
+        uset_count = 0
+        i = 1
+        for set ∈ top_sets
+            if uset == set 
+                uset_count += counts[i]
+            end
+            uset_count > n_half ? (return uset) : nothing 
+            i += 1
         end
     end
-    # should only reach this if equal split
-    return false 
+    return Set(T[])
 end
 
 get_majority_set(system::VotingSystem) = get_majority_set(system.counts, system.uranks)
 
-# this can be speed up by looking at the sets of candidates in the first positions,
-# rather than brute force. Doing so eliminates the number of checks: map(x->Set(x[1:2]), ranks)
+"""
+    get_majority_set(counts, uranks::Vector{Vector{T}}) where {T}
+
+Returns the smallest set of candidates who are strictly preferred to candidates not in the set. 
+
+# Arguments
+
+- `uranks`: a vector of unique rankings. Each ranking is a vector in which index represents rank and value represents candidate id.
+- `counts`: a vector of frequency counts corresponding to each unique ranking 
+"""
 function get_majority_set(counts, uranks::Vector{Vector{T}}) where {T}
     n_candidates = length(uranks[1])
-    candidates = uranks[1]
-    # the set size of the mutual majority is unknown.
-    # starting with set size = 1, test whether there is a simple majority 
-    # increment set size until mutual majority is found or all set sized have 
-    # been examined
-    for set_size ∈ 1:n_candidates
-        # for each set size, try each combination, e.g., [:a,:b], [:a, :c] etc. 
-        for idx ∈ combinations(candidates, set_size)
-            # if a mutual majority is found, stop and return the set 
-            if set_preferred(counts, uranks, idx)
-                return idx
-            end
-        end
+    for c ∈ 1:n_candidates
+        top_sets = get_top_sets(uranks, c)
+        majority_set = find_majority_set(top_sets, counts)
+        !isempty(majority_set) ? (return majority_set) : nothing 
     end
-    # no mutual majority set 
-    return T[]
+    return Set(T[])
 end
 
 property(::Bucklin, ::MutualMajority) = Holds()

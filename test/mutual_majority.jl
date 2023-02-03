@@ -14,7 +14,7 @@
 
         counts, uranks = tally(rankings) 
         majority_set = get_majority_set(counts, uranks)
-        @test Set(majority_set) == Set([:a,:b,:c])
+        @test majority_set == Set([:a,:b,:c])
     end
 
     @safetestset "get_majority_set 2" begin
@@ -33,7 +33,7 @@
         
         counts, uranks = tally(rankings) 
         majority_set = get_majority_set(counts, uranks)
-        @test Set(majority_set) == Set([1,2])
+        @test majority_set == Set([1,2])
     end
 
     @safetestset "get_majority_set 3" begin
@@ -52,7 +52,7 @@
         
         counts, uranks = tally(rankings) 
         majority_set = get_majority_set(counts, uranks)
-        @test Set(majority_set) == Set([1]) || Set(majority_set) == Set([2])
+        @test majority_set == Set([1]) || Set(majority_set) == Set([2])
     end
 
     @safetestset "Borda 1" begin
