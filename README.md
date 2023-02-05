@@ -44,6 +44,7 @@ The following fairness criteria are currently implimented:
 
 The package provides the following functions:
 
+- compute_ranks
 - evaluate_winner
 - satisfies
 - count_violations

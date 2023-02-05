@@ -2,7 +2,7 @@
     @safetestset "score_borda" begin
         using RankChoiceVoting
         using Test
-        using RankChoiceVoting: score_borda
+        using RankChoiceVoting: score
 
         rankings = Vector{Vector{Symbol}}()
         push!(rankings, [[:s,:t,:o,:p] for _ ∈ 1:51]...)
@@ -11,7 +11,7 @@
         push!(rankings, [[:o,:t,:p,:s] for _ ∈ 1:14]...)
         
         system = Borda(rankings)
-        scores = score_borda(system)
+        scores = score(system)
 
         true_scores = Dict(:s => 253, :t => 325, :o => 228, :p => 194)
 
@@ -33,6 +33,6 @@
         system = Borda(rankings)
         winner_id = evaluate_winner(system)
 
-        @test winner_id == :t
+        @test winner_id == [:t]
     end
 end

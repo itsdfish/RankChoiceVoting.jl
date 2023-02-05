@@ -1,22 +1,26 @@
 module RankChoiceVoting
-    using Random
     using Combinatorics
     using Distributions
-    export evaluate_winner
+    using OrderedCollections
+    using Random
+
+    export compute_ranks
     export count_violations
+    export evaluate_winner
     export satisfies
-    export VotingSystem
-    export InstantRunOff
-    export Bucklin
-    export ReversalSymmetry
-    export Monotonicity
-    export CondorcetWinner
-    export CondorcetLoser
+    
     export Borda
-    export Majority
-    export MutualMajority
+    export Bucklin
+    export CondorcetLoser
+    export CondorcetWinner
     export Consistency
     export Independence
+    export InstantRunOff
+    export Majority
+    export Monotonicity
+    export MutualMajority
+    export ReversalSymmetry
+    export VotingSystem
 
     include("common.jl")
     include("systems/instant_runoff.jl")

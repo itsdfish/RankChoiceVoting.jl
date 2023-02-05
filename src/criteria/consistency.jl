@@ -24,6 +24,7 @@ Tests whether a voting system satisfies the Consistency criterion.
 """
 function satisfies(::Fails, system::VotingSystem, criterion::Consistency; n_max=1000, _...) 
     winner = evaluate_winner(system)
+    length(winner) > 1 ? (return true) : nothing 
     for i ∈ 1:n_max 
         violates(system, winner) ? (return false) : nothing 
     end
@@ -38,12 +39,22 @@ function violates(system::V, winner) where {V<:VotingSystem}
     s2 = V(uranks, c2)
     w1 = evaluate_winner(s1)
     w2 = evaluate_winner(s2)
-    return ((w1 == w2) && (winner ≠ w1))
+    # check for violation if a winner can be determined 
+    # in each split
+    if (length(w1) == 1) && (length(w2) == 1) 
+        return ((w1 == w2) && (winner ≠ w1))
+    end
+    return false
 end
 
 function random_split(counts)
     c1 = @. rand(DiscreteUniform(counts))
     c2 = counts .- c1 
+    # make sure c2 contains at least some votes
+    while (sum(c1) == 0) || (sum(c2) == 0)
+        c1 = @. rand(DiscreteUniform(counts))
+        c2 = counts .- c1 
+    end
     return c1,c2
 end
 

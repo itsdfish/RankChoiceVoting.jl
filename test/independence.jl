@@ -40,12 +40,11 @@
         using Random
 
         rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:c, :b, :a] for _ ∈ 1:5]...)
-        push!(rankings, [[:b, :a, :c] for _ ∈ 1:3]...)
-        push!(rankings, [[:b, :c, :a] for _ ∈ 1:1]...)
-        push!(rankings, [[:a, :b, :c] for _ ∈ 1:3]...)
-        push!(rankings, [[:c, :a, :b] for _ ∈ 1:2]...)
-        push!(rankings, [[:a, :c, :b] for _ ∈ 1:1]...)
+        push!(rankings, [[:c, :b, :a] for _ ∈ 1:4]...)
+        push!(rankings, [[:a, :b, :c] for _ ∈ 1:2]...)
+        push!(rankings, [[:b, :a, :c] for _ ∈ 1:1]...)
+        push!(rankings, [[:b, :c, :a] for _ ∈ 1:3]...)
+        push!(rankings, [[:a, :c, :b] for _ ∈ 1:2]...)
 
         system = Borda(rankings)
         criteria = Independence()

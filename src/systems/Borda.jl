@@ -37,15 +37,23 @@ Returns the id of the winning candiate in Borda count election.
 - `system`: a Borda voting system object
 """
 function evaluate_winner(system::Borda)
-    scores = score_borda(system)
-    return findmax(scores)[2]
+    ranks,candidates = compute_ranks(system)
+    return candidates[ranks .== 1]
 end
 
-function score_borda(system::Borda)
+function compute_ranks(system::Borda)
+    scores = score(system)
+    sort!(scores, byvalue=true, rev=true)
+    ranks = tied_ranks(collect(values(scores)))
+    candidates = collect(keys(scores))
+    return ranks, candidates
+end
+
+function score(system::Borda)
     counts = get_counts(system)
     uranks = get_uranks(system)
     candidates = uranks[1]
-    scores = Dict(c => 0 for c ∈ candidates)
+    scores = OrderedDict(c => 0 for c ∈ candidates)
     n_candidates = length(candidates)
     for r ∈ 1:length(counts), i ∈ 1:n_candidates
         c = uranks[r][i]

@@ -37,23 +37,36 @@ Returns the id of the winning candiate in Bucklin voting system.
 - `system`: a Bucklin voting system object
 """
 function evaluate_winner(system::Bucklin)
+    ranks,candidates = compute_ranks(system)
+    return candidates[ranks .== 1]
+end
+
+function compute_ranks(system::Bucklin)
+    scores = score(system)
+    sort!(scores, byvalue=true, rev=true)
+    ranks = tied_ranks(collect(values(scores)))
+    candidates = collect(keys(scores))
+    return ranks, candidates
+end
+
+function score(system::Bucklin)
     counts = get_counts(system)
     uranks = get_uranks(system)
     winner = uranks[1][1]
     n_votes = sum(counts)
     max_iter = length(uranks[1]) - 1
     candidates = uranks[1]
-    scores = Dict(c => 0 for c ∈ candidates)
+    scores = OrderedDict(c => 0 for c ∈ candidates)
     for r ∈ 1:max_iter
-        tally_rank!(scores, counts, uranks, r)
+        score!(scores, counts, uranks, r)
         max_score,winner = findmax(scores)
-        (max_score / n_votes) ≥ .50 ? (return winner) : nothing
+        (max_score / n_votes) ≥ .50 ? break : nothing
     end
-    return winner
+    return scores
 end
 
 """
-    tally_rank!(scores, counts, uranks, r)
+    score!(scores, counts, uranks, r)
 
 Tallies a score based on the count of a rank for a candidate. For example, if a canidate has 28 first 
 rank votes, the canidate will have a tally of 28. 
@@ -65,7 +78,7 @@ rank votes, the canidate will have a tally of 28.
 - `counts`: a vector of frequency counts corresponding to each unique ranking 
 - `r`: the rank being tallied
 """
-function tally_rank!(scores, counts, uranks, r)
+function score!(scores, counts, uranks, r)
     for i ∈ 1:length(counts)
         c = uranks[i][r]
         scores[c] += counts[i]
