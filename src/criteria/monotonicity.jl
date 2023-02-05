@@ -29,7 +29,8 @@ function satisfies(::Fails, system::VotingSystem, criteria::Monotonicity; max_re
     system = deepcopy(system)
     add_zero_counts!(system)
     winner = evaluate_winner(system)
-    win_ind = map(x -> x[1] == winner, system.uranks)
+    length(winner) ≠ 1 ? (return true) : nothing
+    win_ind = map(x -> x[1] == winner[1], system.uranks)
     for _ ∈ 1:max_reps
         _system = deepcopy(system)
         redistribute!(_system, win_ind)
@@ -57,7 +58,8 @@ function count_violations(::Fails, system::VotingSystem, criteria::Monotonicity;
     system = deepcopy(system)
     add_zero_counts!(system)
     winner = evaluate_winner(system)
-    win_ind = map(x -> x[1] == winner, system.uranks)
+    length(winner) ≠ 1 ? (return true) : nothing
+    win_ind = map(x -> x[1] == winner[1], system.uranks)
     cnt = 0
     for _ ∈ 1:n_reps
         _system = deepcopy(system)

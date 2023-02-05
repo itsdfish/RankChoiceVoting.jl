@@ -121,5 +121,14 @@ function tied_ranks(a::Array{T,1}) where {T<:Real}
     return r
 end
 
+function Base.show(io::IO, system::VotingSystem)
+    println("counts      ranks")
+    max_spaces = 12
+    for (c,r) ∈ zip(system.counts,system.uranks)
+        n_spaces = max_spaces - length(digits(c)) 
+        println(c, " "^n_spaces, r)
+    end
+end
+
 get_counts(system) = system.counts
 get_uranks(system) = system.uranks

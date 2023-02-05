@@ -23,6 +23,7 @@ function satisfies(::Fails, system::VotingSystem{T,I}, criterion::CondorcetLoser
     (;counts,uranks) = system
     candidates = uranks[1]
     winner = evaluate_winner(system)
+    length(winner) ≠ 1 ? (return true) : nothing
     pairs = combinations(candidates, 2) |> collect
     condorcet_losers = T[]
     for c ∈ candidates
@@ -31,7 +32,7 @@ function satisfies(::Fails, system::VotingSystem{T,I}, criterion::CondorcetLoser
             break
         end
     end
-    return (winner ∉ condorcet_losers) || isempty(condorcet_losers)
+    return (winner[1] ∉ condorcet_losers) || isempty(condorcet_losers)
 end
 
 """

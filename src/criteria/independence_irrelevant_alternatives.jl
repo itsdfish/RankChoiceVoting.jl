@@ -24,7 +24,7 @@ rank order changes. The current method is less strict compared to alternative me
 """
 function satisfies(::Fails, system::VotingSystem, criterion::Independence;  _...) 
     winner = evaluate_winner(system)
-    losers = setdiff(system.uranks[1], [winner])
+    losers = setdiff(system.uranks[1], winner)
     for i ∈ 1:(length(losers) - 1)
         for comb ∈ combinations(losers, i)
             _system = deepcopy(system)
@@ -58,7 +58,7 @@ rank order changes. The current method is less strict compared to alternative me
 """
 function count_violations(::Fails, system::VotingSystem, criterion::Independence;  _...) 
     winner = evaluate_winner(system)
-    losers = setdiff(system.uranks[1], [winner])
+    losers = setdiff(system.uranks[1], winner)
     cnt = 0
     for i ∈ 1:(length(losers) - 1)
         for comb ∈ combinations(losers, i)

@@ -73,11 +73,6 @@
         using Test
         using Random
 
-        [:a, :b, :c]
-        [:a, :c, :b]
-        [:b, :a, :c]
-        [:c, :a, :b]
-
         rankings = Vector{Vector{Symbol}}()
         push!(rankings, [[:a, :b, :c] for _ ∈ 1:5]...)
         push!(rankings, [[:a, :c, :b] for _ ∈ 1:4]...)
@@ -93,11 +88,6 @@
         using RankChoiceVoting
         using Test
         using Random
-
-        [:a, :b, :c]
-        [:b, :c, :a]
-        [:b, :a, :c]
-        [:c, :a, :b]
 
         rankings = Vector{Vector{Symbol}}()
         push!(rankings, [[:a, :b, :c] for _ ∈ 1:3]...)

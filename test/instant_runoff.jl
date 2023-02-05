@@ -50,7 +50,7 @@
         _,ranks = compute_ranks(system)
         winner = evaluate_winner(system)
 
-        @test winner == []:d]
+        @test winner == [:d]
         @test ranks == [:d,:b,:c,:e,:a]
     end
 end

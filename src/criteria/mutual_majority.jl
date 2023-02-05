@@ -21,7 +21,8 @@ Tests whether a voting system satisfies the mutual majority criterion.
 function satisfies(::Fails, system::VotingSystem, criterion::MutualMajority; _...)
     winner_id = evaluate_winner(system)
     majority_set = get_majority_set(system)
-    return winner_id ∈ majority_set
+    length(winner_id) ≠ 1 ? (return true) : nothing
+    return winner_id[1] ∈ majority_set
 end
 
 """
