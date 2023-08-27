@@ -26,6 +26,14 @@ function satisfies(::Fails, system::VotingSystem, criterion::Majority; _...)
     return winner_id[1] ∈ majority_id ? true : false
 end
 
+function satisfies(::Fails, system::VotingSystem, criterion::Majority, rankings::Ranks; _...)
+    winner_id = evaluate_winner(system, rankings)
+    majority_id = get_majority_id(rankings)
+    length(winner_id) ≠ 1 ? (return false) : nothing
+    isempty(majority_id) ? (return true) : nothing
+    return winner_id[1] ∈ majority_id ? true : false
+end
+
 """
     count_violations(system::VotingSystem, criterion::Majority; _...)
 
@@ -40,7 +48,7 @@ function count_violations(T::Fails, system::VotingSystem, criterion::Majority; _
     return satisfies(T, system, criterion) ? 0 : 1
 end
 
-get_majority_id(system) = get_majority_id(system.counts, system.uranks)
+get_majority_id(rankings) = get_majority_id(rankings.counts, rankings.uranks)
 
 function get_majority_id(counts, uranks::Vector{Vector{T}}) where {T}
     id = T[]

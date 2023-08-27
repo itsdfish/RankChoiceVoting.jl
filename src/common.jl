@@ -1,4 +1,4 @@
-abstract type VotingSystem{T,I} end
+abstract type VotingSystem end
 
 abstract type Criterion end
 
@@ -8,10 +8,28 @@ struct Holds end
 
 struct Fails end 
 
-const ALL_Systems = [Borda(),Bucklin(),InstantRunOff()]
+"""
+    Ranks{T,I<:Integer}
+
+Rank of votes 
+
+# Arguments
+
+- `uranks`: a vector of unique rankings. Each ranking is a vector in which index represents rank and value represents candidate id.
+- `counts`: a vector of frequency counts corresponding to each unique ranking 
+"""
+struct Ranks{T,I<:Integer}
+    counts::Vector{I}
+    uranks::Vector{Vector{T}}
+end 
+
+function Ranks(rankings)
+    counts, uranks = tally(rankings)
+    return Ranks(counts, uranks)
+end
 
 property(::VotingSystem, ::Criterion) = Fails()
-satisfies(s::VotingSystem, c::Criterion; kwargs...) = satisfies(property(s, c), s, c; kwargs...)
+satisfies(s::VotingSystem, c::Criterion, r::Ranks; kwargs...) = satisfies(property(s, c), s, c, r; kwargs...)
 count_violations(s::VotingSystem, c::Criterion; kwargs...) = count_violations(property(s, c), s, c; kwargs...)
 
 """
@@ -29,7 +47,7 @@ function satisfies(::Holds, system::VotingSystem, criterion::Criterion; _...)
     return true
 end
 
-function satisfies(criterion::Majority)
+function satisfies(criterion)
     return filter(x -> property(x, criterion), ALL_Systems)
 end
 
@@ -127,13 +145,14 @@ function tied_ranks(a::Array{T,1}) where {T<:Real}
     return r
 end
 
-function Base.show(io::IO, system::VotingSystem)
+function Base.show(io::IO, ranks::Ranks)
     println("counts      ranks")
     max_spaces = 12
-    for (c,r) ∈ zip(system.counts,system.uranks)
+    for (c,r) ∈ zip(ranks.counts,ranks.uranks)
         n_spaces = max_spaces - length(digits(c)) 
         println(c, " "^n_spaces, r)
     end
+    return nothing
 end
 
 get_counts(system) = system.counts

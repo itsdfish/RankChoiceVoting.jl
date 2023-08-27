@@ -18,7 +18,7 @@ Tests whether a voting system satisfies the Condorcet loser criterion.
 - `system::VotingSystem`: a voting system object
 - `criterion::CondorcetLoser`: condorcet loser criterion object 
 """
-function satisfies(::Fails, system::VotingSystem{T,I}, criterion::CondorcetLoser; _...) where {T,I}
+function satisfies(::Fails, system::VotingSystem, criterion::CondorcetLoser; _...)
     system = deepcopy(system)
     (;counts,uranks) = system
     candidates = uranks[1]

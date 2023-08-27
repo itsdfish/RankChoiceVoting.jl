@@ -3,29 +3,8 @@
 
 A Bucklin voting system object.
 
-# Arguments
-
-- `uranks`: a vector of unique rankings. Each ranking is a vector in which index represents rank and value represents candidate id.
-- `counts`: a vector of frequency counts corresponding to each unique ranking 
 """
-mutable struct Bucklin{T,I<:Integer} <: VotingSystem{T,I}
-    uranks::Vector{Vector{T}}
-    counts::Vector{I}
-end
-
-"""
-    Bucklin(rankings=[Symbol[]])
-
-A constructor for a Bucklin voting system
-
-# Arguments
-
-- `rankings`: a vector of rankings. Each ranking is a vector in which index represents rank and value represents candidate id.
-"""
-function Bucklin(rankings=[Symbol[]])
-    counts, uranks = tally(rankings)
-    return Bucklin(uranks, counts)
-end
+mutable struct Bucklin <: VotingSystem end
 
 """
     evaluate_winner(system::Bucklin)
