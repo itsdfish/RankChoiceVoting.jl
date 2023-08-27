@@ -14,7 +14,7 @@ mutable struct Bucklin{T,I<:Integer} <: VotingSystem{T,I}
 end
 
 """
-    Bucklin(rankings=[Symbol[]])
+    Bucklin(rankings)
 
 A constructor for a Bucklin voting system
 
@@ -22,7 +22,7 @@ A constructor for a Bucklin voting system
 
 - `rankings`: a vector of rankings. Each ranking is a vector in which index represents rank and value represents candidate id.
 """
-function Bucklin(rankings=[Symbol[]])
+function Bucklin(rankings)
     counts, uranks = tally(rankings)
     return Bucklin(uranks, counts)
 end

@@ -14,7 +14,7 @@ mutable struct Borda{T,I<:Integer} <: VotingSystem{T,I}
 end
 
 """
-    Borda(rankings=[Symbol[]])
+    Borda(rankings)
 
 A constructor for a Borda count voting system
 
@@ -22,7 +22,7 @@ A constructor for a Borda count voting system
 
 - `rankings`: a vector of rankings. Each ranking is a vector in which index represents rank and value represents candidate id.
 """
-function Borda(rankings=[Symbol[]])
+function Borda(rankings)
     counts, uranks = tally(rankings)
     return Borda(uranks, counts)
 end
