@@ -14,12 +14,12 @@ makedocs(
     ),
     modules = [RankChoiceVoting],
     pages = [
-    "Home" => "index.md",
-    "Systems" => ["system" => "systems/systems.md"],
-    "Criteria" => ["criteria" => "criteria/criteria.md"],
-    "Functions" => ["functions" => "functions/functions.md"],
-    "API" => "api.md",
-]
+        "Home" => "index.md",
+        "Systems" => ["system" => "systems/systems.md"],
+        "Criteria" => ["criteria" => "criteria/majority.md"],
+        "Functions" => ["functions" => "functions/functions.md"],
+        "API" => "api.md",
+    ]
 )
 
 deploydocs(

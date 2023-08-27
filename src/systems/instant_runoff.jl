@@ -14,14 +14,14 @@ mutable struct InstantRunOff{T,I<:Integer} <: VotingSystem{T,I}
 end
 
 """
-    InstantRunOff(rankings)
+    InstantRunOff(rankings=[Symbol[]])
 
 A constructor for an instant runoff voting system
 
 # Arguments
 - `rankings`: a vector of rankings. Each ranking is a vector in which index represents rank and value represents candidate id.
 """
-function InstantRunOff(rankings)
+function InstantRunOff(rankings=[Symbol[]])
     counts, uranks = tally(rankings)
     return InstantRunOff(uranks, counts)
 end
