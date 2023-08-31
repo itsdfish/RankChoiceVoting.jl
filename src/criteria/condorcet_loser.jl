@@ -9,7 +9,7 @@ mutable struct CondorcetLoser <: Condorcet
 end
 
 """
-    satisfies(system::VotingSystem, criterion::CondorcetLoser; _...)
+    satisfies(system::VotingSystem, criterion::CondorcetLoser, rankings::Ranks; _...)
 
 Tests whether a voting system satisfies the Condorcet loser criterion.
 
@@ -17,12 +17,13 @@ Tests whether a voting system satisfies the Condorcet loser criterion.
 
 - `system::VotingSystem`: a voting system object
 - `criterion::CondorcetLoser`: condorcet loser criterion object 
+- `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
-function satisfies(::Fails, system::VotingSystem{T,I}, criterion::CondorcetLoser; _...) where {T,I}
-    system = deepcopy(system)
-    (;counts,uranks) = system
+function satisfies(::Fails, system::VotingSystem, criterion::CondorcetLoser, rankings::Ranks{T}; _...) where {T} 
+    rankings = deepcopy(rankings)
+    (;counts,uranks) = rankings
     candidates = uranks[1]
-    winner = evaluate_winner(system)
+    winner = evaluate_winner(system, rankings)
     length(winner) ≠ 1 ? (return true) : nothing
     pairs = combinations(candidates, 2) |> collect
     condorcet_losers = T[]
@@ -36,17 +37,18 @@ function satisfies(::Fails, system::VotingSystem{T,I}, criterion::CondorcetLoser
 end
 
 """
-    count_violations(system::VotingSystem, criterion::CondorcetLoser; _...)
+    count_violations(system::VotingSystem, criterion::CondorcetLoser, rankings::Ranks; _...)
 
 Counts the number of violations of the Condorcet loser criterion for a given voting system.
 
 # Arguments
 
 - `system::VotingSystem`: a voting system object
-- `criterion::CondorcetLoser`: condorcet criterion object 
+- `criterion::CondorcetLoser`: condorcet criterion object
+- `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
-function count_violations(T::Fails, system::VotingSystem, criterion::CondorcetLoser; _...)
-    return satisfies(T, system, criterion) ? 0 : 1
+function count_violations(T::Fails, system::VotingSystem, criterion::CondorcetLoser, rankings::Ranks; _...)
+    return satisfies(T, system, criterion, rankings) ? 0 : 1
 end
 
 property(::Borda, ::CondorcetLoser) = Holds()

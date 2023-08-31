@@ -3,55 +3,44 @@
 
 A Bucklin voting system object.
 
-# Arguments
-
-- `uranks`: a vector of unique rankings. Each ranking is a vector in which index represents rank and value represents candidate id.
-- `counts`: a vector of frequency counts corresponding to each unique ranking 
 """
-mutable struct Bucklin{T,I<:Integer} <: VotingSystem{T,I}
-    uranks::Vector{Vector{T}}
-    counts::Vector{I}
-end
+mutable struct Bucklin <: VotingSystem end
 
 """
-    Bucklin(rankings)
+    evaluate_winner(system::Bucklin, rankings::Ranks)
 
-A constructor for a Bucklin voting system
-
-# Arguments
-
-- `rankings`: a vector of rankings. Each ranking is a vector in which index represents rank and value represents candidate id.
-"""
-function Bucklin(rankings)
-    counts, uranks = tally(rankings)
-    return Bucklin(uranks, counts)
-end
-
-"""
-    evaluate_winner(system::Bucklin)
-
-Returns the id of the winning candiate in Bucklin voting system. 
+Returns the id of the winning candiate using the Bucklin voting system. 
 
 # Arguments
 
 - `system`: a Bucklin voting system object
 """
-function evaluate_winner(system::Bucklin)
-    ranks,candidates = compute_ranks(system)
+function evaluate_winner(system::Bucklin, rankings::Ranks)
+    ranks,candidates = compute_ranks(system, rankings)
     return candidates[ranks .== 1]
 end
 
-function compute_ranks(system::Bucklin)
-    scores = score(system)
+"""
+    compute_ranks(system::Bucklin, rankings::Ranks)
+
+Ranks candidates using the Bucklin system. 
+
+# Arguments
+
+- `system`: a Borda voting system object
+- `rankings::Ranks`: an object containing counts and unique rank orders 
+"""
+function compute_ranks(system::Bucklin, rankings::Ranks)
+    scores = score(system, rankings)
     sort!(scores, byvalue=true, rev=true)
     ranks = tied_ranks(collect(values(scores)))
     candidates = collect(keys(scores))
     return ranks, candidates
 end
 
-function score(system::Bucklin)
-    counts = get_counts(system)
-    uranks = get_uranks(system)
+function score(system::Bucklin, rankings::Ranks)
+    counts = get_counts(rankings)
+    uranks = get_uranks(rankings)
     winner = uranks[1][1]
     n_votes = sum(counts)
     max_iter = length(uranks[1]) - 1

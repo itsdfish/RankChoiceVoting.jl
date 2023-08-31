@@ -19,6 +19,7 @@ module RankChoiceVoting
     export Majority
     export Monotonicity
     export MutualMajority
+    export Ranks
     export ReversalSymmetry
     export VotingSystem
 
@@ -34,4 +35,6 @@ module RankChoiceVoting
     include("criteria/consistency.jl")
     include("criteria/mutual_majority.jl")
     include("criteria/independence_irrelevant_alternatives.jl")
+    include("constants.jl")
+
 end

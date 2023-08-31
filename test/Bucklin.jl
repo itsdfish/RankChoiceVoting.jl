@@ -6,17 +6,18 @@
         using RankChoiceVoting: get_counts 
         using RankChoiceVoting: get_uranks
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:m,:n,:c,:k] for _ ∈ 1:40]...)
-        push!(rankings, [[:n,:c,:k,:m] for _ ∈ 1:26]...)
-        push!(rankings, [[:c,:k,:n,:m] for _ ∈ 1:15]...)
-        push!(rankings, [[:k,:c,:n,:m] for _ ∈ 1:17]...)
-        push!(rankings, [[:m,:n,:c,:k] for _ ∈ 1:2]...)
+        data = [[:m,:n,:c,:k] for _ ∈ 1:40]
+        push!(data, [[:n,:c,:k,:m] for _ ∈ 1:26]...)
+        push!(data, [[:c,:k,:n,:m] for _ ∈ 1:15]...)
+        push!(data, [[:k,:c,:n,:m] for _ ∈ 1:17]...)
+        push!(data, [[:m,:n,:c,:k] for _ ∈ 1:2]...)
         
-        system = Bucklin(rankings)
+        rankings = Ranks(data)
 
-        counts = get_counts(system)
-        uranks = get_uranks(system)
+        system = Bucklin()
+
+        counts = get_counts(rankings)
+        uranks = get_uranks(rankings)
         candidates = uranks[1]
         scores = Dict(c => 0 for c ∈ candidates)
 
@@ -37,15 +38,15 @@
         using RankChoiceVoting
         using Test
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:m,:n,:c,:k] for _ ∈ 1:42]...)
-        push!(rankings, [[:n,:c,:k,:m] for _ ∈ 1:26]...)
-        push!(rankings, [[:c,:k,:n,:m] for _ ∈ 1:15]...)
-        push!(rankings, [[:k,:c,:n,:m] for _ ∈ 1:17]...)
+        data = [[:m,:n,:c,:k] for _ ∈ 1:42]
+        push!(data, [[:n,:c,:k,:m] for _ ∈ 1:26]...)
+        push!(data, [[:c,:k,:n,:m] for _ ∈ 1:15]...)
+        push!(data, [[:k,:c,:n,:m] for _ ∈ 1:17]...)
         
-        system = Bucklin(rankings)
-        _,ranks = compute_ranks(system)
-        winner = evaluate_winner(system)
+        rankings = Ranks(data)
+        system = Bucklin()
+        _,ranks = compute_ranks(system, rankings)
+        winner = evaluate_winner(system, rankings)
 
         @test winner == [:n]
         @test ranks == [:n,:c,:m,:k]

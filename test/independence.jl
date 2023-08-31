@@ -4,16 +4,16 @@
         using Test
         using Random
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:a,:b,:c] for _ ∈ 1:37]...)
-        push!(rankings, [[:b,:c,:a] for _ ∈ 1:22]...)
-        push!(rankings, [[:b,:a,:c] for _ ∈ 1:12]...)
-        push!(rankings, [[:c,:a,:b] for _ ∈ 1:29]...)
-        
-        system = InstantRunOff(rankings)
+        data = [[:a,:b,:c] for _ ∈ 1:37]
+        push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
+        push!(data, [[:b,:a,:c] for _ ∈ 1:12]...)
+        push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
+        rankings = Ranks(data)
+
+        system = InstantRunOff()
         criterion = Independence()
-        @test !satisfies(system, criterion)
-        @test count_violations(system, criterion) == 1
+        @test !satisfies(system, criterion, rankings)
+        @test count_violations(system, criterion, rankings) == 1
     end
 
     @safetestset "Instant Runoff 2" begin
@@ -21,17 +21,17 @@
         using Test
         using Random
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:c, :b, :a] for _ ∈ 1:3]...)
-        push!(rankings, [[:c, :a, :b] for _ ∈ 1:2]...)
-        push!(rankings, [[:b, :c, :a] for _ ∈ 1:3]...)
-        push!(rankings, [[:a, :b, :c] for _ ∈ 1:3]...)
-        push!(rankings, [[:a, :c, :b] for _ ∈ 1:2]...)
-        push!(rankings, [[:b, :a, :c] for _ ∈ 1:2]...)
+        data = [[:c, :b, :a] for _ ∈ 1:3]
+        push!(data, [[:c, :a, :b] for _ ∈ 1:2]...)
+        push!(data, [[:b, :c, :a] for _ ∈ 1:3]...)
+        push!(data, [[:a, :b, :c] for _ ∈ 1:3]...)
+        push!(data, [[:a, :c, :b] for _ ∈ 1:2]...)
+        push!(data, [[:b, :a, :c] for _ ∈ 1:2]...)
+        rankings = Ranks(data)
 
-        system = InstantRunOff(rankings)
+        system = InstantRunOff()
         criterion = Independence()
-        @test satisfies(system, criterion)
+        @test satisfies(system, criterion, rankings)
     end
 
     @safetestset "Borda count 1" begin
@@ -39,14 +39,14 @@
         using Test
         using Random
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:c, :b, :a] for _ ∈ 1:4]...)
-        push!(rankings, [[:a, :b, :c] for _ ∈ 1:2]...)
-        push!(rankings, [[:b, :a, :c] for _ ∈ 1:1]...)
-        push!(rankings, [[:b, :c, :a] for _ ∈ 1:3]...)
-        push!(rankings, [[:a, :c, :b] for _ ∈ 1:2]...)
+        data = [[:c, :b, :a] for _ ∈ 1:4]
+        push!(data, [[:a, :b, :c] for _ ∈ 1:2]...)
+        push!(data, [[:b, :a, :c] for _ ∈ 1:1]...)
+        push!(data, [[:b, :c, :a] for _ ∈ 1:3]...)
+        push!(data, [[:a, :c, :b] for _ ∈ 1:2]...)
+        rankings = Ranks(data)
 
-        system = Borda(rankings)
+        system = Borda()
         criteria = Independence()
         @test !satisfies(system, criteria)
     end
@@ -56,16 +56,16 @@
         using Test
         using Random
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:a, :b, :c] for _ ∈ 1:5]...)
-        push!(rankings, [[:b, :c, :a] for _ ∈ 1:2]...)
-        push!(rankings, [[:b, :a, :c] for _ ∈ 1:4]...)
-        push!(rankings, [[:a, :c, :b] for _ ∈ 1:3]...)
-        push!(rankings, [[:c, :a, :b] for _ ∈ 1:1]...)
-
-        system = Borda(rankings)
+        data = [[:a, :b, :c] for _ ∈ 1:5]
+        push!(data, [[:b, :c, :a] for _ ∈ 1:2]...)
+        push!(data, [[:b, :a, :c] for _ ∈ 1:4]...)
+        push!(data, [[:a, :c, :b] for _ ∈ 1:3]...)
+        push!(data, [[:c, :a, :b] for _ ∈ 1:1]...)
+        rankings =  Ranks(data)
+        
+        system = Borda()
         criteria = Independence()
-        @test satisfies(system, criteria)
+        @test satisfies(system, criteria, rankings)
     end
 
     @safetestset "Bucklin 1" begin
@@ -73,15 +73,15 @@
         using Test
         using Random
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:a, :b, :c] for _ ∈ 1:5]...)
-        push!(rankings, [[:a, :c, :b] for _ ∈ 1:4]...)
-        push!(rankings, [[:b, :a, :c] for _ ∈ 1:4]...)
-        push!(rankings, [[:c, :a, :b] for _ ∈ 1:2]...)
+        data = [[:a, :b, :c] for _ ∈ 1:5]
+        push!(data, [[:a, :c, :b] for _ ∈ 1:4]...)
+        push!(data, [[:b, :a, :c] for _ ∈ 1:4]...)
+        push!(data, [[:c, :a, :b] for _ ∈ 1:2]...)
+        rankings = Ranks(data)
 
-        system = Bucklin(rankings)
+        system = Bucklin()
         criteria = Independence()
-        @test satisfies(system, criteria)
+        @test satisfies(system, criteria, rankings)
     end
 
     @safetestset "Bucklin 2" begin
@@ -89,14 +89,14 @@
         using Test
         using Random
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:a, :b, :c] for _ ∈ 1:3]...)
-        push!(rankings, [[:b, :c, :a] for _ ∈ 1:2]...)
-        push!(rankings, [[:b, :a, :c] for _ ∈ 1:4]...)
-        push!(rankings, [[:c, :a, :b] for _ ∈ 1:6]...)
+        data =  [[:a, :b, :c] for _ ∈ 1:3]
+        push!(data, [[:b, :c, :a] for _ ∈ 1:2]...)
+        push!(data, [[:b, :a, :c] for _ ∈ 1:4]...)
+        push!(data, [[:c, :a, :b] for _ ∈ 1:6]...)
+        rankings = Ranks(data)
 
-        system = Bucklin(rankings)
+        system = Bucklin()
         criteria = Independence()
-        @test !satisfies(system, criteria)
+        @test !satisfies(system, criteria, rankings)
     end
 end

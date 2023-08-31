@@ -1,4 +1,4 @@
-abstract type VotingSystem{T,I} end
+abstract type VotingSystem end
 
 abstract type Criterion end
 
@@ -8,12 +8,33 @@ struct Holds end
 
 struct Fails end 
 
+"""
+    Ranks{T,I<:Integer}
+
+Rank of votes 
+
+# Arguments
+
+- `uranks`: a vector of unique rankings. Each ranking is a vector in which index represents rank and value represents candidate id.
+- `counts`: a vector of frequency counts corresponding to each unique ranking 
+"""
+struct Ranks{T,I<:Integer}
+    counts::Vector{I}
+    uranks::Vector{Vector{T}}
+end 
+
+function Ranks(rankings)
+    counts, uranks = tally(rankings)
+    return Ranks(counts, uranks)
+end
+
 property(::VotingSystem, ::Criterion) = Fails()
-satisfies(s::VotingSystem, c::Criterion; kwargs...) = satisfies(property(s, c), s, c; kwargs...)
-count_violations(s::VotingSystem, c::Criterion; kwargs...) = count_violations(property(s, c), s, c; kwargs...)
+satisfies(s::VotingSystem, c::Criterion, r::Ranks; kwargs...) = satisfies(property(s, c), s, c, r; kwargs...)
+satisfies(s::VotingSystem, c::Criterion; kwargs...) = property(s, c) == Holds()
+count_violations(s::VotingSystem, c::Criterion, r::Ranks; kwargs...) = count_violations(property(s, c), s, c, r; kwargs...)
 
 """
-    satisfies(system::InstantRunOff, criterion::CondorcetLoser; _...)
+    satisfies(system::InstantRunOff, criterion::CondorcetLoser, rankings::Ranks; _...)
 
 Tests whether the instant runoff system satisfies the Condorcet loser criterion. Always returns 
 true. 
@@ -23,11 +44,28 @@ true.
 - `system::InstantRunOff`: an instant runoff voting system object
 - `criterion::CondorcetLoser`: condorcet loser criterion object 
 """
-function satisfies(::Holds, system::VotingSystem, criterion::Criterion; _...)
+function satisfies(::Holds, system::VotingSystem, criterion::Criterion, rankings::Ranks; _...)
     return true
 end
 
-function count_violations(::Holds, system::VotingSystem, criterion::Criterion; _...)
+"""
+    satisfies(criterion::Criterion)
+
+Returns a vector of rank choice voting systems which satisfy the given criterion
+
+# Arguments
+
+- `criterion::Criterion`: a fairness criterion  
+"""
+function satisfies(criterion::Criterion)
+    return filter(s -> property(s, criterion) == Holds(), ALL_SYSTEMS)
+end
+
+function satisfies(system::VotingSystem)
+    return filter(c -> property(system, c) == Holds(), ALL_CRITERIA)
+end
+
+function count_violations(::Holds, system::VotingSystem, criterion::Criterion, rankings::Ranks; _...)
     return 0
 end
 
@@ -121,13 +159,14 @@ function tied_ranks(a::Array{T,1}) where {T<:Real}
     return r
 end
 
-function Base.show(io::IO, system::VotingSystem)
+function Base.show(io::IO, ranks::Ranks)
     println("counts      ranks")
     max_spaces = 12
-    for (c,r) ∈ zip(system.counts,system.uranks)
+    for (c,r) ∈ zip(ranks.counts,ranks.uranks)
         n_spaces = max_spaces - length(digits(c)) 
         println(c, " "^n_spaces, r)
     end
+    return nothing
 end
 
 get_counts(system) = system.counts

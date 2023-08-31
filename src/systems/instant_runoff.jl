@@ -8,40 +8,35 @@ An instant runoff voting system object.
 - `uranks`: a vector of unique rankings. Each ranking is a vector in which index represents rank and value represents candidate id.
 - `counts`: a vector of frequency counts corresponding to each unique ranking 
 """
-mutable struct InstantRunOff{T,I<:Integer} <: VotingSystem{T,I}
-    uranks::Vector{Vector{T}}
-    counts::Vector{I}
-end
+mutable struct InstantRunOff <: VotingSystem end
 
 """
-    InstantRunOff(rankings)
-
-A constructor for an instant runoff voting system
-
-# Arguments
-- `rankings`: a vector of rankings. Each ranking is a vector in which index represents rank and value represents candidate id.
-"""
-function InstantRunOff(rankings)
-    counts, uranks = tally(rankings)
-    return InstantRunOff(uranks, counts)
-end
-
-"""
-    evaluate_winner(system::InstantRunOff)
+    evaluate_winner(system::InstantRunOff, rankings::Ranks)
 
 Returns the id of the winning candiate in an instant runoff election. 
 
 # Arguments
 - `system`: an instant runoff system object
+- `rankings::Ranks`: an object containing counts and unique rank orders 
 """
-function evaluate_winner(system::InstantRunOff)
-    rank,candidates = compute_ranks(system)
+function evaluate_winner(system::InstantRunOff, rankings::Ranks)
+    rank,candidates = compute_ranks(system, rankings)
     return candidates[rank .== 1]
 end
 
-function compute_ranks(system::InstantRunOff)
-    counts = deepcopy(get_counts(system))
-    uranks = deepcopy(get_uranks(system))
+"""
+    compute_ranks(system::InstantRunOff, rankings::Ranks)
+
+Ranks candidates using the InstantRunOff system. 
+
+# Arguments
+
+- `system`: an InstantRunOff voting system object
+- `rankings::Ranks`: an object containing counts and unique rank orders 
+"""
+function compute_ranks(system::InstantRunOff, rankings::Ranks)
+    counts = deepcopy(get_counts(rankings))
+    uranks = deepcopy(get_uranks(rankings))
     winner_idx = -100
     n_votes = sum(counts)
     candidates = uranks[1][:]

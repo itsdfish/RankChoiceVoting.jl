@@ -3,17 +3,18 @@
         using RankChoiceVoting
         using Test
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:a,:b,:c] for _ ∈ 1:37]...)
-        push!(rankings, [[:b,:c,:a] for _ ∈ 1:22]...)
-        push!(rankings, [[:b,:a,:c] for _ ∈ 1:12]...)
-        push!(rankings, [[:c,:a,:b] for _ ∈ 1:29]...)
+        data = [[:a,:b,:c] for _ ∈ 1:37]
+        push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
+        push!(data, [[:b,:a,:c] for _ ∈ 1:12]...)
+        push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
 
-        system = InstantRunOff(rankings)
+        rankings = Ranks(data)
+
+        system = InstantRunOff()
         criteria = CondorcetWinner()
-        violations = count_violations(system, criteria)
+        violations = count_violations(system, criteria, rankings)
         @test violations == 0
-        @test satisfies(system, criteria)
+        @test satisfies(system, criteria, rankings)
     end
 
     @safetestset "instant runoff 2" begin
@@ -21,20 +22,19 @@
         using RankChoiceVoting
         using Test
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:a,:c,:b,:d] for _ ∈ 1:10]...)
-        push!(rankings, [[:d,:b,:a,:c] for _ ∈ 1:7]...)
-        push!(rankings, [[:b,:c,:a,:d] for _ ∈ 1:5]...)
-        push!(rankings, [[:c,:d,:a,:b] for _ ∈ 1:5]...)
-        push!(rankings, [[:b,:c,:d,:a] for _ ∈ 1:4]...)
+        data = [[:a,:c,:b,:d] for _ ∈ 1:10]
+        push!(data, [[:d,:b,:a,:c] for _ ∈ 1:7]...)
+        push!(data, [[:b,:c,:a,:d] for _ ∈ 1:5]...)
+        push!(data, [[:c,:d,:a,:b] for _ ∈ 1:5]...)
+        push!(data, [[:b,:c,:d,:a] for _ ∈ 1:4]...)
+        rankings = Ranks(data)
 
-        system = InstantRunOff(rankings)
+        system = InstantRunOff()
         criteria = CondorcetWinner()
-        violations = count_violations(system, criteria)
+        violations = count_violations(system, criteria, rankings)
         @test violations == 1
-        @test !satisfies(system, criteria)
+        @test !satisfies(system, criteria, rankings)
     end
-
 end
 
 @safetestset "condorcet loser" begin
@@ -43,17 +43,17 @@ end
         using Test
         using Random
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:a,:b,:c] for _ ∈ 1:37]...)
-        push!(rankings, [[:b,:c,:a] for _ ∈ 1:22]...)
-        push!(rankings, [[:b,:a,:c] for _ ∈ 1:12]...)
-        push!(rankings, [[:c,:a,:b] for _ ∈ 1:29]...)
+        data = [[:a,:b,:c] for _ ∈ 1:37]
+        push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
+        push!(data, [[:b,:a,:c] for _ ∈ 1:12]...)
+        push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
+        rankings = Ranks(data)
 
-        system = InstantRunOff(rankings)
+        system = InstantRunOff()
         criteria = CondorcetLoser()
-        violations = count_violations(system, criteria)
+        violations = count_violations(system, criteria, rankings)
         @test violations == 0
-        @test satisfies(system, criteria)
+        @test satisfies(system, criteria, rankings)
     end
 
     @safetestset "instant runoff 2" begin
@@ -66,10 +66,11 @@ end
 
         for _ ∈ 1:100
             n = rand(10:100)
-            rankings = [shuffle(candidates) for _ ∈ 1:n]
-            system = InstantRunOff(rankings)
+            data = [shuffle(candidates) for _ ∈ 1:n]
+            rankings = Ranks(data)
+            system = InstantRunOff()
             criteria = CondorcetLoser()
-            @test_skip satisfies(Fails(), system, criteria)
+            @test_skip satisfies(Fails(), system, criteria, rankings)
         end
     end
 
@@ -78,17 +79,17 @@ end
         using Test
         using Random
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:a,:b,:c] for _ ∈ 1:37]...)
-        push!(rankings, [[:b,:c,:a] for _ ∈ 1:22]...)
-        push!(rankings, [[:b,:a,:c] for _ ∈ 1:12]...)
-        push!(rankings, [[:c,:a,:b] for _ ∈ 1:29]...)
+        data = [[:a,:b,:c] for _ ∈ 1:37]
+        push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
+        push!(data, [[:b,:a,:c] for _ ∈ 1:12]...)
+        push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
+        rankings = Ranks(data)
 
-        system = Borda(rankings)
+        system = Borda()
         criteria = CondorcetLoser()
-        violations = count_violations(system, criteria)
+        violations = count_violations(system, criteria, rankings)
         @test violations == 0
-        @test satisfies(system, criteria)
+        @test satisfies(system, criteria, rankings)
     end
 
     @safetestset "Bucklin" begin
@@ -126,18 +127,18 @@ end
         using Test
         using Random
 
-        rankings = Vector{Vector{Int64}}()
-        push!(rankings, [[1,2,3] for _ ∈ 1:1]...)
-        push!(rankings, [[2,1,3] for _ ∈ 1:3]...)
-        push!(rankings, [[3,1,2] for _ ∈ 1:3]...)
-        push!(rankings, [[1,3,2] for _ ∈ 1:1]...)
-        push!(rankings, [[2,3,1] for _ ∈ 1:2]...)
-        push!(rankings, [[3,2,1] for _ ∈ 1:1]...)
+        data =  [[1,2,3] for _ ∈ 1:1]
+        push!(data, [[2,1,3] for _ ∈ 1:3]...)
+        push!(data, [[3,1,2] for _ ∈ 1:3]...)
+        push!(data, [[1,3,2] for _ ∈ 1:1]...)
+        push!(data, [[2,3,1] for _ ∈ 1:2]...)
+        push!(data, [[3,2,1] for _ ∈ 1:1]...)
+        rankings = Ranks(data)
 
-        system = Bucklin(rankings)
+        system = Bucklin()
         criteria = CondorcetLoser()
-        violations = count_violations(system, criteria)
+        violations = count_violations(system, criteria, rankings)
         @test violations == 1
-        @test !satisfies(system, criteria)
+        @test !satisfies(system, criteria, rankings)
     end
 end
