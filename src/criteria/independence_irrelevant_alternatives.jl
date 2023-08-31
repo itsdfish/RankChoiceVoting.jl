@@ -58,7 +58,7 @@ rank order changes. The current method is less strict compared to alternative me
 """
 function count_violations(::Fails, system::VotingSystem, criterion::Independence, rankings::Ranks;  _...) 
     winner = evaluate_winner(system, rankings)
-    losers = setdiff(system.uranks[1], winner)
+    losers = setdiff(rankings.uranks[1], winner)
     cnt = 0
     for i ∈ 1:(length(losers) - 1)
         for comb ∈ combinations(losers, i)

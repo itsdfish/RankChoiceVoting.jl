@@ -59,50 +59,50 @@
         using RankChoiceVoting
         using Test
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:s,:t,:o,:p] for _ ∈ 1:51]...)
-        push!(rankings, [[:t,:p,:o,:s] for _ ∈ 1:25]...)
-        push!(rankings, [[:p,:t,:o,:s] for _ ∈ 1:10]...)
-        push!(rankings, [[:o,:t,:p,:s] for _ ∈ 1:14]...)
-        
-        system = Borda(rankings)
+        data = [[:s,:t,:o,:p] for _ ∈ 1:51]
+        push!(data, [[:t,:p,:o,:s] for _ ∈ 1:25]...)
+        push!(data, [[:p,:t,:o,:s] for _ ∈ 1:10]...)
+        push!(data, [[:o,:t,:p,:s] for _ ∈ 1:14]...)
+        rankings = Ranks(data)
+
+        system = Borda()
         criterion = MutualMajority()
-        @test !satisfies(system, criterion)
-        @test count_violations(system, criterion) == 1
+        @test !satisfies(system, criterion, rankings)
+        @test count_violations(system, criterion, rankings) == 1
     end
 
     @safetestset "Borda 2" begin
         using RankChoiceVoting
         using Test
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:s,:t,:o,:p] for _ ∈ 1:20]...)
-        push!(rankings, [[:t,:p,:o,:s] for _ ∈ 1:2]...)
-        push!(rankings, [[:p,:t,:o,:s] for _ ∈ 1:1]...)
-        push!(rankings, [[:o,:t,:p,:s] for _ ∈ 1:2]...)
+        data = [[:s,:t,:o,:p] for _ ∈ 1:20]
+        push!(data, [[:t,:p,:o,:s] for _ ∈ 1:2]...)
+        push!(data, [[:p,:t,:o,:s] for _ ∈ 1:1]...)
+        push!(data, [[:o,:t,:p,:s] for _ ∈ 1:2]...)
+        rankings = Ranks(data)
         
-        system = Borda(rankings)
+        system = Borda()
         criterion = Majority()
 
-        @test satisfies(system, criterion)
-        @test count_violations(system, criterion) == 0
+        @test satisfies(system, criterion, rankings)
+        @test count_violations(system, criterion, rankings) == 0
     end
 
     @safetestset "Bucklin 1" begin
         using RankChoiceVoting
         using Test
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:s,:t,:o,:p] for _ ∈ 1:20]...)
-        push!(rankings, [[:t,:p,:o,:s] for _ ∈ 1:2]...)
-        push!(rankings, [[:p,:t,:o,:s] for _ ∈ 1:1]...)
-        push!(rankings, [[:o,:t,:p,:s] for _ ∈ 1:2]...)
-        
-        system = Bucklin(rankings)
+        data = [[:s,:t,:o,:p] for _ ∈ 1:20]
+        push!(data, [[:t,:p,:o,:s] for _ ∈ 1:2]...)
+        push!(data, [[:p,:t,:o,:s] for _ ∈ 1:1]...)
+        push!(data, [[:o,:t,:p,:s] for _ ∈ 1:2]...)
+        rankings = Ranks(data)
+
+        system = Bucklin()
         criterion = MutualMajority()
 
-        @test satisfies(system, criterion)
-        @test count_violations(system, criterion) == 0
+        @test satisfies(system, criterion, rankings)
+        @test count_violations(system, criterion, rankings) == 0
     end
 
     @safetestset "Bucklin 2" begin
@@ -114,12 +114,13 @@
         Random.seed!(5200)        
         for _ ∈ 1:25
             n = rand(10:100)
-            rankings = [[1,2,3] for _ ∈ 1:n]
-            shuffle!.(rankings)
-            system = Bucklin(rankings)
+            data = [[1,2,3] for _ ∈ 1:n]
+            shuffle!.(data)
+            rankings = Ranks(data)
+            system = Bucklin()
             criterion = MutualMajority()
-            @test satisfies(Fails(), system, criterion)
-            @test count_violations(Fails(), system, criterion) == 0
+            @test satisfies(Fails(), system, criterion, rankings)
+            @test count_violations(Fails(), system, criterion, rankings) == 0
         end
     end
 
@@ -132,12 +133,13 @@
         Random.seed!(5200)        
         for _ ∈ 1:25
             n = rand(10:100)
-            rankings = [[1,2,3] for _ ∈ 1:n]
-            shuffle!.(rankings)
-            system = InstantRunOff(rankings)
+            data = [[1,2,3] for _ ∈ 1:n]
+            shuffle!.(data)
+            rankings = Ranks(data)
+            system = InstantRunOff()
             criterion = MutualMajority()
-            @test satisfies(Fails(), system, criterion)
-            @test count_violations(Fails(), system, criterion) == 0
+            @test satisfies(Fails(), system, criterion, rankings)
+            @test count_violations(Fails(), system, criterion, rankings) == 0
         end
     end
 end

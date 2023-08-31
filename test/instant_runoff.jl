@@ -3,16 +3,16 @@
         using RankChoiceVoting
         using Test
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:d,:c,:a,:e,:b] for _ ∈ 1:9]...)
-        push!(rankings, [[:b,:e,:a,:c,:d] for _ ∈ 1:5]...)
-        push!(rankings, [[:e,:a,:d,:b,:c] for _ ∈ 1:2]...)
-        push!(rankings, [[:b,:c,:a,:d,:e] for _ ∈ 1:5]...)
-        push!(rankings, [[:c,:a,:d,:b,:e] for _ ∈ 1:8]...)
-        push!(rankings, [[:b,:d,:c,:a,:e] for _ ∈ 1:6]...)
+        data = [[:d,:c,:a,:e,:b] for _ ∈ 1:9]
+        push!(data, [[:b,:e,:a,:c,:d] for _ ∈ 1:5]...)
+        push!(data, [[:e,:a,:d,:b,:c] for _ ∈ 1:2]...)
+        push!(data, [[:b,:c,:a,:d,:e] for _ ∈ 1:5]...)
+        push!(data, [[:c,:a,:d,:b,:e] for _ ∈ 1:8]...)
+        push!(data, [[:b,:d,:c,:a,:e] for _ ∈ 1:6]...)
+        rankings = Ranks(data)
         
-        system = InstantRunOff(rankings)
-        winner = evaluate_winner(system)
+        system = InstantRunOff()
+        winner = evaluate_winner(system, rankings)
         @test length(winner) == 1
         @test winner[1] == :d
     end
@@ -21,13 +21,13 @@
         using RankChoiceVoting
         using Test
         
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:a, :b, :c] for _ ∈ 1:8]...)
-        push!(rankings, [[:b, :c, :a] for _ ∈ 1:8]...)
-        
-        system = InstantRunOff(rankings)
-        _,ranks = compute_ranks(system)
-        winner = evaluate_winner(system)
+        data = [[:a, :b, :c] for _ ∈ 1:8]
+        push!(data, [[:b, :c, :a] for _ ∈ 1:8]...)
+        rankings = Ranks(data)
+
+        system = InstantRunOff()
+        _,ranks = compute_ranks(system, rankings)
+        winner = evaluate_winner(system, rankings)
         
         @test (ranks == [:a,:b,:c]) || (ranks == [:b,:a,:c])
         @test Set(winner) == Set([:a,:b])
@@ -38,17 +38,17 @@
         using RankChoiceVoting
         using Test
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:b,:c,:a,:d,:e] for _ ∈ 1:3]...)
-        push!(rankings, [[:c,:a,:d,:b,:e] for _ ∈ 1:4]...)
-        push!(rankings, [[:b,:d,:c,:a,:e] for _ ∈ 1:4]...)
-        push!(rankings, [[:d,:c,:a,:e,:b] for _ ∈ 1:6]...)
-        push!(rankings, [[:b,:e,:a,:c,:d] for _ ∈ 1:2]...)
-        push!(rankings, [[:e,:a,:d,:b,:c] for _ ∈ 1:1]...)
+        data = [[:b,:c,:a,:d,:e] for _ ∈ 1:3]
+        push!(data, [[:c,:a,:d,:b,:e] for _ ∈ 1:4]...)
+        push!(data, [[:b,:d,:c,:a,:e] for _ ∈ 1:4]...)
+        push!(data, [[:d,:c,:a,:e,:b] for _ ∈ 1:6]...)
+        push!(data, [[:b,:e,:a,:c,:d] for _ ∈ 1:2]...)
+        push!(data, [[:e,:a,:d,:b,:c] for _ ∈ 1:1]...)
+        rankings = Ranks(data)
         
-        system = InstantRunOff(rankings)
-        _,ranks = compute_ranks(system)
-        winner = evaluate_winner(system)
+        system = InstantRunOff()
+        _,ranks = compute_ranks(system, rankings)
+        winner = evaluate_winner(system, rankings)
 
         @test winner == [:d]
         @test ranks == [:d,:b,:c,:e,:a]

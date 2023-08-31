@@ -3,23 +3,23 @@
         using RankChoiceVoting
         using Test
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:a,:b,:c] for _ ∈ 1:37]...)
-        push!(rankings, [[:b,:c,:a] for _ ∈ 1:22]...)
-        push!(rankings, [[:b,:a,:c] for _ ∈ 1:12]...)
-        push!(rankings, [[:c,:a,:b] for _ ∈ 1:29]...)
+        data = [[:a,:b,:c] for _ ∈ 1:37]
+        push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
+        push!(data, [[:b,:a,:c] for _ ∈ 1:12]...)
+        push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
+        rankings = Ranks(data)
 
-        system = InstantRunOff(rankings)
-        winner1 = evaluate_winner(system)
+        system = InstantRunOff()
+        winner1 = evaluate_winner(system, rankings)
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:a,:b,:c] for _ ∈ 1:47]...)
-        push!(rankings, [[:b,:c,:a] for _ ∈ 1:22]...)
-        push!(rankings, [[:b,:a,:c] for _ ∈ 1:2]...)
-        push!(rankings, [[:c,:a,:b] for _ ∈ 1:29]...)
+        data = [[:a,:b,:c] for _ ∈ 1:47]
+        push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
+        push!(data, [[:b,:a,:c] for _ ∈ 1:2]...)
+        push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
+        rankings = Ranks(data)
 
-        system = InstantRunOff(rankings)
-        winner2 = evaluate_winner(system)
+        system = InstantRunOff()
+        winner2 = evaluate_winner(system, rankings)
         @test winner1 ≠ winner2 
     end
     
@@ -28,19 +28,19 @@
         using Test
         using Random
 
-        Random.seed!(6951)
+        Random.seed!(4741)
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:a,:b,:c] for _ ∈ 1:37]...)
-        push!(rankings, [[:b,:c,:a] for _ ∈ 1:22]...)
-        push!(rankings, [[:b,:a,:c] for _ ∈ 1:12]...)
-        push!(rankings, [[:c,:a,:b] for _ ∈ 1:29]...)
+        data = [[:a,:b,:c] for _ ∈ 1:37]
+        push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
+        push!(data, [[:b,:a,:c] for _ ∈ 1:12]...)
+        push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
+        rankings = Ranks(data)
 
-        system = InstantRunOff(rankings)
+        system = InstantRunOff()
         criteria = Monotonicity()
-        violations = count_violations(system, criteria)
+        violations = count_violations(system, criteria, rankings)
         @test violations > 0
-        @test !satisfies(system, criteria)
+        @test !satisfies(system, criteria, rankings)
     end
 
     @safetestset "Borda 1" begin
@@ -51,14 +51,15 @@
         Random.seed!(1231)
         for _ ∈ 1:25
             n = rand(10:100)
-            rankings = [[1,2,3] for _ ∈ 1:n]
-            shuffle!.(rankings)
-            system = Borda(rankings)
+            data = [[1,2,3] for _ ∈ 1:n]
+            shuffle!.(data)
+            rankings = Ranks(data)
+            system = Borda()
             criterion = Monotonicity()
-            violations = count_violations(system, criterion)
+            violations = count_violations(system, criterion, rankings)
             # Borda always satisfies Monotonicity
             @test violations == 0
-            @test satisfies(system, criterion)
+            @test satisfies(system, criterion, rankings)
         end
     end
 
@@ -75,9 +76,10 @@
 
         for _ ∈ 1:100
             n = rand(50:500)
-            rankings = map(_ -> shuffle(candidates), 1:n)
-            system = Borda(rankings)
-            @test satisfies(Fails(), system, criterion)
+            data = map(_ -> shuffle(candidates), 1:n)
+            rankings = Ranks(data)
+            system = Borda()
+            @test satisfies(Fails(), system, criterion, rankings)
         end
     end
 
@@ -89,14 +91,15 @@
         Random.seed!(9854)
         for _ ∈ 1:25
             n = rand(10:100)
-            rankings = [[1,2,3] for _ ∈ 1:n]
-            shuffle!.(rankings)
-            system = Bucklin(rankings)
+            data = [[1,2,3] for _ ∈ 1:n]
+            shuffle!.(data)
+            rankings = Ranks(data)
+            system = Bucklin()
             criterion = Monotonicity()
-            violations = count_violations(system, criterion)
+            violations = count_violations(system, criterion, rankings)
             # Borda always satisfies Monotonicity
             @test violations == 0
-            @test satisfies(system, criterion)
+            @test satisfies(system, criterion, rankings)
         end
     end
 end
