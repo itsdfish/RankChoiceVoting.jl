@@ -11,7 +11,7 @@ mutable struct Monotonicity <: Criterion
 end
 
 """
-    satisfies(system::VotingSystem, criteria::Monotonicity; _...)
+    satisfies(system::VotingSystem, criteria::Monotonicity, rankings::Ranks; _...)
 
 Tests whether a voting system satisfies the monotonicity criterion.
 
@@ -19,6 +19,7 @@ Tests whether a voting system satisfies the monotonicity criterion.
 
 - `system::VotingSystem`: a voting system object
 - `criteria::Monotonicity`: monotonicity criterion object 
+- `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 
 # Keywords
 
@@ -41,7 +42,7 @@ function satisfies(::Fails, system::VotingSystem, criteria::Monotonicity, rankin
 end
 
 """
-    count_violations(system::VotingSystem, criteria::Monotonicity; n_reps=1000, _...)
+    count_violations(system::VotingSystem, criteria::Monotonicity, rankings::Ranks; n_reps=1000, _...)
 
 Counts the number of violations of the monotonicity criterion for a given voting system.
 
@@ -49,6 +50,7 @@ Counts the number of violations of the monotonicity criterion for a given voting
 
 - `system::VotingSystem`: a voting system object
 - `criteria::Monotonicity`: condorcet criterion object 
+- `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 
 # Keywords
 

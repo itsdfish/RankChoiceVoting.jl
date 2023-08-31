@@ -6,9 +6,9 @@ A Borda count voting system object.
 mutable struct Borda <: VotingSystem end
 
 """
-    evaluate_winner(system::Borda)
+    evaluate_winner(system::Borda, rankings::Ranks)
 
-Returns the id of the winning candiate in Borda count election. 
+Returns the id of the winning candiate in Borda count system. 
 
 # Arguments
 
@@ -20,6 +20,16 @@ function evaluate_winner(system::Borda, rankings::Ranks)
     return candidates[ranks .== 1]
 end
 
+"""
+    compute_ranks(system::Borda, rankings::Ranks)
+
+Ranks candidates using Borda count system. 
+
+# Arguments
+
+- `system`: a Borda voting system object
+- `rankings::Ranks`: an object containing counts and unique rank orders 
+"""
 function compute_ranks(system::Borda, rankings::Ranks)
     scores = score(system, rankings)
     sort!(scores, byvalue=true, rev=true)

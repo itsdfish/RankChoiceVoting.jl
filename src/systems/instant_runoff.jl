@@ -11,18 +11,29 @@ An instant runoff voting system object.
 mutable struct InstantRunOff <: VotingSystem end
 
 """
-    evaluate_winner(system::InstantRunOff)
+    evaluate_winner(system::InstantRunOff, rankings::Ranks)
 
 Returns the id of the winning candiate in an instant runoff election. 
 
 # Arguments
 - `system`: an instant runoff system object
+- `rankings::Ranks`: an object containing counts and unique rank orders 
 """
 function evaluate_winner(system::InstantRunOff, rankings::Ranks)
     rank,candidates = compute_ranks(system, rankings)
     return candidates[rank .== 1]
 end
 
+"""
+    compute_ranks(system::InstantRunOff, rankings::Ranks)
+
+Ranks candidates using the InstantRunOff system. 
+
+# Arguments
+
+- `system`: an InstantRunOff voting system object
+- `rankings::Ranks`: an object containing counts and unique rank orders 
+"""
 function compute_ranks(system::InstantRunOff, rankings::Ranks)
     counts = deepcopy(get_counts(rankings))
     uranks = deepcopy(get_uranks(rankings))

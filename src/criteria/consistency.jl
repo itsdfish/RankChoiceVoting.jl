@@ -9,7 +9,7 @@ mutable struct Consistency <: Criterion
 end
 
 """
-    satisfies(system::VotingSystem, criterion::Consistency; n_max=1000, _...)
+    satisfies(system::VotingSystem, criterion::Consistency, rankings::Ranks; n_max=1000, _...)
 
 Tests whether a voting system satisfies the Consistency criterion.
 
@@ -17,6 +17,7 @@ Tests whether a voting system satisfies the Consistency criterion.
 
 - `system::VotingSystem`: a voting system object
 - `criterion::Consistency`: consistency criterion object 
+- `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 
 # Keywords
 
@@ -59,7 +60,7 @@ function random_split(counts)
 end
 
 """
-    count_violations(system::VotingSystem, criterion::Consistency; n_rep=1000, _...)
+    count_violations(system::VotingSystem, criterion::Consistency, rankings::Ranks; n_rep=1000, _...)
 
 Counts the number of violations of the consistency criterion for a given voting system.
 
@@ -67,6 +68,7 @@ Counts the number of violations of the consistency criterion for a given voting 
 
 - `system::VotingSystem`: a voting system object
 - `criterion::Consistency`: condorcet criterion object 
+- `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 
 # Keywords
 

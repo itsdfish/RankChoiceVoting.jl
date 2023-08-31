@@ -34,7 +34,7 @@ satisfies(s::VotingSystem, c::Criterion; kwargs...) = property(s, c) == Holds()
 count_violations(s::VotingSystem, c::Criterion, r::Ranks; kwargs...) = count_violations(property(s, c), s, c, r; kwargs...)
 
 """
-    satisfies(system::InstantRunOff, criterion::CondorcetLoser; _...)
+    satisfies(system::InstantRunOff, criterion::CondorcetLoser, rankings::Ranks; _...)
 
 Tests whether the instant runoff system satisfies the Condorcet loser criterion. Always returns 
 true. 

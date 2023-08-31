@@ -7,9 +7,9 @@ A Bucklin voting system object.
 mutable struct Bucklin <: VotingSystem end
 
 """
-    evaluate_winner(system::Bucklin)
+    evaluate_winner(system::Bucklin, rankings::Ranks)
 
-Returns the id of the winning candiate in Bucklin voting system. 
+Returns the id of the winning candiate using the Bucklin voting system. 
 
 # Arguments
 
@@ -20,6 +20,16 @@ function evaluate_winner(system::Bucklin, rankings::Ranks)
     return candidates[ranks .== 1]
 end
 
+"""
+    compute_ranks(system::Bucklin, rankings::Ranks)
+
+Ranks candidates using the Bucklin system. 
+
+# Arguments
+
+- `system`: a Borda voting system object
+- `rankings::Ranks`: an object containing counts and unique rank orders 
+"""
 function compute_ranks(system::Bucklin, rankings::Ranks)
     scores = score(system, rankings)
     sort!(scores, byvalue=true, rev=true)

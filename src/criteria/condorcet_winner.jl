@@ -9,7 +9,7 @@ mutable struct CondorcetWinner <: Condorcet
 end
 
 """
-    satisfies(system::VotingSystem, criterion::CondorcetWinner; _...)
+    satisfies(system::VotingSystem, criterion::CondorcetWinner, rankings::Ranks; _...)
 
 Tests whether a voting system satisfies the Condorcet winner criterion.
 
@@ -17,6 +17,7 @@ Tests whether a voting system satisfies the Condorcet winner criterion.
 
 - `system::VotingSystem`: a voting system object
 - `criterion::CondorcetWinner`: condorcet criterion object 
+- `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
 function satisfies(::Fails, system::VotingSystem, criterion::CondorcetWinner, rankings::Ranks{T}; _...) where {T}
     rankings = deepcopy(rankings)
@@ -36,7 +37,7 @@ function satisfies(::Fails, system::VotingSystem, criterion::CondorcetWinner, ra
 end
 
 """
-    count_violations(system::VotingSystem, criterion::CondorcetWinner; _...)
+    count_violations(system::VotingSystem, criterion::CondorcetWinner, rankings::Ranks; _...)
 
 Counts the number of violations of the Condorcet for a given voting system.
 
@@ -44,6 +45,7 @@ Counts the number of violations of the Condorcet for a given voting system.
 
 - `system::VotingSystem`: a voting system object
 - `criterion::CondorcetWinner`: condorcet criterion object 
+- `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
 function count_violations(T, system::VotingSystem, criterion::CondorcetWinner, rankings::Ranks; _...)
     return satisfies(T, system, criterion, rankings) ? 0 : 1

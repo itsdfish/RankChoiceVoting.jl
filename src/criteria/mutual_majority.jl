@@ -9,7 +9,7 @@ mutable struct MutualMajority <: Criterion
 end
 
 """
-    satisfies(system::VotingSystem, criterion::MutualMajority; _...)
+    satisfies(system::VotingSystem, criterion::MutualMajority, rankings::Ranks; _...)
 
 Tests whether a voting system satisfies the mutual majority criterion.
 
@@ -17,6 +17,7 @@ Tests whether a voting system satisfies the mutual majority criterion.
 
 - `system::VotingSystem`: a voting system object
 - `criterion::MutualMajority`: majority criterion object 
+- `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
 function satisfies(::Fails, system::VotingSystem, criterion::MutualMajority, rankings::Ranks; _...)
     winner_id = evaluate_winner(system, rankings)
@@ -27,7 +28,7 @@ function satisfies(::Fails, system::VotingSystem, criterion::MutualMajority, ran
 end
 
 """
-    count_violations(system::VotingSystem, criterion::MutualMajority; _...)
+    count_violations(system::VotingSystem, criterion::MutualMajority, rankings::Ranks; _...)
 
 Counts the number of violations of the majority criterion for a given voting system.
 
@@ -35,6 +36,7 @@ Counts the number of violations of the majority criterion for a given voting sys
 
 - `system::VotingSystem`: a voting system object
 - `criterion::Majority`: majority criterion object 
+- `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
 function count_violations(T::Fails, system::VotingSystem, criterion::MutualMajority, rankings::Ranks; _...)
     return satisfies(T, system, criterion, rankings) ? 0 : 1

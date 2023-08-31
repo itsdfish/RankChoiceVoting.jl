@@ -9,7 +9,7 @@ mutable struct ReversalSymmetry <: Criterion
 end
 
 """
-    satisfies(system::VotingSystem, criterion::ReversalSymmetry; _...)
+    satisfies(system::VotingSystem, criterion::ReversalSymmetry, rankings::Ranks; _...)
 
 Tests whether a voting system satisfies the reversal symmetry criterion.
 
@@ -17,6 +17,7 @@ Tests whether a voting system satisfies the reversal symmetry criterion.
 
 - `system::VotingSystem`: a voting system object
 - `criterion::ReversalSymmetry`: condorcet criterion object 
+- `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
 function satisfies(::Fails, system::VotingSystem, criterion::ReversalSymmetry, rankings::Ranks; kwargs...)
     winner = evaluate_winner(system, rankings)
@@ -27,7 +28,7 @@ function satisfies(::Fails, system::VotingSystem, criterion::ReversalSymmetry, r
 end
 
 """
-    count_violations(system::VotingSystem, criterion::ReversalSymmetry; _...)
+    count_violations(system::VotingSystem, criterion::ReversalSymmetry, rankings::Ranks; _...)
 
 Counts the number of violations of the reversal symmetry criterion for a given voting system.
 
@@ -35,6 +36,7 @@ Counts the number of violations of the reversal symmetry criterion for a given v
 
 - `system::VotingSystem`: a voting system object
 - `criterion::ReversalSymmetry`: reversal symmetry criterion object 
+- `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
 function count_violations(T::Fails, system::VotingSystem, criterion::ReversalSymmetry, rankings::Ranks; _...)
     return satisfies(T, system, criterion, rankings) ? 0 : 1

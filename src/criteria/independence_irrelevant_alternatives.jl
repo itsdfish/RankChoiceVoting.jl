@@ -9,7 +9,7 @@ mutable struct Independence <: Criterion
 end
 
 """
-    satisfies(::Fails, system::VotingSystem, criterion::Independence;  _...) 
+    satisfies(::Fails, system::VotingSystem, criterion::Independence, rankings::Ranks;  _...) 
 
 Tests whether a voting system satisfies the Independence of Irrelevant alternatives criterion. There are
 several ways to test this criterion. Currently, it is tested by removing subsets of losing candidates and 
@@ -20,7 +20,7 @@ rank order changes. The current method is less strict compared to alternative me
 
 - `system::VotingSystem`: a voting system object
 - `criterion::Independence`: Independence criterion object 
-
+- `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
 function satisfies(::Fails, system::VotingSystem, criterion::Independence, rankings::Ranks;  _...) 
     winner = evaluate_winner(system, rankings)
@@ -43,7 +43,7 @@ function violates(winner, system, rankings, removed_candidates)
 end
 
 """
-    count_violations(system::VotingSystem, criterion::Independence; _...)
+    count_violations(system::VotingSystem, criterion::Independence, rankings::Ranks; _...)
 
 Counts the number of violations of the Independence of Irrelevant alternatives criterion. There are
 several ways to test this criterion. Currently, it is tested by removing subsets of losing candidates and 
@@ -54,7 +54,7 @@ rank order changes. The current method is less strict compared to alternative me
 
 - `system::VotingSystem`: a voting system object
 - `criterion::Independence`: Independence criterion object 
-
+- `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
 function count_violations(::Fails, system::VotingSystem, criterion::Independence, rankings::Ranks;  _...) 
     winner = evaluate_winner(system, rankings)
