@@ -48,19 +48,19 @@ end
 
     Random.seed!(602)
 
-    rankings = Vector{Vector{Symbol}}()
-    push!(rankings, [[:a,:b,:c] for _ ∈ 1:10]...)
-    push!(rankings, [[:b,:c,:a] for _ ∈ 1:5]...)
-    push!(rankings, [[:b,:a,:c] for _ ∈ 1:1]...)
-    push!(rankings, [[:c,:a,:b] for _ ∈ 1:2]...)
+    data =  [[:a,:b,:c] for _ ∈ 1:10]
+    push!(data, [[:b,:c,:a] for _ ∈ 1:5]...)
+    push!(data, [[:b,:a,:c] for _ ∈ 1:1]...)
+    push!(data, [[:c,:a,:b] for _ ∈ 1:2]...)
 
-    system = InstantRunOff(rankings)
-    winner = head_to_head(system, :a, :b)
+    rankings = Ranks(data)
+    system = InstantRunOff()
+    winner = head_to_head(rankings, :a, :b)
     @test winner == :a
-    winner = head_to_head(system, :b, :a)
+    winner = head_to_head(rankings, :b, :a)
     @test winner == :a
     @test winner == :a
-    winner = head_to_head(system, :c, :a)
+    winner = head_to_head(rankings, :c, :a)
     @test winner == :a
 end
 
@@ -72,23 +72,24 @@ end
         using Test
         using Random
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:a,:b,:c] for _ ∈ 1:37]...)
-        push!(rankings, [[:b,:c,:a] for _ ∈ 1:22]...)
-        push!(rankings, [[:b,:a,:c] for _ ∈ 1:12]...)
-        push!(rankings, [[:c,:a,:b] for _ ∈ 1:29]...)
+        data = [[:a,:b,:c] for _ ∈ 1:37]
+        push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
+        push!(data, [[:b,:a,:c] for _ ∈ 1:12]...)
+        push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
+
+        rankings = Ranks(data)
     
-        system = InstantRunOff(rankings)
-        system = deepcopy(system)
-        add_zero_counts!(system)
-        winner = evaluate_winner(system)
-        win_ind = map(x -> x[1] == winner, system.uranks)
+        system = InstantRunOff()
+        rankings = deepcopy(rankings)
+        add_zero_counts!(rankings)
+        winner = evaluate_winner(system, rankings)
+        win_ind = map(x -> x[1] == winner, rankings.uranks)
     
-        _system = deepcopy(system)
-        redistribute!(_system, win_ind)
+        _rankings = deepcopy(rankings)
+        redistribute!(_rankings, win_ind)
         
-        @test sum(system.counts) == sum(_system.counts)
-        @test all(system.counts[win_ind] .≥ system.counts[win_ind])
+        @test sum(rankings.counts) == sum(_rankings.counts)
+        @test all(rankings.counts[win_ind] .≥ rankings.counts[win_ind])
     end
 
     @safetestset "2" begin 
@@ -100,26 +101,27 @@ end
     
         Random.seed!(55)
 
-        rankings = Vector{Vector{Symbol}}()
-        push!(rankings, [[:a,:b,:c] for _ ∈ 1:10]...)
-        push!(rankings, [[:b,:c,:a] for _ ∈ 1:5]...)
-        push!(rankings, [[:b,:a,:c] for _ ∈ 1:5]...)
-        push!(rankings, [[:c,:a,:b] for _ ∈ 1:5]...)
-        push!(rankings, [[:c,:b,:a] for _ ∈ 1:0]...)
-        push!(rankings, [[:a,:c,:b] for _ ∈ 1:0]...)
+        data =  [[:a,:b,:c] for _ ∈ 1:10]
+        push!(data, [[:b,:c,:a] for _ ∈ 1:5]...)
+        push!(data, [[:b,:a,:c] for _ ∈ 1:5]...)
+        push!(data, [[:c,:a,:b] for _ ∈ 1:5]...)
+        push!(data, [[:c,:b,:a] for _ ∈ 1:0]...)
+        push!(data, [[:a,:c,:b] for _ ∈ 1:0]...)
+
+        rankings = Ranks(data)
     
-        system = InstantRunOff(rankings)
-        system = deepcopy(system)
-        add_zero_counts!(system)
-        winner = evaluate_winner(system)
-        win_ind = map(x -> x[1] == winner, system.uranks)
+        system = InstantRunOff()
+        rankings = deepcopy(rankings)
+        add_zero_counts!(rankings)
+        winner = evaluate_winner(system, rankings)
+        win_ind = map(x -> x[1] == winner, rankings.uranks)
     
         for _ ∈ 1:1000
-            _system = deepcopy(system)
-            redistribute!(_system, win_ind)
-            @test sum(system.counts) == sum(_system.counts)
-            @test all(system.counts[win_ind] .≥ system.counts[win_ind])
-            @test all(system.counts[win_ind .≠ true] .≤ system.counts[win_ind .≠ true])
+            _rankings= deepcopy(rankings)
+            redistribute!(_rankings, win_ind)
+            @test sum(rankings.counts) == sum(_rankings.counts)
+            @test all(rankings.counts[win_ind] .≥ rankings.counts[win_ind])
+            @test all(rankings.counts[win_ind .≠ true] .≤ rankings.counts[win_ind .≠ true])
         end
     end
 end

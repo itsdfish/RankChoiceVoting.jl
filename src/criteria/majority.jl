@@ -17,15 +17,8 @@ Tests whether a voting system satisfies the majority criterion.
 
 - `system::VotingSystem`: a voting system object
 - `criterion::Majority`: majority criterion object 
+- `rankings::Ranks`: rank choice votes
 """
-function satisfies(::Fails, system::VotingSystem, criterion::Majority; _...)
-    winner_id = evaluate_winner(system)
-    majority_id = get_majority_id(system)
-    length(winner_id) ≠ 1 ? (return false) : nothing
-    isempty(majority_id) ? (return true) : nothing
-    return winner_id[1] ∈ majority_id ? true : false
-end
-
 function satisfies(::Fails, system::VotingSystem, criterion::Majority, rankings::Ranks; _...)
     winner_id = evaluate_winner(system, rankings)
     majority_id = get_majority_id(rankings)
@@ -44,8 +37,8 @@ Counts the number of violations of the majority criterion for a given voting sys
 - `system::VotingSystem`: a voting system object
 - `criterion::Majority`: majority criterion object 
 """
-function count_violations(T::Fails, system::VotingSystem, criterion::Majority; _...)
-    return satisfies(T, system, criterion) ? 0 : 1
+function count_violations(T::Fails, system::VotingSystem, criterion::Majority, rankings::Ranks; _...)
+    return satisfies(T, system, criterion, rankings) ? 0 : 1
 end
 
 get_majority_id(rankings) = get_majority_id(rankings.counts, rankings.uranks)

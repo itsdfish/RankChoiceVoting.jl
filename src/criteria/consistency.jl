@@ -22,23 +22,23 @@ Tests whether a voting system satisfies the Consistency criterion.
 
 - `n_max`: maximum Monte Carlo simulations to perform 
 """
-function satisfies(::Fails, system::VotingSystem, criterion::Consistency; n_max=1000, _...) 
-    winner = evaluate_winner(system)
+function satisfies(::Fails, system::VotingSystem, criterion::Consistency, rankings::Ranks; n_max=1000, _...) 
+    winner = evaluate_winner(system, rankings)
     length(winner) > 1 ? (return true) : nothing 
     for i ∈ 1:n_max 
-        violates(system, winner) ? (return false) : nothing 
+        violates(system, winner, rankings) ? (return false) : nothing 
     end
     return true 
 end
 
-function violates(system::V, winner) where {V<:VotingSystem}
-    system = deepcopy(system)
-    (;counts,uranks) = system
+function violates(system::V, winner, rankings) where {V<:VotingSystem}
+    rankings = deepcopy(rankings)
+    (;counts,uranks) = rankings
     c1,c2 = random_split(counts)
-    s1 = V(uranks, c1)
-    s2 = V(uranks, c2)
-    w1 = evaluate_winner(s1)
-    w2 = evaluate_winner(s2)
+    r1 = Ranks(c1, uranks)
+    r2 = Ranks(c2, uranks)
+    w1 = evaluate_winner(system, r1)
+    w2 = evaluate_winner(system, r2)
     # check for violation if a winner can be determined 
     # in each split
     if (length(w1) == 1) && (length(w2) == 1) 
@@ -72,11 +72,11 @@ Counts the number of violations of the consistency criterion for a given voting 
 
 - `n_rep`: number of Monte Carlo simulations to perform 
 """
-function count_violations(::Fails, system::VotingSystem, criterion::Consistency; n_reps=1000, _...)
-    winner = evaluate_winner(system)
+function count_violations(::Fails, system::VotingSystem, criterion::Consistency, rankings::Ranks; n_reps=1000, _...)
+    winner = evaluate_winner(system, rankings)
     cnt = 0
     for i ∈ 1:n_reps 
-        cnt += violates(system, winner) ? 1 : 0
+        cnt += violates(system, winner, rankings) ? 1 : 0
     end
     return cnt 
 end

@@ -30,7 +30,8 @@ end
 
 property(::VotingSystem, ::Criterion) = Fails()
 satisfies(s::VotingSystem, c::Criterion, r::Ranks; kwargs...) = satisfies(property(s, c), s, c, r; kwargs...)
-count_violations(s::VotingSystem, c::Criterion; kwargs...) = count_violations(property(s, c), s, c; kwargs...)
+satisfies(s::VotingSystem, c::Criterion; kwargs...) = property(s, c) == Holds()
+count_violations(s::VotingSystem, c::Criterion, r::Ranks; kwargs...) = count_violations(property(s, c), s, c, r; kwargs...)
 
 """
     satisfies(system::InstantRunOff, criterion::CondorcetLoser; _...)
@@ -43,15 +44,28 @@ true.
 - `system::InstantRunOff`: an instant runoff voting system object
 - `criterion::CondorcetLoser`: condorcet loser criterion object 
 """
-function satisfies(::Holds, system::VotingSystem, criterion::Criterion; _...)
+function satisfies(::Holds, system::VotingSystem, criterion::Criterion, rankings::Ranks; _...)
     return true
 end
 
-function satisfies(criterion)
-    return filter(x -> property(x, criterion), ALL_Systems)
+"""
+    satisfies(criterion::Criterion)
+
+Returns a vector of rank choice voting systems which satisfy the given criterion
+
+# Arguments
+
+- `criterion::Criterion`: a fairness criterion  
+"""
+function satisfies(criterion::Criterion)
+    return filter(s -> property(s, criterion) == Holds(), ALL_SYSTEMS)
 end
 
-function count_violations(::Holds, system::VotingSystem, criterion::Criterion; _...)
+function satisfies(system::VotingSystem)
+    return filter(c -> property(system, c) == Holds(), ALL_CRITERIA)
+end
+
+function count_violations(::Holds, system::VotingSystem, criterion::Criterion, rankings::Ranks; _...)
     return 0
 end
 

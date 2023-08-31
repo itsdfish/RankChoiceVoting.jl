@@ -18,14 +18,14 @@ Returns the id of the winning candiate in an instant runoff election.
 # Arguments
 - `system`: an instant runoff system object
 """
-function evaluate_winner(system::InstantRunOff)
-    rank,candidates = compute_ranks(system)
+function evaluate_winner(system::InstantRunOff, rankings::Ranks)
+    rank,candidates = compute_ranks(system, rankings)
     return candidates[rank .== 1]
 end
 
-function compute_ranks(system::InstantRunOff)
-    counts = deepcopy(get_counts(system))
-    uranks = deepcopy(get_uranks(system))
+function compute_ranks(system::InstantRunOff, rankings::Ranks)
+    counts = deepcopy(get_counts(rankings))
+    uranks = deepcopy(get_uranks(rankings))
     winner_idx = -100
     n_votes = sum(counts)
     candidates = uranks[1][:]

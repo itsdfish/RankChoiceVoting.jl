@@ -25,16 +25,16 @@ Tests whether a voting system satisfies the monotonicity criterion.
 - `max_reps=1000`: maximum number of Monte Carlo simulations to perform while searching 
 for a violation
 """
-function satisfies(::Fails, system::VotingSystem, criteria::Monotonicity; max_reps=1000, _...)
-    system = deepcopy(system)
-    add_zero_counts!(system)
-    winner = evaluate_winner(system)
+function satisfies(::Fails, system::VotingSystem, criteria::Monotonicity, rankings::Ranks; max_reps=1000, _...)
+    rankings = deepcopy(rankings)
+    add_zero_counts!(rankings)
+    winner = evaluate_winner(system, rankings)
     length(winner) ≠ 1 ? (return true) : nothing
-    win_ind = map(x -> x[1] == winner[1], system.uranks)
+    win_ind = map(x -> x[1] == winner[1], rankings.uranks)
     for _ ∈ 1:max_reps
-        _system = deepcopy(system)
-        redistribute!(_system, win_ind)
-        new_winner = evaluate_winner(_system)
+        _rankings = deepcopy(rankings)
+        redistribute!(rankings, win_ind)
+        new_winner = evaluate_winner(system, _rankings)
         winner ≠ new_winner ? (return false) : nothing
     end
     return true
@@ -81,9 +81,9 @@ voters who have the same rank ordering except for the winner. For example,
 - `system`: a voting system object 
 - `win_ind`: a vector indicating which ranks corresond to the winner. 
 """
-function redistribute!(system, win_ind)
-    counts = get_counts(system)
-    uranks = get_uranks(system)
+function redistribute!(rankings, win_ind)
+    counts = get_counts(rankings)
+    uranks = get_uranks(rankings)
     n = length(counts)
     for i ∈ 1:n 
         if win_ind[i]

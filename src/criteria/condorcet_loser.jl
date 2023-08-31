@@ -18,11 +18,11 @@ Tests whether a voting system satisfies the Condorcet loser criterion.
 - `system::VotingSystem`: a voting system object
 - `criterion::CondorcetLoser`: condorcet loser criterion object 
 """
-function satisfies(::Fails, system::VotingSystem, criterion::CondorcetLoser; _...)
-    system = deepcopy(system)
-    (;counts,uranks) = system
+function satisfies(::Fails, system::VotingSystem, criterion::CondorcetLoser, rankings::Ranks{T}; _...) where {T} 
+    rankings = deepcopy(rankings)
+    (;counts,uranks) = rankings
     candidates = uranks[1]
-    winner = evaluate_winner(system)
+    winner = evaluate_winner(system, rankings)
     length(winner) ≠ 1 ? (return true) : nothing
     pairs = combinations(candidates, 2) |> collect
     condorcet_losers = T[]
@@ -45,8 +45,8 @@ Counts the number of violations of the Condorcet loser criterion for a given vot
 - `system::VotingSystem`: a voting system object
 - `criterion::CondorcetLoser`: condorcet criterion object 
 """
-function count_violations(T::Fails, system::VotingSystem, criterion::CondorcetLoser; _...)
-    return satisfies(T, system, criterion) ? 0 : 1
+function count_violations(T::Fails, system::VotingSystem, criterion::CondorcetLoser, rankings::Ranks; _...)
+    return satisfies(T, system, criterion, rankings) ? 0 : 1
 end
 
 property(::Borda, ::CondorcetLoser) = Holds()

@@ -35,6 +35,6 @@ module RankChoiceVoting
     include("criteria/consistency.jl")
     include("criteria/mutual_majority.jl")
     include("criteria/independence_irrelevant_alternatives.jl")
-    const ALL_Systems = [Borda(),Bucklin(),InstantRunOff()]
+    include("constants.jl")
 
 end

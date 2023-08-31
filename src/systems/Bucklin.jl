@@ -15,22 +15,22 @@ Returns the id of the winning candiate in Bucklin voting system.
 
 - `system`: a Bucklin voting system object
 """
-function evaluate_winner(system::Bucklin)
-    ranks,candidates = compute_ranks(system)
+function evaluate_winner(system::Bucklin, rankings::Ranks)
+    ranks,candidates = compute_ranks(system, rankings)
     return candidates[ranks .== 1]
 end
 
-function compute_ranks(system::Bucklin)
-    scores = score(system)
+function compute_ranks(system::Bucklin, rankings::Ranks)
+    scores = score(system, rankings)
     sort!(scores, byvalue=true, rev=true)
     ranks = tied_ranks(collect(values(scores)))
     candidates = collect(keys(scores))
     return ranks, candidates
 end
 
-function score(system::Bucklin)
-    counts = get_counts(system)
-    uranks = get_uranks(system)
+function score(system::Bucklin, rankings::Ranks)
+    counts = get_counts(rankings)
+    uranks = get_uranks(rankings)
     winner = uranks[1][1]
     n_votes = sum(counts)
     max_iter = length(uranks[1]) - 1
