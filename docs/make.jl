@@ -15,6 +15,7 @@ makedocs(
     modules = [RankChoiceVoting],
     pages = [
         "Home" => "index.md",
+        "Rank Choice Votes" => "voting_data.md",
         "Systems" => ["Borda" => "systems/borda.md"],
         "Criteria" => ["Majority" => "criteria/majority.md"
                         "Reversal Symmetry" => "criteria/reversalsymmetry.md"],

@@ -18,6 +18,7 @@ to add RankChoiceVoting.jl to your environment.
 
 # API Overview
 
+The API for RankChoiceVoting.jl is summarized below. For more details, use the navigation panel on the left.
 ## Type System
 
 The API for RankChoiceVoting consists of three sets of types: 
@@ -34,16 +35,16 @@ The API for RankChoiceVoting consists of three sets of types:
 - `count_violations`: counts the number of violations of a criterion in a given set of rank choice votes
 
 # Quick Example
-The code block below shows how to determine the winner of an election using the `Borda` system.
+Below, we will showcase some common uses of RankChoiceVoting.jl using an example based on the `Borda count` system.
 
+## Rank Choice Votes
+The code block below generates synthetic rank choice votes of candidates $C = \{c,k,m,n\}$ from 100 voters:
 ```@setup index
 using RankChoiceVoting
 
-data = [[:m,:n,:c,:k] for _ ∈ 1:42]
-push!(data, [[:n,:m,:c,:k] for _ ∈ 1:26]...)
-push!(data, [[:c,:k,:n,:m] for _ ∈ 1:15]...)
-push!(data, [[:k,:c,:n,:m] for _ ∈ 1:17]...)
-rankings = Ranks(data)
+data = [[:m,:n,:c,:k],[:n,:m,:c,:k],[:c,:k,:n,:m],[:k,:c,:n,:m]]
+counts = [42,26,15,17]
+rankings = Ranks(counts, data)
 
 system = Borda()
 ```
@@ -51,20 +52,24 @@ system = Borda()
 ```@example index
 using RankChoiceVoting
 
-data = [[:m,:n,:c,:k] for _ ∈ 1:42]
-push!(data, [[:n,:m,:c,:k] for _ ∈ 1:26]...)
-push!(data, [[:c,:k,:n,:m] for _ ∈ 1:15]...)
-push!(data, [[:k,:c,:n,:m] for _ ∈ 1:17]...)
-rankings = Ranks(data)
-
+data = [[:m,:n,:c,:k],[:n,:m,:c,:k],[:c,:k,:n,:m],[:k,:c,:n,:m]]
+counts = [42,26,15,17]
+rankings = Ranks(counts, data)
+```
+## Select Winner
+We can use the function `evaluate_winner` to determine the winner of the election.
+```@example index
 system = Borda()
 evaluate_winner(system, rankings)
 ```
+## Compute Ranks
+
 Similarly, we can determine the full ranking with the function `compute_ranks`:
 
 ```@example index
 compute_ranks(system, rankings)
 ```
+## Fairness Criteria
 
 The code block below shows how to use the `satisfies` function to determine which criteria the `Borda` voting system satisfies.
 ```@example 

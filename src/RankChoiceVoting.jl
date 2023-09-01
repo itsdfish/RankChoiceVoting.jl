@@ -2,6 +2,7 @@ module RankChoiceVoting
     using Combinatorics
     using Distributions
     using OrderedCollections
+    using PrettyTables
     using Random
 
     export compute_ranks

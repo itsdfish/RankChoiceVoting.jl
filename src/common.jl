@@ -159,14 +159,18 @@ function tied_ranks(a::Array{T,1}) where {T<:Real}
     return r
 end
 
-function Base.show(io::IO, ranks::Ranks)
-    println("counts      ranks")
-    max_spaces = 12
-    for (c,r) ∈ zip(ranks.counts,ranks.uranks)
-        n_spaces = max_spaces - length(digits(c)) 
-        println(c, " "^n_spaces, r)
-    end
-    return nothing
+function Base.show(io::IO, ::MIME"text/plain", model::Ranks)
+    T = typeof(model)
+    values = [model.counts model.uranks]
+    model_name = string(T.name.name)
+    return pretty_table(io,
+        values;
+        title=model_name,
+        compact_printing=false,
+        header=["Counts","Ranks"],
+        row_name_alignment=:l,
+        alignment=:l,
+    )
 end
 
 get_counts(system) = system.counts
