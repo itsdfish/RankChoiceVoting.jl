@@ -135,30 +135,6 @@ function add_zero_counts!(system)
     return nothing 
 end
 
-function find_ties(a::Array{T,1}) where {T<:Real}
-    x = T[]
-    for u ∈ unique(a)
-        cnt = 0
-        for i ∈ a
-            cnt += i == u ? 1 : 0
-            if cnt > 1 
-                push!(x, i)
-                break 
-            end 
-        end  
-    end
-    return x
-end
-
-function tied_ranks(a::Array{T,1}) where {T<:Real}
-    r = [1:length(a);]
-    1.0 < r[end] || return r
-    for i in find_ties(a)
-        r[a .== i] .= minimum(r[a .== i])
-    end
-    return r
-end
-
 function Base.show(io::IO, ::MIME"text/plain", model::Ranks)
     T = typeof(model)
     values = [model.counts model.uranks]

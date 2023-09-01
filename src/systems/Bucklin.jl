@@ -33,7 +33,7 @@ Ranks candidates using the Bucklin system.
 function compute_ranks(system::Bucklin, rankings::Ranks)
     scores = score(system, rankings)
     sort!(scores, byvalue=true, rev=true)
-    ranks = tied_ranks(collect(values(scores)))
+    ranks = denserank(collect(values(scores)), rev=true)
     candidates = collect(keys(scores))
     return ranks, candidates
 end

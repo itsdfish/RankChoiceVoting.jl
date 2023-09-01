@@ -16,9 +16,17 @@ makedocs(
     pages = [
         "Home" => "index.md",
         "Rank Choice Votes" => "voting_data.md",
-        "Systems" => ["Borda" => "systems/borda.md"],
-        "Criteria" => ["Majority" => "criteria/majority.md"
-                        "Reversal Symmetry" => "criteria/reversalsymmetry.md"],
+        "Systems" => ["Borda" => "systems/borda.md",
+                     "Bucklin" => "systems/bucklin.md",
+                     "Instant Runoff" => "systems/instant_runoff.md"],
+        "Criteria" => ["Condorcet Loser" => "criteria/condorcet_loser.md",
+                        "Condorcet Winner" => "criteria/condorcet_winner.md",
+                        "Consistency" => "criteria/consistency.md",
+                        "Majority" => "criteria/majority.md",
+                        "Monotonicity" => "criteria/monotonicity.md",
+                        "Mutual Majority" => "criteria/mutual_majority.md",
+                        "Reversal Symmetry" => "criteria/reversalsymmetry.md",
+                        "IIA" => "criteria/IIA.md"],
         "API" => "api.md",
     ]
 )

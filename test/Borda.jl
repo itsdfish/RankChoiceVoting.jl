@@ -1,5 +1,5 @@
 @safetestset "Borda" begin
-    @safetestset "score_borda" begin
+    @safetestset "score" begin
         using RankChoiceVoting
         using Test
         using RankChoiceVoting: score

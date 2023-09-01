@@ -13,7 +13,7 @@ The Borda count system assigns a score to each vote according to the following r
 
 $s = n - r + 1$
 
-where $s$ is the score, $n$ is the number of candidates and $r$. Effectively, the score reverse codes the rank votes. The candidate with the highest Borda score is selected as the winner. As an example, consider the following:
+where $s$ is the score, $n$ is the number of candidates and $r$ is the rank. Effectively, the score reverse codes the rank votes. The candidate with the highest Borda score is selected as the winner. As an example, consider the following:
 
 | count 	| 1 	| 2 	| 3 	|
 |-------	|---	|---	|---	|

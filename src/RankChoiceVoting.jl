@@ -5,6 +5,8 @@ module RankChoiceVoting
     using PrettyTables
     using Random
 
+    using StatsBase: denserank
+
     export compute_ranks
     export count_violations
     export evaluate_winner
@@ -12,22 +14,26 @@ module RankChoiceVoting
     
     export Borda
     export Bucklin
+    export InstantRunOff
+    export Minimax
+    export VotingSystem
+
     export CondorcetLoser
     export CondorcetWinner
     export Consistency
     export Independence
-    export InstantRunOff
     export Majority
     export Monotonicity
     export MutualMajority
     export Ranks
     export ReversalSymmetry
-    export VotingSystem
+   
 
     include("common.jl")
     include("systems/instant_runoff.jl")
     include("systems/Borda.jl")
     include("systems/Bucklin.jl")
+    include("systems/minimax.jl")
     include("criteria/monotonicity.jl")
     include("criteria/reversalsymmetry.jl")
     include("criteria/condorcet_winner.jl")
