@@ -141,4 +141,33 @@ end
         @test violations == 1
         @test !satisfies(system, criteria, rankings)
     end
+
+    @safetestset "minimax 1" begin
+        using RankChoiceVoting
+        using Test
+        using Random
+        
+        system = Minimax()
+        criteria = CondorcetWinner()
+
+        @test satisfies(system, criteria)
+    end
+
+    @safetestset "minimax 2" begin
+        using RankChoiceVoting
+        using Test
+        using RankChoiceVoting: Fails
+        using Random
+
+        candidates = [:a,:c,:b,:d] 
+
+        for _ ∈ 1:100
+            n = rand(10:100)
+            data = [shuffle(candidates) for _ ∈ 1:n]
+            rankings = Ranks(data)
+            system = Minimax()
+            criteria = CondorcetWinner()
+            @test satisfies(Fails(), system, criteria, rankings)
+        end
+    end
 end

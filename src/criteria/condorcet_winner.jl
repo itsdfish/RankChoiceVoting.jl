@@ -113,3 +113,5 @@ function head_to_head(counts, uranks, id1, id2; compare = >)
     end
     return compare(cnt, 0) ? id1 : id2
 end
+
+property(::Minimax, ::CondorcetWinner) = Holds()

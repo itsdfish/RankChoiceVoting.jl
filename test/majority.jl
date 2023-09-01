@@ -81,4 +81,40 @@
         @test satisfies(system, criterion, rankings)
         @test count_violations(system, criterion, rankings) == 0
     end
+
+    @safetestset "minimax 1" begin
+        using RankChoiceVoting
+        using Test
+
+        data = [[:s,:t,:o,:p] for _ ∈ 1:20]
+        push!(data, [[:t,:p,:o,:s] for _ ∈ 1:2]...)
+        push!(data, [[:p,:t,:o,:s] for _ ∈ 1:1]...)
+        push!(data, [[:o,:t,:p,:s] for _ ∈ 1:2]...)
+        rankings = Ranks(data)
+        
+        system = Minimax()
+        criterion = Majority()
+
+        @test satisfies(system, criterion, rankings)
+        @test count_violations(system, criterion, rankings) == 0
+    end
+
+    @safetestset "minimax 2" begin
+        using RankChoiceVoting
+        using Test
+        using RankChoiceVoting: Fails
+        using Random
+
+        candidates = [:a,:c,:b,:d] 
+
+        for i ∈ 1:100
+            Random.seed!(i)
+            n = rand(10:100)
+            data = [shuffle(candidates) for _ ∈ 1:n]
+            rankings = Ranks(data)
+            system = Minimax()
+            criteria = Majority()
+            @test satisfies(Fails(), system, criteria, rankings)
+        end
+    end
 end

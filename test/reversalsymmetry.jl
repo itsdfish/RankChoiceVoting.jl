@@ -48,4 +48,28 @@
             @test satisfies(system, criteria, rankings)
         end
     end
+
+    @safetestset "Minimax" begin
+        using RankChoiceVoting
+        using Test
+  
+        counts = [4,4,2,1,1,2]
+        ranks = [[:a,:b,:d,:c],
+                [:b,:c,:a,:d],
+                [:c,:d,:a,:b],
+                [:d,:a,:b,:c],
+                [:d,:b,:c,:a],
+                [:d,:c,:a,:b]]
+        rankings = Ranks(counts, ranks)
+
+        system = Minimax()
+        criterion = ReversalSymmetry()
+
+        winner = evaluate_winner(system, rankings)
+        result = satisfies(system, criterion, rankings)
+
+        @test winner == [:d]
+        @test !result
+    end
 end
+

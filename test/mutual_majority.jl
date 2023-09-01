@@ -142,4 +142,27 @@
             @test count_violations(Fails(), system, criterion, rankings) == 0
         end
     end
+
+    @safetestset "Minimax" begin
+        using RankChoiceVoting
+        using Test
+  
+        counts = [19,17,17,16,16,15]
+        ranks = [[:c,:a,:b,:d],
+                [:d,:c,:a,:b],
+                [:b,:c,:a,:d],
+                [:d,:b,:c,:a],
+                [:a,:b,:c,:d],
+                [:d,:a,:b,:c]]
+        rankings = Ranks(counts, ranks)
+
+        system = Minimax()
+        criterion = MutualMajority()
+
+        winner = evaluate_winner(system, rankings)
+        result = satisfies(system, criterion, rankings)
+
+        @test winner == [:d]
+        @test !result
+    end
 end

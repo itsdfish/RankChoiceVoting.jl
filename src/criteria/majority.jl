@@ -22,7 +22,8 @@ Tests whether a voting system satisfies the majority criterion.
 function satisfies(::Fails, system::VotingSystem, criterion::Majority, rankings::Ranks; _...)
     winner_id = evaluate_winner(system, rankings)
     majority_id = get_majority_id(rankings)
-    length(winner_id) ≠ 1 ? (return false) : nothing
+    # should this be true,false or not applicable?
+    #length(winner_id) ≠ 1 ? (return false) : nothing
     isempty(majority_id) ? (return true) : nothing
     return winner_id[1] ∈ majority_id ? true : false
 end
@@ -60,3 +61,4 @@ end
 
 property(::Bucklin, ::Majority) = Holds()
 property(::InstantRunOff, ::Majority) = Holds()
+property(::Minimax, ::Majority) = Holds()
