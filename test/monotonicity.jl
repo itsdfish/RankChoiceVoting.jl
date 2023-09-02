@@ -102,4 +102,23 @@
             @test satisfies(system, criterion, rankings)
         end
     end
+
+    @safetestset "minimax" begin
+        using RankChoiceVoting
+        using Test
+        using RankChoiceVoting: Fails
+        using Random
+
+        candidates = [:a,:c,:b,:d] 
+
+        for i ∈ 1:100
+            Random.seed!(i)
+            n = rand(10:100)
+            data = [shuffle(candidates) for _ ∈ 1:n]
+            rankings = Ranks(data)
+            system = Minimax()
+            criteria = Monotonicity()
+            @test satisfies(Fails(), system, criteria, rankings)
+        end
+    end
 end

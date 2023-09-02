@@ -113,8 +113,8 @@
             data = [shuffle(candidates) for _ ∈ 1:n]
             rankings = Ranks(data)
             system = Minimax()
-            criteria = Majority()
-            @test satisfies(Fails(), system, criteria, rankings)
+            criterion = Majority()
+            @test satisfies(Fails(), system, criterion, rankings)
         end
     end
 end

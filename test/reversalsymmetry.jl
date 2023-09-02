@@ -8,10 +8,10 @@
         push!(data, [[:c,:a,:b] for _ ∈ 1:2]...)
         rankings = Ranks(data)
         system = InstantRunOff()
-        criteria = ReversalSymmetry()
-        violations = count_violations(system, criteria, rankings)
+        criterion = ReversalSymmetry()
+        violations = count_violations(system, criterion, rankings)
         @test violations == 1
-        @test !satisfies(system, criteria, rankings)
+        @test !satisfies(system, criterion, rankings)
     end
 
     @safetestset "instant runoff 2" begin
@@ -24,10 +24,10 @@
         rankings = Ranks(data)
 
         system = InstantRunOff()
-        criteria = ReversalSymmetry()
-        violations = count_violations(system, criteria, rankings)
+        criterion = ReversalSymmetry()
+        violations = count_violations(system, criterion, rankings)
         @test violations == 0
-        @test satisfies(system, criteria, rankings)
+        @test satisfies(system, criterion, rankings)
     end
 
     @safetestset "Borda count" begin
@@ -41,11 +41,11 @@
             data = map(_ -> shuffle([:a,:b,:c]), 1:n)
             rankings = Ranks(data)
             system = Borda()
-            criteria = ReversalSymmetry()
-            violations = count_violations(system, criteria, rankings)
+            criterion = ReversalSymmetry()
+            violations = count_violations(system, criterion, rankings)
             # Borda always satisfies reversal symmetry
             @test violations == 0
-            @test satisfies(system, criteria, rankings)
+            @test satisfies(system, criterion, rankings)
         end
     end
 

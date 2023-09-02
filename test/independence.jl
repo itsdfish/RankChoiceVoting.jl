@@ -47,8 +47,8 @@
         rankings = Ranks(data)
 
         system = Borda()
-        criteria = Independence()
-        @test !satisfies(system, criteria)
+        criterion = Independence()
+        @test !satisfies(system, criterion)
     end
 
     @safetestset "Borda count 2" begin
@@ -64,8 +64,8 @@
         rankings =  Ranks(data)
         
         system = Borda()
-        criteria = Independence()
-        @test satisfies(system, criteria, rankings)
+        criterion = Independence()
+        @test satisfies(system, criterion, rankings)
     end
 
     @safetestset "Bucklin 1" begin
@@ -80,8 +80,8 @@
         rankings = Ranks(data)
 
         system = Bucklin()
-        criteria = Independence()
-        @test satisfies(system, criteria, rankings)
+        criterion = Independence()
+        @test satisfies(system, criterion, rankings)
     end
 
     @safetestset "Bucklin 2" begin
@@ -96,7 +96,7 @@
         rankings = Ranks(data)
 
         system = Bucklin()
-        criteria = Independence()
-        @test !satisfies(system, criteria, rankings)
+        criterion = Independence()
+        @test !satisfies(system, criterion, rankings)
     end
 end

@@ -9,10 +9,10 @@
         rankings = Ranks(data)
 
         system = InstantRunOff()
-        criteria = Consistency()
-        violations = count_violations(system, criteria, rankings)
+        criterion = Consistency()
+        violations = count_violations(system, criterion, rankings)
         @test violations > 0
-        @test !satisfies(system, criteria, rankings)
+        @test !satisfies(system, criterion, rankings)
     end
 
     @safetestset "Borda" begin
@@ -33,5 +33,44 @@
             system = Borda()
             @test satisfies(Fails(), system, criterion, rankings)
         end
+    end
+
+    @safetestset "minimax" begin
+        using RankChoiceVoting
+        using Test
+
+        system = Minimax()
+        criterion = Consistency()
+
+        ranks = [[:a,:b,:c,:d],
+                [:a,:b,:d,:c],
+                [:a,:d,:b,:c],
+                [:a,:d,:c,:b],
+                [:b,:c,:d,:a],
+                [:c,:b,:d,:a],
+                [:c,:d,:b,:a],
+                [:d,:c,:b,:a]]
+        counts = [1,8,6,2,5,9,6,6]
+        rankings = Ranks(counts, ranks)
+        winner = evaluate_winner(system, rankings)
+
+        ranks = [[:a,:b,:c,:d],
+                [:a,:d,:b,:c],
+                [:b,:c,:d,:a],
+                [:c,:d,:b,:a]]
+        counts = [1,6,5,6]
+        rankings = Ranks(counts, ranks)
+        winner1 = evaluate_winner(system, rankings)
+
+        ranks = [[:a,:b,:d,:c],
+        [:a,:d,:c,:b],
+        [:c,:b,:d,:a],
+        [:d,:c,:b,:a]]
+        counts = [8,2,9,6]
+        rankings = Ranks(counts, ranks)
+        winner2 = evaluate_winner(system, rankings)
+
+        @test winner1 == winner2
+        @test winner ≠ winner1
     end
 end

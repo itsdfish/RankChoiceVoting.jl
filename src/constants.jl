@@ -1,4 +1,4 @@
-const ALL_SYSTEMS = [Borda(),Bucklin(),InstantRunOff()]
+const ALL_SYSTEMS = [Borda(),Bucklin(),InstantRunOff(), Minimax()]
 const ALL_CRITERIA = [
     CondorcetLoser(),
     CondorcetWinner(),

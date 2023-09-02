@@ -55,6 +55,22 @@
         @test majority_set == Set([1]) || Set(majority_set) == Set([2])
     end
 
+    @safetestset "get_majority_set 4" begin
+        using RankChoiceVoting
+        using Test
+        using RankChoiceVoting: get_majority_set, tally
+
+        rankings = [
+            [:a,:b,:c],
+            [:b,:c,:a],
+            [:c,:a,:b],
+        ]
+        
+        counts, uranks = tally(rankings) 
+        majority_set = get_majority_set(counts, uranks)
+        @test majority_set == Set([:a,:b,:c])
+    end
+
     @safetestset "Borda 1" begin
         using RankChoiceVoting
         using Test
@@ -144,6 +160,7 @@
     end
 
     @safetestset "Minimax" begin
+        # https://en.wikipedia.org/wiki/Mutual_majority_criterion#Minimax
         using RankChoiceVoting
         using Test
   
