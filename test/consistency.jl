@@ -73,4 +73,22 @@
         @test winner1 == winner2
         @test winner ≠ winner1
     end
+
+    @safetestset "plurality" begin
+        using RankChoiceVoting
+        using Test
+        using Random
+        using RankChoiceVoting: Fails
+
+        candidates = [:a,:b,:c]
+        criterion = Consistency()
+
+        for _ ∈ 1:100
+            n = rand(50:500)
+            data = map(_ -> shuffle(candidates), 1:n)
+            rankings = Ranks(data)
+            system = Plurality()
+            @test satisfies(Fails(), system, criterion, rankings)
+        end
+    end
 end

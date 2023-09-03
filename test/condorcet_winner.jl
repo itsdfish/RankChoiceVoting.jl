@@ -64,4 +64,20 @@
             @test satisfies(Fails(), system, criterion, rankings)
         end
     end
+
+    @safetestset "plurality" begin
+        # https://en.wikipedia.org/wiki/Condorcet_winner_criterion#Plurality_voting
+        using RankChoiceVoting
+        using Test
+
+        data = [[:a,:b,:c],[:c,:a,:b],[:b,:a,:c]]
+        counts = [3,3,4]
+        rankings = Ranks(counts, data)
+
+        system = Plurality()
+        criterion = CondorcetWinner()
+        violations = count_violations(system, criterion, rankings)
+        @test violations == 1
+        @test !satisfies(system, criterion, rankings)
+    end
 end

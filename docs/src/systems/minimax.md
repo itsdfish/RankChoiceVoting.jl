@@ -1,10 +1,8 @@
 ```@setup minimax
 using RankChoiceVoting
-data = [[:m,:n,:c,:k] for _ ∈ 1:42]
-push!(data, [[:n,:m,:c,:k] for _ ∈ 1:26]...)
-push!(data, [[:c,:k,:n,:m] for _ ∈ 1:15]...)
-push!(data, [[:k,:c,:n,:m] for _ ∈ 1:17]...)
-rankings = Ranks(data)
+data = [[:m,:n,:c,:k],[:n,:m,:c,:k],[:c,:k,:n,:m],[:k,:c,:n,:m]]
+counts = [42,26,15,17]
+rankings = Ranks(counts, data)
 system = Minimax()
 ```
 # Minimax
@@ -37,11 +35,9 @@ The following examples illustrate some ways in which the Borda system can be use
 ```@example minimax
 using RankChoiceVoting 
 
-data = [[:m,:n,:c,:k] for _ ∈ 1:42]
-push!(data, [[:n,:m,:c,:k] for _ ∈ 1:26]...)
-push!(data, [[:c,:k,:n,:m] for _ ∈ 1:15]...)
-push!(data, [[:k,:c,:n,:m] for _ ∈ 1:17]...)
-rankings = Ranks(data)
+data = [[:m,:n,:c,:k],[:n,:m,:c,:k],[:c,:k,:n,:m],[:k,:c,:n,:m]]
+counts = [42,26,15,17]
+rankings = Ranks(counts, data)
 ```
 Next, let's create objects for the `Consistency` criterion and the `Minimax` voting system.
 ```@example minimax 

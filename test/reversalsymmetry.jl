@@ -71,5 +71,20 @@
         @test winner == [:d]
         @test !result
     end
+
+    @safetestset "plurality" begin
+        using RankChoiceVoting
+        using Test
+
+        data = [[:a,:b,:c],[:c,:b,:a],[:b,:a,:c],[:c,:a,:b]]
+        counts = fill(1, 4)
+        rankings = Ranks(counts, data)
+
+        system = Plurality()
+        criterion = ReversalSymmetry()
+        violations = count_violations(system, criterion, rankings)
+        @test violations == 1
+        @test !satisfies(system, criterion, rankings)
+    end
 end
 

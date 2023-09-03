@@ -84,3 +84,4 @@ function count_violations(::Fails, system::VotingSystem, criterion::Consistency,
 end
 
 property(::Borda, ::Consistency) = Holds()
+property(::Plurality, ::Consistency) = Holds()

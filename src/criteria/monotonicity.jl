@@ -121,3 +121,4 @@ end
 
 property(::Borda, ::Monotonicity) = Holds()
 property(::Bucklin, ::Monotonicity) = Holds()
+property(::Plurality, ::Monotonicity) = Holds()

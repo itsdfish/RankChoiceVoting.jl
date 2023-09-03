@@ -16,6 +16,7 @@ module RankChoiceVoting
     export Bucklin
     export InstantRunOff
     export Minimax
+    export Plurality
     export VotingSystem
 
     export CondorcetLoser
@@ -34,6 +35,7 @@ module RankChoiceVoting
     include("systems/Borda.jl")
     include("systems/Bucklin.jl")
     include("systems/minimax.jl")
+    include("systems/plurality.jl")
     include("criteria/monotonicity.jl")
     include("criteria/reversalsymmetry.jl")
     include("criteria/condorcet_winner.jl")

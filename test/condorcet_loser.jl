@@ -126,4 +126,28 @@
         @test winner == [:l]
         @test !result
     end
+
+    @safetestset "plurality" begin
+        # https://en.wikipedia.org/wiki/Condorcet_loser_criterion#Plurality_voting
+        using RankChoiceVoting
+        using Test
+  
+        data = [[:m,:n,:c,:k] for _ ∈ 1:42]
+        push!(data, [[:n,:c,:k,:m] for _ ∈ 1:26]...)
+        push!(data, [[:c,:k,:n,:m] for _ ∈ 1:15]...)
+        push!(data, [[:k,:c,:n,:m] for _ ∈ 1:17]...)
+        
+        rankings = Ranks(data)
+        system = Plurality()
+        criterion = CondorcetLoser()
+
+        winner = evaluate_winner(system, rankings)
+        result = satisfies(system, criterion, rankings)
+
+        @test winner == [:m]
+        @test !result
+    end
 end
+
+
+

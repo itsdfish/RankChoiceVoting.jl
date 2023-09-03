@@ -71,6 +71,23 @@
         @test majority_set == Set([:a,:b,:c])
     end
 
+    @safetestset "get_majority_id 5" begin
+        # https://en.wikipedia.org/wiki/Mutual_majority_criterion#Plurality
+        using RankChoiceVoting
+        using RankChoiceVoting: get_majority_set
+        using Test
+    
+        data = [[:m,:n,:c,:k] for _ ∈ 1:42]
+        push!(data, [[:n,:c,:k,:m] for _ ∈ 1:26]...)
+        push!(data, [[:c,:k,:n,:m] for _ ∈ 1:15]...)
+        push!(data, [[:k,:c,:n,:m] for _ ∈ 1:17]...)
+        rankings = Ranks(data)
+        (;counts,uranks) = rankings
+        majority_set = get_majority_set(counts, uranks)
+    
+        @test majority_set == Set([:n,:k,:c])
+    end
+
     @safetestset "Borda 1" begin
         using RankChoiceVoting
         using Test
@@ -180,6 +197,27 @@
         result = satisfies(system, criterion, rankings)
 
         @test winner == [:d]
+        @test !result
+    end
+
+    @safetestset "plurality" begin
+        # https://en.wikipedia.org/wiki/Condorcet_loser_criterion#Plurality_voting
+        using RankChoiceVoting
+        using Test
+  
+        data = [[:m,:n,:c,:k] for _ ∈ 1:42]
+        push!(data, [[:n,:c,:k,:m] for _ ∈ 1:26]...)
+        push!(data, [[:c,:k,:n,:m] for _ ∈ 1:15]...)
+        push!(data, [[:k,:c,:n,:m] for _ ∈ 1:17]...)
+        
+        rankings = Ranks(data)
+        system = Plurality()
+        criterion = MutualMajority()
+
+        winner = evaluate_winner(system, rankings)
+        result = satisfies(system, criterion, rankings)
+
+        @test winner == [:m]
         @test !result
     end
 end

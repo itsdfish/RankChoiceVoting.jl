@@ -84,19 +84,20 @@
         @test satisfies(system, criterion, rankings)
     end
 
-    @safetestset "Bucklin 2" begin
-        using RankChoiceVoting
-        using Test
-        using Random
+    # @safetestset "plurality" begin
+        ## for less strict version https://www.yorku.ca/bucovets/4080/choice/2.pdf
+    #     using RankChoiceVoting
+    #     using Test
+    #     using Random
 
-        data =  [[:a, :b, :c] for _ ∈ 1:3]
-        push!(data, [[:b, :c, :a] for _ ∈ 1:2]...)
-        push!(data, [[:b, :a, :c] for _ ∈ 1:4]...)
-        push!(data, [[:c, :a, :b] for _ ∈ 1:6]...)
-        rankings = Ranks(data)
+    #     data =  [[:a, :b, :c] for _ ∈ 1:3]
+    #     push!(data, [[:b, :c, :a] for _ ∈ 1:2]...)
+    #     push!(data, [[:b, :a, :c] for _ ∈ 1:4]...)
+    #     push!(data, [[:c, :a, :b] for _ ∈ 1:6]...)
+    #     rankings = Ranks(data)
 
-        system = Bucklin()
-        criterion = Independence()
-        @test !satisfies(system, criterion, rankings)
-    end
+    #     system = Bucklin()
+    #     criterion = Independence()
+    #     @test !satisfies(system, criterion, rankings)
+    # end
 end

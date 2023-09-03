@@ -62,3 +62,4 @@ end
 property(::Bucklin, ::Majority) = Holds()
 property(::InstantRunOff, ::Majority) = Holds()
 property(::Minimax, ::Majority) = Holds()
+property(::Plurality, ::Majority) = Holds()
