@@ -3,7 +3,7 @@
 
 A Plurality voting system object.
 """
-mutable struct Plurality <: VotingSystem end
+struct Plurality <: VotingSystem end
 
 """
     evaluate_winner(system::Plurality, rankings::Ranks)

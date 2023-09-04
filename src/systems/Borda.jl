@@ -3,7 +3,7 @@
 
 A Borda count voting system object.
 """
-mutable struct Borda <: VotingSystem end
+struct Borda <: VotingSystem end
 
 """
     evaluate_winner(system::Borda, rankings::Ranks)

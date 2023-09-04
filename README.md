@@ -1,7 +1,5 @@
 # RankChoiceVoting.jl (Work in progress)
-
 [![](docs/logo/logo.png)](https://itsdfish.github.io/RankChoiceVoting.jl/dev/)
-
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://itsdfish.github.io/RankChoiceVoting.jl/dev/) [![CI](https://github.com/itsdfish/RankChoiceVoting.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/itsdfish/RankChoiceVoting.jl/actions/workflows/CI.yml)
 
 This package provides a framework for simulating and evaluating rank choice voting systems. 

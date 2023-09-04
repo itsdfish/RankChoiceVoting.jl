@@ -3,7 +3,7 @@
 
 A Minimax voting system object.
 """
-mutable struct Minimax <: VotingSystem end
+struct Minimax <: VotingSystem end
 
 """
     evaluate_winner(system::Minimax, rankings::Ranks)

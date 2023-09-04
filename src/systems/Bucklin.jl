@@ -4,7 +4,7 @@
 A Bucklin voting system object.
 
 """
-mutable struct Bucklin <: VotingSystem end
+struct Bucklin <: VotingSystem end
 
 """
     evaluate_winner(system::Bucklin, rankings::Ranks)

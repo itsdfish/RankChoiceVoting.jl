@@ -6,7 +6,7 @@ a different candidate by increasing votes (without otherwise changing the rank o
 In other words, redistributing more votes to the winner (without otherwise changing the rank order), should not prevent the winner
 from winning. 
 """
-mutable struct Monotonicity <: Criterion
+struct Monotonicity <: Criterion
 
 end
 

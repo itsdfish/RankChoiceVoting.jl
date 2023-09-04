@@ -1,7 +1,7 @@
 """
 Independence <: Criterion
 
-
+An object representing the independence of irrelevant alternatives criterion
 """
 mutable struct Independence <: Criterion
 
@@ -33,14 +33,6 @@ function satisfies(::Fails, system::VotingSystem, criterion::Independence, ranki
     return true
 end
 
-function violates(winner, system, rankings, removed_candidates)
-    for c ∈ removed_candidates
-        remove_candidate!.(rankings.uranks, c)
-    end
-    new_winner = evaluate_winner(system, rankings)
-    return winner ≠ new_winner
-end
-
 """
     count_violations(system::VotingSystem, criterion::Independence, rankings::Ranks; _...)
 
@@ -66,4 +58,12 @@ function count_violations(::Fails, system::VotingSystem, criterion::Independence
         end
     end
     return cnt 
+end
+
+function violates(winner, system, rankings, removed_candidates)
+    for c ∈ removed_candidates
+        remove_candidate!.(rankings.uranks, c)
+    end
+    new_winner = evaluate_winner(system, rankings)
+    return winner ≠ new_winner
 end

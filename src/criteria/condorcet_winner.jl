@@ -4,7 +4,7 @@
 A Condorcet winner criterion object. The Condorcet criterion states that a candiate who wins all
 pairwise elections must also win the election using a given voting system.
 """
-mutable struct CondorcetWinner <: Condorcet
+struct CondorcetWinner <: Condorcet
 
 end
 

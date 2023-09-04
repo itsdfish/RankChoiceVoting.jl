@@ -8,7 +8,7 @@ An instant runoff voting system object.
 - `uranks`: a vector of unique rankings. Each ranking is a vector in which index represents rank and value represents candidate id.
 - `counts`: a vector of frequency counts corresponding to each unique ranking 
 """
-mutable struct InstantRunOff <: VotingSystem end
+struct InstantRunOff <: VotingSystem end
 
 """
     evaluate_winner(system::InstantRunOff, rankings::Ranks)
