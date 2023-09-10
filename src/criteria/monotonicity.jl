@@ -23,20 +23,32 @@ Tests whether a voting system satisfies the monotonicity criterion.
 
 # Keywords
 
-- `max_reps=1000`: maximum number of Monte Carlo simulations to perform while searching 
+- `n_reps=1000`: maximum number of Monte Carlo simulations to perform while searching 
 for a violation
 """
-function satisfies(::Fails, system::VotingSystem, criteria::Monotonicity, rankings::Ranks; max_reps=1000, _...)
+function satisfies(::Fails, system::VotingSystem, criteria::Monotonicity, rankings::Ranks; n_reps=1000, _...)
     rankings = deepcopy(rankings)
     add_zero_counts!(rankings)
     winner = evaluate_winner(system, rankings)
     length(winner) ≠ 1 ? (return true) : nothing
-    win_ind = map(x -> x[1] == winner[1], rankings.uranks)
-    for _ ∈ 1:max_reps
+    candidates = rankings.uranks[1]
+    cnt = 0
+    for _ ∈ 1:n_reps
         _rankings = deepcopy(rankings)
-        redistribute!(_rankings, win_ind)
+        giver,taker = sample(candidates, 2, replace=false)
+        redistribute!(_rankings, giver, taker)
         new_winner = evaluate_winner(system, _rankings)
-        winner ≠ new_winner ? (return false) : nothing
+        if (taker == winner[1]) && (new_winner ≠ winner)
+            println("1")
+            print(_rankings)
+            println("")
+            println(rankings)
+            return false
+        end
+        if (giver ≠ winner[1]) && (giver == new_winner[1])
+            println("2")
+            return false
+        end
     end
     return true
 end
@@ -60,14 +72,20 @@ function count_violations(::Fails, system::VotingSystem, criteria::Monotonicity,
     rankings = deepcopy(rankings)
     add_zero_counts!(rankings)
     winner = evaluate_winner(system, rankings)
-    length(winner) ≠ 1 ? (return true) : nothing
-    win_ind = map(x -> x[1] == winner[1], rankings.uranks)
+    length(winner) ≠ 1 ? (return 0) : nothing
+    candidates = rankings.uranks[1]
     cnt = 0
     for _ ∈ 1:n_reps
         _rankings = deepcopy(rankings)
-        redistribute!(_rankings, win_ind)
+        giver,taker = sample(candidates, 2, replace=false)
+        redistribute!(_rankings, giver, taker)
         new_winner = evaluate_winner(system, _rankings)
-        cnt += winner ≠ new_winner ? 1 : 0
+        if (taker == winner[1]) && (new_winner ≠ winner)
+            cnt += 1
+        end
+        if (giver ≠ winner[1]) && (giver == new_winner[1])
+            cnt += 1
+        end
     end
     return cnt 
 end
@@ -83,40 +101,46 @@ voters who have the same rank ordering except for the winner. For example,
 - `system`: a voting system object 
 - `win_ind`: a vector indicating which ranks corresond to the winner. 
 """
-function redistribute!(rankings, win_ind)
+function redistribute!(rankings, giver, taker)
     counts = get_counts(rankings)
     uranks = get_uranks(rankings)
     n = length(counts)
+    take_ids = Int[]
+    give_ids = Int[]
     for i ∈ 1:n 
-        if win_ind[i]
-            swapped_rank = swap(uranks[i])
-            cidx = findfirst(x -> x == swapped_rank, uranks)
-            total = counts[cidx]
-            Δ = rand(0:total)
-            counts[cidx] -= Δ 
-            counts[i] += Δ 
+        if is_preferred_to(giver, taker, uranks[i])
+            push!(give_ids, i)
+        else
+            push!(take_ids, i)
         end
     end
+    # figure out how much to give
+    total_to_give = 0
+    for i ∈ give_ids
+        to_give = rand(0:counts[i])
+        total_to_give += to_give 
+        counts[i] -= to_give
+    end
+    # give it to the takers
+    n_takers = length(take_ids)
+    for i ∈ 1:n_takers
+        to_take = rand(0:total_to_give)
+        total_to_give -= to_take
+        counts[take_ids[i]] += to_take
+    end
+    counts[take_ids[end]] += total_to_give     
     return nothing
 end
 
-"""
-    swap(urank; idx=1:2)
-
-Reverse a subset of rankings. Returns a new ranking vector.
-
-# Arguments
-
-- `urank`: - `uranks`: a vector of unique rankings. Each ranking is a vector in which index represents rank and value represents candidate id.
-
-# Keywords
-
-- `idx=1:2`: an index range to reverse order
-"""
-function swap(urank; idx=1:2)
-    r = urank[:]
-    reverse!(@view r[idx])
-    return r
+function is_preferred_to(c1, c2, uranks::Vector{T}) where {T}
+    for r ∈ uranks 
+        if r == c1 
+            return true 
+        elseif r == c2 
+            return false 
+        end
+    end 
+    return false 
 end
 
 property(::Borda, ::Monotonicity) = Holds()

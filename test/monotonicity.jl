@@ -1,40 +1,73 @@
 @safetestset "monotonicity" begin
     @safetestset "instant runoff test case" begin
+        # https://mathbooks.unl.edu/Contemporary/sec-5-3-irv.html
         using RankChoiceVoting
         using Test
 
-        data = [[:a,:b,:c] for _ ∈ 1:37]
-        push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
-        push!(data, [[:b,:a,:c] for _ ∈ 1:12]...)
-        push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
-        rankings = Ranks(data)
+        ranks = [[:a,:b,:c],[:b,:c,:a],[:b,:a,:c],[:c,:a,:b]]
+        counts = [37,22,12,29]
+        rankings = Ranks(counts, ranks)
 
         system = InstantRunOff()
         winner1 = evaluate_winner(system, rankings)
 
-        data = [[:a,:b,:c] for _ ∈ 1:47]
-        push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
-        push!(data, [[:b,:a,:c] for _ ∈ 1:2]...)
-        push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
-        rankings = Ranks(data)
+        ranks = [[:a,:b,:c],[:b,:c,:a],[:b,:a,:c],[:c,:a,:b]]
+        counts = [47,22,2,29]
+        rankings = Ranks(counts, ranks)
 
         system = InstantRunOff()
         winner2 = evaluate_winner(system, rankings)
         @test winner1 ≠ winner2 
     end
     
-    @safetestset "instant runoff" begin
+    @safetestset "instant runoff 1" begin
         using RankChoiceVoting
         using Test
         using Random
 
         Random.seed!(4741)
 
+        data = [[:c,:a,:b],[:b,:a,:c],[:b,:c,:a],[:a,:b,:c],[:a,:c,:b]]
+        counts = [6,2,3,4,2]
+        rankings = Ranks(counts, data)
+
+        system = InstantRunOff()
+        criteria = Monotonicity()
+        violations = count_violations(system, criteria, rankings)
+        @test violations > 0
+        @test !satisfies(system, criteria, rankings)
+    end
+
+    @safetestset "instant runoff 2" begin
+        using RankChoiceVoting
+        using Test
+        using Random
+
+        Random.seed!(8784)
+
         data = [[:a,:b,:c] for _ ∈ 1:37]
         push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
         push!(data, [[:b,:a,:c] for _ ∈ 1:12]...)
         push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
         rankings = Ranks(data)
+
+        system = InstantRunOff()
+        criteria = Monotonicity()
+        violations = count_violations(system, criteria, rankings)
+        @test violations > 0
+        @test !satisfies(system, criteria, rankings)
+    end
+
+    @safetestset "instant runoff 3" begin
+        using RankChoiceVoting
+        using Test
+        using Random
+
+        Random.seed!(98)
+
+        data = [[:c,:b,:a],[:a,:c,:b],[:b,:a,:c]]
+        counts = [5,4,8]
+        rankings = Ranks(counts, data)
 
         system = InstantRunOff()
         criteria = Monotonicity()
@@ -97,7 +130,7 @@
             system = Bucklin()
             criterion = Monotonicity()
             violations = count_violations(system, criterion, rankings)
-            # Borda always satisfies Monotonicity
+            # Bucklin always satisfies Monotonicity
             @test violations == 0
             @test satisfies(system, criterion, rankings)
         end
@@ -118,6 +151,7 @@
             rankings = Ranks(data)
             system = Minimax()
             criteria = Monotonicity()
+            println("$i")
             @test satisfies(Fails(), system, criteria, rankings)
         end
     end
