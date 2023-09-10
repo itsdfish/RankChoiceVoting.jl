@@ -23,22 +23,30 @@ Tests whether a voting system satisfies the monotonicity criterion.
 
 # Keywords
 
-- `max_reps=1000`: maximum number of Monte Carlo simulations to perform while searching 
+- `n_reps=1000`: maximum number of Monte Carlo simulations to perform while searching 
 for a violation
 """
-function satisfies(::Fails, system::VotingSystem, criteria::Monotonicity, rankings::Ranks; max_reps=1000, _...)
+function satisfies(::Fails, system::VotingSystem, criteria::Monotonicity, rankings::Ranks; n_reps=1000, _...)
     rankings = deepcopy(rankings)
     add_zero_counts!(rankings)
     winner = evaluate_winner(system, rankings)
     length(winner) ≠ 1 ? (return true) : nothing
-    win_ind = map(x -> x[1] == winner[1], rankings.uranks)
-    for _ ∈ 1:max_reps
+    uranks = get_uranks(rankings)
+    cnt = 0
+    for _ ∈ 1:n_reps
         _rankings = deepcopy(rankings)
-        redistribute!(_rankings, win_ind)
+        target_rankings = rand(uranks)
+        taker,giver = target_rankings[1:2]
+        redistribute!(_rankings, target_rankings)
         new_winner = evaluate_winner(system, _rankings)
-        winner ≠ new_winner ? (return false) : nothing
+        if (taker == winner[1]) && (new_winner ≠ winner)
+            return false
+        end
+        if (giver ≠ winner[1]) && (giver == new_winner[1])
+            return false
+        end
     end
-    return true
+    return true 
 end
 
 """
@@ -60,14 +68,21 @@ function count_violations(::Fails, system::VotingSystem, criteria::Monotonicity,
     rankings = deepcopy(rankings)
     add_zero_counts!(rankings)
     winner = evaluate_winner(system, rankings)
-    length(winner) ≠ 1 ? (return true) : nothing
-    win_ind = map(x -> x[1] == winner[1], rankings.uranks)
+    length(winner) ≠ 1 ? (return 0) : nothing
+    uranks = get_uranks(rankings)
     cnt = 0
     for _ ∈ 1:n_reps
         _rankings = deepcopy(rankings)
-        redistribute!(_rankings, win_ind)
+        target_rankings = rand(uranks)
+        taker,giver = target_rankings[1:2]
+        redistribute!(_rankings, target_rankings)
         new_winner = evaluate_winner(system, _rankings)
-        cnt += winner ≠ new_winner ? 1 : 0
+        if (taker == winner[1]) && (new_winner ≠ winner)
+            cnt += 1
+        end
+        if (giver ≠ winner[1]) && (giver == new_winner[1])
+            cnt += 1
+        end
     end
     return cnt 
 end
@@ -83,20 +98,16 @@ voters who have the same rank ordering except for the winner. For example,
 - `system`: a voting system object 
 - `win_ind`: a vector indicating which ranks corresond to the winner. 
 """
-function redistribute!(rankings, win_ind)
+function redistribute!(rankings, target_ranks)
     counts = get_counts(rankings)
     uranks = get_uranks(rankings)
-    n = length(counts)
-    for i ∈ 1:n 
-        if win_ind[i]
-            swapped_rank = swap(uranks[i])
-            cidx = findfirst(x -> x == swapped_rank, uranks)
-            total = counts[cidx]
-            Δ = rand(0:total)
-            counts[cidx] -= Δ 
-            counts[i] += Δ 
-        end
-    end
+    swapped_rank = swap(target_ranks)
+    idx = findfirst(x -> x == target_ranks, uranks)
+    cidx = findfirst(x -> x == swapped_rank, uranks)
+    total = counts[cidx]
+    Δ = rand(0:total)
+    counts[cidx] -= Δ 
+    counts[idx] += Δ 
     return nothing
 end
 

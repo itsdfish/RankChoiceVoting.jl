@@ -67,35 +67,9 @@ end
 @safetestset "redistribute!" begin
     @safetestset "1" begin 
         using RankChoiceVoting
-        using RankChoiceVoting: redistribute!
         using RankChoiceVoting: add_zero_counts!
-        using Test
-        using Random
-
-        data = [[:a,:b,:c] for _ ∈ 1:37]
-        push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
-        push!(data, [[:b,:a,:c] for _ ∈ 1:12]...)
-        push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
-
-        rankings = Ranks(data)
-    
-        system = InstantRunOff()
-        rankings = deepcopy(rankings)
-        add_zero_counts!(rankings)
-        winner = evaluate_winner(system, rankings)
-        win_ind = map(x -> x[1] == winner, rankings.uranks)
-    
-        _rankings = deepcopy(rankings)
-        redistribute!(_rankings, win_ind)
-        
-        @test sum(rankings.counts) == sum(_rankings.counts)
-        @test all(rankings.counts[win_ind] .≥ rankings.counts[win_ind])
-    end
-
-    @safetestset "2" begin 
-        using RankChoiceVoting
         using RankChoiceVoting: redistribute!
-        using RankChoiceVoting: add_zero_counts!
+        using RankChoiceVoting: swap
         using Test
         using Random
     
@@ -113,15 +87,20 @@ end
         system = InstantRunOff()
         rankings = deepcopy(rankings)
         add_zero_counts!(rankings)
-        winner = evaluate_winner(system, rankings)
-        win_ind = map(x -> x[1] == winner, rankings.uranks)
     
         for _ ∈ 1:1000
             _rankings= deepcopy(rankings)
-            redistribute!(_rankings, win_ind)
+            target_ranks = rand(rankings.uranks)
+            swapped_ranks = swap(target_ranks)
+            tidx = findfirst(x -> x == target_ranks, rankings.uranks)
+            sidx = findfirst(x -> x == swapped_ranks, rankings.uranks)
+            
+
+            redistribute!(_rankings, target_ranks)
+            
             @test sum(rankings.counts) == sum(_rankings.counts)
-            @test all(rankings.counts[win_ind] .≥ rankings.counts[win_ind])
-            @test all(rankings.counts[win_ind .≠ true] .≤ rankings.counts[win_ind .≠ true])
+            @test _rankings.counts[tidx] ≥ rankings.counts[tidx]
+            @test _rankings.counts[sidx] ≤ rankings.counts[sidx]
         end
     end
 end

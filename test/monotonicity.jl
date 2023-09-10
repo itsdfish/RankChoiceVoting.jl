@@ -23,18 +23,54 @@
         @test winner1 ≠ winner2 
     end
     
-    @safetestset "instant runoff" begin
+    @safetestset "instant runoff 1" begin
         using RankChoiceVoting
         using Test
         using Random
 
         Random.seed!(4741)
 
+        data = [[:c,:a,:b],[:b,:a,:c],[:b,:c,:a],[:a,:b,:c],[:a,:c,:b]]
+        counts = [6,2,3,4,2]
+        rankings = Ranks(counts, data)
+
+        system = InstantRunOff()
+        criteria = Monotonicity()
+        violations = count_violations(system, criteria, rankings)
+        @test violations > 0
+        @test !satisfies(system, criteria, rankings)
+    end
+
+    @safetestset "instant runoff 2" begin
+        using RankChoiceVoting
+        using Test
+        using Random
+
+        Random.seed!(8784)
+
         data = [[:a,:b,:c] for _ ∈ 1:37]
         push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
         push!(data, [[:b,:a,:c] for _ ∈ 1:12]...)
         push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
         rankings = Ranks(data)
+
+        system = InstantRunOff()
+        criteria = Monotonicity()
+        violations = count_violations(system, criteria, rankings)
+        @test violations > 0
+        @test !satisfies(system, criteria, rankings)
+    end
+
+    @safetestset "instant runoff 3" begin
+        using RankChoiceVoting
+        using Test
+        using Random
+
+        Random.seed!(98)
+
+        data = [[:c,:b,:a],[:a,:c,:b],[:b,:a,:c]]
+        counts = [5,4,8]
+        rankings = Ranks(counts, data)
 
         system = InstantRunOff()
         criteria = Monotonicity()
