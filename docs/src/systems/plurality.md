@@ -7,9 +7,9 @@ system = Plurality()
 ```
 # Plurality
 
-A plurality voting system selects the candidate who has the greatest first position preferences. Formally, let $C = \{c_i\}_{i\in \mathcal{I}}$ be a set of $n$ candidates, where $\mathcal{I}=\{1,\dots,n\}$ is the index set. Let $r_j(c_i)$ be a function which counts the number of $j^{th}$ position preferences for candidate $i$. The winning candidate is given by 
+A plurality voting system selects the candidate who has the greatest first position preferences. Formally, let $C = \{c_i\}_{i\in \mathcal{I}}$ be a set of $m$ candidates, where $\mathcal{I}=\{1,\dots,m\}$ is the index set. Let $r_j(c_i)$ be a function which counts the number of $j^{th}$ position preferences for candidate $i$. The winning candidate is given by 
 
-$c_m = \underset{c_i \in C}{\mathrm{argmax}}f_1(c_i).$
+$c_k = \underset{c_i \in C}{\mathrm{argmax}} r_1(c_i).$
 
 # Example Usage
 
