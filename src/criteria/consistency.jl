@@ -21,12 +21,12 @@ Tests whether a voting system satisfies the Consistency criterion.
 
 # Keywords
 
-- `n_max`: maximum Monte Carlo simulations to perform 
+- `n_reps`: maximum Monte Carlo simulations to perform 
 """
-function satisfies(::Fails, system::VotingSystem, criterion::Consistency, rankings::Ranks; n_max=1000, _...) 
+function satisfies(::Fails, system::VotingSystem, criterion::Consistency, rankings::Ranks; n_reps=1000, _...) 
     winner = evaluate_winner(system, rankings)
     length(winner) > 1 ? (return true) : nothing 
-    for i ∈ 1:n_max 
+    for i ∈ 1:n_reps 
         violates(system, winner, rankings) ? (return false) : nothing 
     end
     return true 
@@ -60,7 +60,7 @@ function random_split(counts)
 end
 
 """
-    count_violations(system::VotingSystem, criterion::Consistency, rankings::Ranks; n_rep=1000, _...)
+    count_violations(system::VotingSystem, criterion::Consistency, rankings::Ranks; n_reps=1000, _...)
 
 Counts the number of violations of the consistency criterion for a given voting system.
 
@@ -72,7 +72,7 @@ Counts the number of violations of the consistency criterion for a given voting 
 
 # Keywords
 
-- `n_rep`: number of Monte Carlo simulations to perform 
+- `n_reps`: number of Monte Carlo simulations to perform 
 """
 function count_violations(::Fails, system::VotingSystem, criterion::Consistency, rankings::Ranks; n_reps=1000, _...)
     winner = evaluate_winner(system, rankings)

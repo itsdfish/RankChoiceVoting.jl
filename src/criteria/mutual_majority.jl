@@ -1,8 +1,7 @@
 """
     MutualMajority <: Criterion
 
-An object for the fairness criterion, majority. A voting system satisfies the majority criterion if it elects the candidate who
-recieves more than 50% first preferences. 
+An object for the mutual majority. The mutual majority criterion requires a system to select a candidate from the smallest set of the k highest ranked candidates whose combined support exceeds 50%. 
 """
 struct MutualMajority <: Criterion
 

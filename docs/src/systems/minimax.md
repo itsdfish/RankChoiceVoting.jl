@@ -7,30 +7,25 @@ system = Minimax()
 ```
 # Minimax
 
-The minimax system assigns a score to each vote according to the following rule:
+The minimax system selects the winner whose worst case scenario is the best amoung other candidates. There are different ways to measure the worst case scenario. In this package, the worst case scenario is measures using a margin of pairwise victories of candidate. Formally, let $C = \{c_i\}_{i\in \mathcal{I}}$ be a set of $n$ candidates, where $\mathcal{I}=\{1,\dots,n\}$ is the index set. The margin of voters prefering candidate $i$ over candidate $j$ is given by:
 
-$s = n - r + 1$
+$f(c_i,c_j) = d(c_i,c_j) - d(c_j,c_i),$
 
-where $s$ is the score, $n$ is the number of candidates and $r$ is the rank. Effectively, the score reverse codes the rank votes. The candidate with the highest Borda score is selected as the winner. As an example, consider the following:
+where $d(i,j)$ is the number of voters who prefer candidate $i$ over candidate $j$. In the example below, the maximum margin of defeat is $[-2,2,2]$ for candidates a, b, and c, respectively. The *best* worst case scenario occurs for candidate a, whose score indicates a margin of victory of 2.  
 
-| count 	| 1 	| 2 	| 3 	|
-|-------	|---	|---	|---	|
-| 1     	| a 	| b 	| c 	|
-| 2     	| c 	| b 	| a 	|
+```@example 
+using RankChoiceVoting
+using RankChoiceVoting: score_pairwise
 
-The Borda scores for each candidate are:
-
-| candidate 	| score 	|
-|-----------	|-------	|
-| a         	| 4     	|
-| b         	| 6     	|
-| c         	| 6     	|
-
-which creates a tie between candidates b and c. 
-
+data = [[:a,:b,:c],[:a,:c,:b],[:c,:b,:a]]
+counts = [2,1,1]
+rankings = Ranks(counts, data)
+system = Minimax()
+x = score_pairwise(rankings, [:a,:b,:c])
+```
 # Example Usage
 
-The following examples illustrate some ways in which the Borda system can be used in RankChoiceVoting.jl. To begin, let's generate some synthetic rank choice votes for candidates $C = \{c,k,m,n\}$ from 100 voters. 
+The following examples illustrate some ways in which the minimax system can be used in RankChoiceVoting.jl. To begin, let's generate some synthetic rank choice votes for candidates $C = \{c,k,m,n\}$ from 100 voters. 
 
 ```@example minimax
 using RankChoiceVoting 

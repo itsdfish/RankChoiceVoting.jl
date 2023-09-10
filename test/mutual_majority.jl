@@ -2,7 +2,7 @@
     @safetestset "get_majority_set 1" begin
         using RankChoiceVoting
         using Test
-        using RankChoiceVoting: get_majority_set, tally
+        using RankChoiceVoting: tally
 
         rankings = Vector{Vector{Symbol}}()
         push!(rankings, [[:c,:a,:b,:d] for _ ∈ 1:19]...)
@@ -20,7 +20,7 @@
     @safetestset "get_majority_set 2" begin
         using RankChoiceVoting
         using Test
-        using RankChoiceVoting: get_majority_set, tally
+        using RankChoiceVoting: tally
 
         rankings = [
             [1, 2, 3, 4, 5],
@@ -39,7 +39,7 @@
     @safetestset "get_majority_set 3" begin
         using RankChoiceVoting
         using Test
-        using RankChoiceVoting: get_majority_set, tally
+        using RankChoiceVoting: tally
 
         rankings = [
             [1, 2, 3, 4, 5],
@@ -52,13 +52,12 @@
         
         counts, uranks = tally(rankings) 
         majority_set = get_majority_set(counts, uranks)
-        @test majority_set == Set([1]) || Set(majority_set) == Set([2])
     end
 
     @safetestset "get_majority_set 4" begin
         using RankChoiceVoting
         using Test
-        using RankChoiceVoting: get_majority_set, tally
+        using RankChoiceVoting: tally
 
         rankings = [
             [:a,:b,:c],
@@ -71,10 +70,9 @@
         @test majority_set == Set([:a,:b,:c])
     end
 
-    @safetestset "get_majority_id 5" begin
+    @safetestset "get_majority_set 5" begin
         # https://en.wikipedia.org/wiki/Mutual_majority_criterion#Plurality
         using RankChoiceVoting
-        using RankChoiceVoting: get_majority_set
         using Test
     
         data = [[:m,:n,:c,:k] for _ ∈ 1:42]

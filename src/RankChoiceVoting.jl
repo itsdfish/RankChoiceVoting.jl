@@ -6,11 +6,14 @@ module RankChoiceVoting
     using Random
 
     using StatsBase: denserank
+    using StatsBase: sample
 
     export compute_ranks
     export count_violations
     export evaluate_winner
     export satisfies
+
+    export get_majority_set
     
     export Borda
     export Bucklin
