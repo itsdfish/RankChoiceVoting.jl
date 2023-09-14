@@ -1,8 +1,8 @@
 """
     CondorcetLoser <: Condorcet
 
-A Condorcet loser criterion object. The Condorcet criterion states that a candiate who wins all
-pairwise elections must also win the election using a given voting system.
+A Condorcet loser criterion object. The Condorcet loser criterion states that a voting system cannot selected
+acandiate who loses all pairwise comparisons cannot be selected.
 """
 struct CondorcetLoser <: Condorcet
 

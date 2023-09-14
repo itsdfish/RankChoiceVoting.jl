@@ -44,4 +44,3 @@ counts = [51,25,10,14]
 rankings = Ranks(counts, ranks)
 satisfies(system, criterion, rankings)
 ```
-## References

@@ -13,7 +13,7 @@ $s = n - r + 1$
 
 where $s$ is the score, $n$ is the number of candidates and $r$ is the rank. Effectively, the score reverse codes the rank votes. The candidate with the highest Borda score is selected as the winner. As an example, consider the following:
 
-| count 	| 1 	| 2 	| 3 	|
+| count 	|  	|  	|  	|
 |-------	|---	|---	|---	|
 | 1     	| a 	| b 	| c 	|
 | 2     	| c 	| b 	| a 	|
@@ -75,5 +75,3 @@ The code block below shows how to use `count_violations` to determine the number
 ```@example borda_count
 count_violations(system, criterion, rankings)
 ```
-
-## References

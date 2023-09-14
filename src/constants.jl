@@ -10,7 +10,7 @@ const ALL_CRITERIA = [
     CondorcetLoser(),
     CondorcetWinner(),
     Consistency(),
-    Independence(),
+    IIA(),
     Majority(),
     Monotonicity(),
     MutualMajority(),

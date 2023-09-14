@@ -1,17 +1,15 @@
-@safetestset "Independence" begin
+@safetestset "IIA" begin
     @safetestset "Instant Runoff 1" begin
         using RankChoiceVoting
         using Test
         using Random
 
-        data = [[:a,:b,:c] for _ ∈ 1:37]
-        push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
-        push!(data, [[:b,:a,:c] for _ ∈ 1:12]...)
-        push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
-        rankings = Ranks(data)
+        data = [[:a,:b,:c],[:b,:c,:a],[:b,:a,:c],[:c,:a,:b]]
+        counts = [37,22,12,29]
+        rankings = Ranks(counts, data)
 
         system = InstantRunOff()
-        criterion = Independence()
+        criterion = IIA()
         @test !satisfies(system, criterion, rankings)
         @test count_violations(system, criterion, rankings) == 1
     end
@@ -30,7 +28,7 @@
         rankings = Ranks(data)
 
         system = InstantRunOff()
-        criterion = Independence()
+        criterion = IIA()
         @test satisfies(system, criterion, rankings)
     end
 
@@ -47,7 +45,7 @@
         rankings = Ranks(data)
 
         system = Borda()
-        criterion = Independence()
+        criterion = IIA()
         @test !satisfies(system, criterion)
     end
 
@@ -64,7 +62,7 @@
         rankings =  Ranks(data)
         
         system = Borda()
-        criterion = Independence()
+        criterion = IIA()
         @test satisfies(system, criterion, rankings)
     end
 
@@ -80,7 +78,7 @@
         rankings = Ranks(data)
 
         system = Bucklin()
-        criterion = Independence()
+        criterion = IIA()
         @test satisfies(system, criterion, rankings)
     end
 
@@ -97,7 +95,7 @@
     #     rankings = Ranks(data)
 
     #     system = Bucklin()
-    #     criterion = Independence()
+    #     criterion = IIA()
     #     @test !satisfies(system, criterion, rankings)
     # end
 end

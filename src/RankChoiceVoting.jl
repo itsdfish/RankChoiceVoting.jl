@@ -25,7 +25,7 @@ module RankChoiceVoting
     export CondorcetLoser
     export CondorcetWinner
     export Consistency
-    export Independence
+    export IIA
     export Majority
     export Monotonicity
     export MutualMajority

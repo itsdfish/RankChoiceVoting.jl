@@ -69,5 +69,3 @@ The code block below shows how to use `count_violations` to determine the number
 ```@example minimax
 count_violations(system, criterion, rankings)
 ```
-
-## References

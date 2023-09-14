@@ -31,7 +31,7 @@
             rankings = Ranks(data)
             system = InstantRunOff()
             criterion = CondorcetLoser()
-            @test_skip satisfies(Fails(), system, criterion, rankings)
+            @test satisfies(Fails(), system, criterion, rankings)
         end
     end
 

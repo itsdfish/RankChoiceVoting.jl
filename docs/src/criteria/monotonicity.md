@@ -79,4 +79,3 @@ which yields false for this example. To explore this result in more detail, we c
 get_majority_set(rankings)
 ```
 In this simple example, $B = \{s\}$, and the winning candidate $t \notin B$.
-# References

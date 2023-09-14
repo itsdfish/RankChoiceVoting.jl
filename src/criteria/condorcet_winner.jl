@@ -83,11 +83,11 @@ Returns the winner of a pairwise election between two candidates
 
 # Arguments
 
-- `system`: a voting system object
+- `rankings::Ranks`: a data object containing a preference profile
 - `id1`: candidate id 1
 - `id2`: candidate id 2
 """
-head_to_head(system, id1, id2; compare = >) = head_to_head(system.counts, system.uranks, id1, id2; compare)
+head_to_head(rankings::Ranks, id1, id2; compare = >) = head_to_head(rankings.counts, rankings.uranks, id1, id2; compare)
 
 """
     head_to_head(counts, uranks, id1, id2)

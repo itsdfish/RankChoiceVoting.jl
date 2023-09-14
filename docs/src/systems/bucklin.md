@@ -78,4 +78,3 @@ The code block below shows how to use `count_violations` to determine the number
 count_violations(system, criterion, rankings)
 ```
 The count is zero because the Bucklin system satisfies the consistency criterion in this case. 
-## References
