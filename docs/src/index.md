@@ -1,6 +1,3 @@
-!!! warning 
-    Work in progress
-
 # Overview
 
 This package provides a framework for simulating and evaluating rank choice voting systems. Rank choice voting systems allow voters to order candidates according to preference rather than providing a single selection of the most preferred candidate. Each rank choice voting system specifies a rule for aggregating individual rankings into a societial ranking from which a winner is selected. Importantly, the rules can provide different election outcomes. 
