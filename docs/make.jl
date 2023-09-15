@@ -2,6 +2,7 @@ using Documenter
 using RankChoiceVoting
 
 makedocs(
+    warnonly = true,
     sitename = "RankChoiceVoting",
     format = Documenter.HTML(
         assets=[
@@ -29,7 +30,10 @@ makedocs(
                         "Mutual Majority" => "criteria/mutual_majority.md",
                         "Reversal Symmetry" => "criteria/reversalsymmetry.md",
                         "IIA" => "criteria/IIA.md"],
-        "API" => "api.md",
+        "Examples" => ["Spatial Model" => "simulations/spatial_model.md"],
+        "API" => ["Systems" => "api_systems.md",
+                 "Criteria" => "api_criteria.md"],
+        "Contributer Guide" => "contributer_guide.md"
     ]
 )
 

@@ -26,6 +26,8 @@ The API for RankChoiceVoting consists of three sets of types:
 
 ## Functions
 
+The API uses the following methods:
+
 - `compute_ranks`: transforms a set of individual rank choices into a societal ranking
 - `evaluate_winner`: returns the winner(s) of an election
 - `satisfies`: evaluates whether a system satisfies a given criterion
