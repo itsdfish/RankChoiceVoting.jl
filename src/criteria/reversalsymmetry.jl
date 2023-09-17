@@ -2,7 +2,7 @@
     ReversalSymmetry <: Criterion
 
 An object for the fairness criterion reversal symmetry. According to the reversal systemetry criterion, 
-a winner of an election cannot win if each voter's rankings are reversed
+a winner of an election cannot win if each voter's rankings are reversed.
 """
 struct ReversalSymmetry <: Criterion
 
@@ -30,7 +30,8 @@ end
 """
     count_violations(system::VotingSystem, criterion::ReversalSymmetry, rankings::Ranks; _...)
 
-Counts the number of violations of the reversal symmetry criterion for a given voting system.
+Counts the number of violations of the reversal symmetry criterion for a given voting system. 
+The number of violations is either 0 or 1. 
 
 # Arguments
 

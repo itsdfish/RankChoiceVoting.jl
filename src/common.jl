@@ -1,5 +1,15 @@
+"""
+    VotingSystem
+
+An abstract type for rank choice voting systems. 
+"""
 abstract type VotingSystem end
 
+"""
+    Criterion
+
+An abstract type for fairness criteria. 
+"""
 abstract type Criterion end
 
 abstract type Condorcet <: Criterion end
@@ -61,6 +71,14 @@ function satisfies(criterion::Criterion)
     return filter(s -> property(s, criterion) == Holds(), ALL_SYSTEMS)
 end
 
+"""
+    satisfies(system::VotingSystem)
+
+Returns a vector of criteria which a provided voting system satisfies in all cases. 
+# Arguments
+
+- `system::VotingSystem`: an object representing a voting system 
+"""
 function satisfies(system::VotingSystem)
     return filter(c -> property(system, c) == Holds(), ALL_CRITERIA)
 end

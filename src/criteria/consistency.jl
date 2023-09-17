@@ -11,7 +11,7 @@ end
 """
     satisfies(system::VotingSystem, criterion::Consistency, rankings::Ranks; n_max=1000, _...)
 
-Tests whether a voting system satisfies the Consistency criterion.
+Uses Monte Carlo simulation to test whether a voting system satisfies the Consistency criterion.
 
 # Arguments
 
@@ -62,7 +62,7 @@ end
 """
     count_violations(system::VotingSystem, criterion::Consistency, rankings::Ranks; n_reps=1000, _...)
 
-Counts the number of violations of the consistency criterion for a given voting system.
+Uses Monte Carlo simulation to count the number of violations of the consistency criterion for a given voting system.
 
 # Arguments
 

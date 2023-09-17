@@ -11,9 +11,9 @@ struct Monotonicity <: Criterion
 end
 
 """
-    satisfies(system::VotingSystem, criteria::Monotonicity, rankings::Ranks; _...)
+    satisfies(::Fails, system::VotingSystem, criteria::Monotonicity, rankings::Ranks; n_reps=1000, _...)
 
-Tests whether a voting system satisfies the monotonicity criterion.
+Uses Monte Carlo simulation to tests whether a voting system satisfies the monotonicity criterion.
 
 # Arguments
 
@@ -52,7 +52,7 @@ end
 """
     count_violations(system::VotingSystem, criteria::Monotonicity, rankings::Ranks; n_reps=1000, _...)
 
-Counts the number of violations of the monotonicity criterion for a given voting system.
+Uses Monte Carlo simulation to counts the number of violations of the monotonicity criterion for a given voting system.
 
 # Arguments
 

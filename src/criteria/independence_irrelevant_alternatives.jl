@@ -1,7 +1,9 @@
 """
 IIA <: Criterion
 
-An object representing the independence of irrelevant alternatives criterion
+An object representing the independence of irrelevant alternatives IIA criterion. 
+According to the IIA criterion, the winner of an election should not depend on the presence or absence of less prefered candidates.
+Although there are several variations in the implimentation of IIA, RankChoiceVoting.jl tests for violations of IIA by removing subsets of lossing candidates.
 """
 mutable struct IIA <: Criterion
 
@@ -12,7 +14,8 @@ end
 
 Tests whether a voting system satisfies the IIA of Irrelevant alternatives criterion. There are
 several ways to test this criterion. Currently, it is tested by removing subsets of losing candidates and 
-testing whether the winner changes. Other methods could add and/or subtract candidates and test whether the 
+testing whether the winner changes. The function checks all possible combinations of subsets until the 
+first violation is encountered. Other methods could add and/or subtract candidates and test whether the 
 rank order changes. The current method is less strict compared to alternative methods. 
 
 # Arguments
@@ -38,7 +41,7 @@ end
 
 Counts the number of violations of the IIA of Irrelevant alternatives criterion. There are
 several ways to test this criterion. Currently, it is tested by removing subsets of losing candidates and 
-testing whether the winner changes. Other methods could add and/or subtract candidates and test whether the 
+testing whether the winner changes. The function checks all possible combinations of subsets. Other methods could add and/or subtract candidates and test whether the 
 rank order changes. The current method is less strict compared to alternative methods. 
 
 # Arguments

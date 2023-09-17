@@ -104,3 +104,79 @@ end
         end
     end
 end
+
+@safetestset "add_zero_counts!" begin
+    @safetestset "1" begin 
+        using RankChoiceVoting
+        using RankChoiceVoting: add_zero_counts!
+        using Test
+    
+        data =  [[:a,:b,:c]]
+        counts = [1]
+
+        rankings = Ranks(counts, data)
+        add_zero_counts!(rankings)
+
+        true_set = [[:a, :b, :c],
+            [:a, :c, :b],
+            [:b, :a, :c],
+            [:b, :c, :a],
+            [:c, :a, :b],
+            [:c, :b, :a]]
+
+        @test length(unique(rankings.uranks)) == 6
+        @test rankings.uranks == true_set
+        @test rankings.counts == [1,0,0,0,0,0] 
+    end
+
+    @safetestset "2" begin 
+        using RankChoiceVoting
+        using RankChoiceVoting: add_zero_counts!
+        using Test
+    
+        data =  [[:a,:b,:c],[:c, :b, :a]]
+        counts = [1,1]
+
+        rankings = Ranks(counts, data)
+        add_zero_counts!(rankings)
+
+        true_set = [[:a, :b, :c],
+            [:c, :b, :a],
+            [:a, :c, :b],
+            [:b, :a, :c],
+            [:b, :c, :a],
+            [:c, :a, :b]]
+
+        @test length(unique(rankings.uranks)) == 6
+        @test rankings.uranks == true_set
+        @test rankings.counts == [1,1,0,0,0,0] 
+    end
+
+    @safetestset "3" begin 
+        using RankChoiceVoting
+        using RankChoiceVoting: add_zero_counts!
+        using Test
+    
+        data =  [[:a, :b, :c],
+            [:c, :b, :a],
+            [:a, :c, :b],
+            [:b, :a, :c],
+            [:b, :c, :a],
+            [:c, :a, :b]]
+        counts = fill(1, 6)
+
+        rankings = Ranks(counts, data)
+        add_zero_counts!(rankings)
+
+        true_set = [[:a, :b, :c],
+            [:c, :b, :a],
+            [:a, :c, :b],
+            [:b, :a, :c],
+            [:b, :c, :a],
+            [:c, :a, :b]]
+
+        @test length(unique(rankings.uranks)) == 6
+        @test rankings.uranks == true_set
+        @test rankings.counts == [1,1,1,1,1,1] 
+    end
+end

@@ -39,7 +39,7 @@ end
 """
     count_violations(system::VotingSystem, criterion::CondorcetWinner, rankings::Ranks; _...)
 
-Counts the number of violations of the Condorcet for a given voting system.
+Counts the number of violations of the Condorcet for a given voting system. The count is either 0 or 1.
 
 # Arguments
 
