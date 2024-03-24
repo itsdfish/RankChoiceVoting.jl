@@ -19,9 +19,15 @@ Tests whether a voting system satisfies the Condorcet loser criterion.
 - `criterion::CondorcetLoser`: condorcet loser criterion object 
 - `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
-function satisfies(::Fails, system::VotingSystem, criterion::CondorcetLoser, rankings::Ranks{T}; _...) where {T} 
+function satisfies(
+    ::Fails,
+    system::VotingSystem,
+    criterion::CondorcetLoser,
+    rankings::Ranks{T};
+    _...,
+) where {T}
     rankings = deepcopy(rankings)
-    (;counts,uranks) = rankings
+    (; counts, uranks) = rankings
     candidates = uranks[1]
     winner = evaluate_winner(system, rankings)
     length(winner) ≠ 1 ? (return true) : nothing
@@ -48,7 +54,13 @@ either 0 or 1.
 - `criterion::CondorcetLoser`: condorcet criterion object
 - `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
-function count_violations(T::Fails, system::VotingSystem, criterion::CondorcetLoser, rankings::Ranks; _...)
+function count_violations(
+    T::Fails,
+    system::VotingSystem,
+    criterion::CondorcetLoser,
+    rankings::Ranks;
+    _...,
+)
     return satisfies(T, system, criterion, rankings) ? 0 : 1
 end
 

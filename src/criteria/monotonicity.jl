@@ -26,7 +26,14 @@ Uses Monte Carlo simulation to tests whether a voting system satisfies the monot
 - `n_reps=1000`: maximum number of Monte Carlo simulations to perform while searching 
 for a violation
 """
-function satisfies(::Fails, system::VotingSystem, criteria::Monotonicity, rankings::Ranks; n_reps=1000, _...)
+function satisfies(
+    ::Fails,
+    system::VotingSystem,
+    criteria::Monotonicity,
+    rankings::Ranks;
+    n_reps = 1000,
+    _...,
+)
     rankings = deepcopy(rankings)
     add_zero_counts!(rankings)
     winner = evaluate_winner(system, rankings)
@@ -36,7 +43,7 @@ function satisfies(::Fails, system::VotingSystem, criteria::Monotonicity, rankin
     for _ ∈ 1:n_reps
         _rankings = deepcopy(rankings)
         target_rankings = rand(uranks)
-        taker,giver = target_rankings[1:2]
+        taker, giver = target_rankings[1:2]
         redistribute!(_rankings, target_rankings)
         new_winner = evaluate_winner(system, _rankings)
         if (taker == winner[1]) && (new_winner ≠ winner)
@@ -46,7 +53,7 @@ function satisfies(::Fails, system::VotingSystem, criteria::Monotonicity, rankin
             return false
         end
     end
-    return true 
+    return true
 end
 
 """
@@ -64,7 +71,14 @@ Uses Monte Carlo simulation to counts the number of violations of the monotonici
 
 - `n_reps=1000`: maximum number of Monte Carlo simulations to perform
 """
-function count_violations(::Fails, system::VotingSystem, criteria::Monotonicity, rankings::Ranks; n_reps=1000, _...)
+function count_violations(
+    ::Fails,
+    system::VotingSystem,
+    criteria::Monotonicity,
+    rankings::Ranks;
+    n_reps = 1000,
+    _...,
+)
     rankings = deepcopy(rankings)
     add_zero_counts!(rankings)
     winner = evaluate_winner(system, rankings)
@@ -74,7 +88,7 @@ function count_violations(::Fails, system::VotingSystem, criteria::Monotonicity,
     for _ ∈ 1:n_reps
         _rankings = deepcopy(rankings)
         target_rankings = rand(uranks)
-        taker,giver = target_rankings[1:2]
+        taker, giver = target_rankings[1:2]
         redistribute!(_rankings, target_rankings)
         new_winner = evaluate_winner(system, _rankings)
         if (taker == winner[1]) && (new_winner ≠ winner)
@@ -84,7 +98,7 @@ function count_violations(::Fails, system::VotingSystem, criteria::Monotonicity,
             cnt += 1
         end
     end
-    return cnt 
+    return cnt
 end
 
 """
@@ -106,8 +120,8 @@ function redistribute!(rankings, target_ranks)
     cidx = findfirst(x -> x == swapped_rank, uranks)
     total = counts[cidx]
     Δ = rand(0:total)
-    counts[cidx] -= Δ 
-    counts[idx] += Δ 
+    counts[cidx] -= Δ
+    counts[idx] += Δ
     return nothing
 end
 
@@ -124,7 +138,7 @@ Reverse a subset of rankings. Returns a new ranking vector.
 
 - `idx=1:2`: an index range to reverse order
 """
-function swap(urank; idx=1:2)
+function swap(urank; idx = 1:2)
     r = urank[:]
     reverse!(@view r[idx])
     return r

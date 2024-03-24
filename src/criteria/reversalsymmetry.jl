@@ -19,7 +19,13 @@ Tests whether a voting system satisfies the reversal symmetry criterion.
 - `criterion::ReversalSymmetry`: condorcet criterion object 
 - `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
-function satisfies(::Fails, system::VotingSystem, criterion::ReversalSymmetry, rankings::Ranks; kwargs...)
+function satisfies(
+    ::Fails,
+    system::VotingSystem,
+    criterion::ReversalSymmetry,
+    rankings::Ranks;
+    kwargs...,
+)
     winner = evaluate_winner(system, rankings)
     _rankings = deepcopy(rankings)
     reverse!.(_rankings.uranks)
@@ -39,7 +45,13 @@ The number of violations is either 0 or 1.
 - `criterion::ReversalSymmetry`: reversal symmetry criterion object 
 - `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
-function count_violations(T::Fails, system::VotingSystem, criterion::ReversalSymmetry, rankings::Ranks; _...)
+function count_violations(
+    T::Fails,
+    system::VotingSystem,
+    criterion::ReversalSymmetry,
+    rankings::Ranks;
+    _...,
+)
     return satisfies(T, system, criterion, rankings) ? 0 : 1
 end
 

@@ -24,15 +24,15 @@ rank order changes. The current method is less strict compared to alternative me
 - `criterion::IIA`: IIA criterion object 
 - `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
-function satisfies(::Fails, system::VotingSystem, criterion::IIA, rankings::Ranks;  _...) 
+function satisfies(::Fails, system::VotingSystem, criterion::IIA, rankings::Ranks; _...)
     winner = evaluate_winner(system, rankings)
     losers = setdiff(rankings.uranks[1], winner)
-    for i ∈ 1:(length(losers) - 1)
+    for i ∈ 1:(length(losers)-1)
         for comb ∈ combinations(losers, i)
             _rankings = deepcopy(rankings)
-            violates(winner, system, _rankings, comb) ? (return false) : nothing 
+            violates(winner, system, _rankings, comb) ? (return false) : nothing
         end
-    end 
+    end
     return true
 end
 
@@ -50,17 +50,23 @@ rank order changes. The current method is less strict compared to alternative me
 - `criterion::IIA`: IIA criterion object 
 - `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
-function count_violations(::Fails, system::VotingSystem, criterion::IIA, rankings::Ranks;  _...) 
+function count_violations(
+    ::Fails,
+    system::VotingSystem,
+    criterion::IIA,
+    rankings::Ranks;
+    _...,
+)
     winner = evaluate_winner(system, rankings)
     losers = setdiff(rankings.uranks[1], winner)
     cnt = 0
-    for i ∈ 1:(length(losers) - 1)
+    for i ∈ 1:(length(losers)-1)
         for comb ∈ combinations(losers, i)
             _rankings = deepcopy(rankings)
             cnt += violates(winner, system, _rankings, comb)
         end
     end
-    return cnt 
+    return cnt
 end
 
 function violates(winner, system, rankings, removed_candidates)

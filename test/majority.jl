@@ -4,10 +4,10 @@
         using Test
         using RankChoiceVoting: get_majority_id
 
-        data = [[:a,:b,:c] for _ ∈ 1:37]
-        push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
-        push!(data, [[:b,:a,:c] for _ ∈ 1:12]...)
-        push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
+        data = [[:a, :b, :c] for _ ∈ 1:37]
+        push!(data, [[:b, :c, :a] for _ ∈ 1:22]...)
+        push!(data, [[:b, :a, :c] for _ ∈ 1:12]...)
+        push!(data, [[:c, :a, :b] for _ ∈ 1:29]...)
         rankings = Ranks(data)
 
         system = InstantRunOff()
@@ -20,10 +20,10 @@
         using Test
         using RankChoiceVoting: get_majority_id
 
-        data =  [[:a,:b,:c] for _ ∈ 1:30]
-        push!(data, [[:b,:c,:a] for _ ∈ 1:26]...)
-        push!(data, [[:b,:a,:c] for _ ∈ 1:25]...)
-        push!(data, [[:c,:a,:b] for _ ∈ 1:19]...)
+        data = [[:a, :b, :c] for _ ∈ 1:30]
+        push!(data, [[:b, :c, :a] for _ ∈ 1:26]...)
+        push!(data, [[:b, :a, :c] for _ ∈ 1:25]...)
+        push!(data, [[:c, :a, :b] for _ ∈ 1:19]...)
         rankings = Ranks(data)
 
         system = InstantRunOff()
@@ -35,10 +35,10 @@
         using RankChoiceVoting
         using Test
 
-        data = [[:s,:t,:o,:p] for _ ∈ 1:51]
-        push!(data, [[:t,:p,:o,:s] for _ ∈ 1:25]...)
-        push!(data, [[:p,:t,:o,:s] for _ ∈ 1:10]...)
-        push!(data, [[:o,:t,:p,:s] for _ ∈ 1:14]...)
+        data = [[:s, :t, :o, :p] for _ ∈ 1:51]
+        push!(data, [[:t, :p, :o, :s] for _ ∈ 1:25]...)
+        push!(data, [[:p, :t, :o, :s] for _ ∈ 1:10]...)
+        push!(data, [[:o, :t, :p, :s] for _ ∈ 1:14]...)
         rankings = Ranks(data)
 
         system = Borda()
@@ -52,12 +52,12 @@
         using RankChoiceVoting
         using Test
 
-        data = [[:s,:t,:o,:p] for _ ∈ 1:20]
-        push!(data, [[:t,:p,:o,:s] for _ ∈ 1:2]...)
-        push!(data, [[:p,:t,:o,:s] for _ ∈ 1:1]...)
-        push!(data, [[:o,:t,:p,:s] for _ ∈ 1:2]...)
+        data = [[:s, :t, :o, :p] for _ ∈ 1:20]
+        push!(data, [[:t, :p, :o, :s] for _ ∈ 1:2]...)
+        push!(data, [[:p, :t, :o, :s] for _ ∈ 1:1]...)
+        push!(data, [[:o, :t, :p, :s] for _ ∈ 1:2]...)
         rankings = Ranks(data)
-        
+
         system = Borda()
         criterion = Majority()
 
@@ -69,12 +69,12 @@
         using RankChoiceVoting
         using Test
 
-        data = [[:s,:t,:o,:p] for _ ∈ 1:20]
-        push!(data, [[:t,:p,:o,:s] for _ ∈ 1:2]...)
-        push!(data, [[:p,:t,:o,:s] for _ ∈ 1:1]...)
-        push!(data, [[:o,:t,:p,:s] for _ ∈ 1:2]...)
+        data = [[:s, :t, :o, :p] for _ ∈ 1:20]
+        push!(data, [[:t, :p, :o, :s] for _ ∈ 1:2]...)
+        push!(data, [[:p, :t, :o, :s] for _ ∈ 1:1]...)
+        push!(data, [[:o, :t, :p, :s] for _ ∈ 1:2]...)
         rankings = Ranks(data)
-        
+
         system = Bucklin()
         criterion = Majority()
 
@@ -86,12 +86,12 @@
         using RankChoiceVoting
         using Test
 
-        data = [[:s,:t,:o,:p] for _ ∈ 1:20]
-        push!(data, [[:t,:p,:o,:s] for _ ∈ 1:2]...)
-        push!(data, [[:p,:t,:o,:s] for _ ∈ 1:1]...)
-        push!(data, [[:o,:t,:p,:s] for _ ∈ 1:2]...)
+        data = [[:s, :t, :o, :p] for _ ∈ 1:20]
+        push!(data, [[:t, :p, :o, :s] for _ ∈ 1:2]...)
+        push!(data, [[:p, :t, :o, :s] for _ ∈ 1:1]...)
+        push!(data, [[:o, :t, :p, :s] for _ ∈ 1:2]...)
         rankings = Ranks(data)
-        
+
         system = Minimax()
         criterion = Majority()
 
@@ -105,7 +105,7 @@
         using RankChoiceVoting: Fails
         using Random
 
-        candidates = [:a,:c,:b,:d] 
+        candidates = [:a, :c, :b, :d]
 
         for i ∈ 1:100
             Random.seed!(i)
@@ -124,7 +124,7 @@
         using Random
         using RankChoiceVoting: Fails
 
-        candidates = [:a,:b,:c]
+        candidates = [:a, :b, :c]
         criterion = Majority()
 
         for _ ∈ 1:100

@@ -3,15 +3,15 @@
         using RankChoiceVoting
         using Test
         using RankChoiceVoting: score!
-        using RankChoiceVoting: get_counts 
+        using RankChoiceVoting: get_counts
         using RankChoiceVoting: get_uranks
 
-        data = [[:m,:n,:c,:k] for _ ∈ 1:40]
-        push!(data, [[:n,:c,:k,:m] for _ ∈ 1:26]...)
-        push!(data, [[:c,:k,:n,:m] for _ ∈ 1:15]...)
-        push!(data, [[:k,:c,:n,:m] for _ ∈ 1:17]...)
-        push!(data, [[:m,:n,:c,:k] for _ ∈ 1:2]...)
-        
+        data = [[:m, :n, :c, :k] for _ ∈ 1:40]
+        push!(data, [[:n, :c, :k, :m] for _ ∈ 1:26]...)
+        push!(data, [[:c, :k, :n, :m] for _ ∈ 1:15]...)
+        push!(data, [[:k, :c, :n, :m] for _ ∈ 1:17]...)
+        push!(data, [[:m, :n, :c, :k] for _ ∈ 1:2]...)
+
         rankings = Ranks(data)
 
         system = Bucklin()
@@ -38,17 +38,17 @@
         using RankChoiceVoting
         using Test
 
-        data = [[:m,:n,:c,:k] for _ ∈ 1:42]
-        push!(data, [[:n,:c,:k,:m] for _ ∈ 1:26]...)
-        push!(data, [[:c,:k,:n,:m] for _ ∈ 1:15]...)
-        push!(data, [[:k,:c,:n,:m] for _ ∈ 1:17]...)
-        
+        data = [[:m, :n, :c, :k] for _ ∈ 1:42]
+        push!(data, [[:n, :c, :k, :m] for _ ∈ 1:26]...)
+        push!(data, [[:c, :k, :n, :m] for _ ∈ 1:15]...)
+        push!(data, [[:k, :c, :n, :m] for _ ∈ 1:17]...)
+
         rankings = Ranks(data)
         system = Bucklin()
-        _,ranks = compute_ranks(system, rankings)
+        _, ranks = compute_ranks(system, rankings)
         winner = evaluate_winner(system, rankings)
 
         @test winner == [:n]
-        @test ranks == [:n,:c,:m,:k]
+        @test ranks == [:n, :c, :m, :k]
     end
 end

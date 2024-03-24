@@ -1,10 +1,4 @@
-const ALL_SYSTEMS = [
-    Borda(),
-    Bucklin(),
-    InstantRunOff(),
-    Minimax(),
-    Plurality()
-]
+const ALL_SYSTEMS = [Borda(), Bucklin(), InstantRunOff(), Minimax(), Plurality()]
 
 const ALL_CRITERIA = [
     CondorcetLoser(),
@@ -14,5 +8,5 @@ const ALL_CRITERIA = [
     Majority(),
     Monotonicity(),
     MutualMajority(),
-    ReversalSymmetry()
+    ReversalSymmetry(),
 ]

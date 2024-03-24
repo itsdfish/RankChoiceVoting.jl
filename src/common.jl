@@ -16,7 +16,7 @@ abstract type Condorcet <: Criterion end
 
 struct Holds end
 
-struct Fails end 
+struct Fails end
 
 """
     Ranks{T,I<:Integer}
@@ -31,7 +31,7 @@ Rank of votes
 struct Ranks{T,I<:Integer}
     counts::Vector{I}
     uranks::Vector{Vector{T}}
-end 
+end
 
 function Ranks(rankings)
     counts, uranks = tally(rankings)
@@ -39,9 +39,11 @@ function Ranks(rankings)
 end
 
 property(::VotingSystem, ::Criterion) = Fails()
-satisfies(s::VotingSystem, c::Criterion, r::Ranks; kwargs...) = satisfies(property(s, c), s, c, r; kwargs...)
+satisfies(s::VotingSystem, c::Criterion, r::Ranks; kwargs...) =
+    satisfies(property(s, c), s, c, r; kwargs...)
 satisfies(s::VotingSystem, c::Criterion; kwargs...) = property(s, c) == Holds()
-count_violations(s::VotingSystem, c::Criterion, r::Ranks; kwargs...) = count_violations(property(s, c), s, c, r; kwargs...)
+count_violations(s::VotingSystem, c::Criterion, r::Ranks; kwargs...) =
+    count_violations(property(s, c), s, c, r; kwargs...)
 
 """
     satisfies(system::InstantRunOff, criterion::CondorcetLoser, rankings::Ranks; _...)
@@ -54,7 +56,13 @@ true.
 - `system::InstantRunOff`: an instant runoff voting system object
 - `criterion::CondorcetLoser`: condorcet loser criterion object 
 """
-function satisfies(::Holds, system::VotingSystem, criterion::Criterion, rankings::Ranks; _...)
+function satisfies(
+    ::Holds,
+    system::VotingSystem,
+    criterion::Criterion,
+    rankings::Ranks;
+    _...,
+)
     return true
 end
 
@@ -83,7 +91,13 @@ function satisfies(system::VotingSystem)
     return filter(c -> property(system, c) == Holds(), ALL_CRITERIA)
 end
 
-function count_violations(::Holds, system::VotingSystem, criterion::Criterion, rankings::Ranks; _...)
+function count_violations(
+    ::Holds,
+    system::VotingSystem,
+    criterion::Criterion,
+    rankings::Ranks;
+    _...,
+)
     return 0
 end
 
@@ -142,28 +156,29 @@ Adds rank orders which have zero votes.
 - `system`: a voting system object
 """
 function add_zero_counts!(system)
-    (;counts,uranks) = system 
+    (; counts, uranks) = system
     all_uranks = permutations(uranks[1])
-    for r ∈ all_uranks 
-        if r ∉ uranks 
+    for r ∈ all_uranks
+        if r ∉ uranks
             push!(uranks, r)
             push!(counts, 0)
         end
     end
-    return nothing 
+    return nothing
 end
 
 function Base.show(io::IO, ::MIME"text/plain", model::Ranks)
     T = typeof(model)
     values = [model.counts model.uranks]
     model_name = string(T.name.name)
-    return pretty_table(io,
+    return pretty_table(
+        io,
         values;
-        title=model_name,
-        compact_printing=false,
-        header=["Counts","Ranks"],
-        row_name_alignment=:l,
-        alignment=:l,
+        title = model_name,
+        compact_printing = false,
+        header = ["Counts", "Ranks"],
+        row_name_alignment = :l,
+        alignment = :l,
     )
 end
 

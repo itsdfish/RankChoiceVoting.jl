@@ -18,7 +18,13 @@ Tests whether a voting system satisfies the mutual majority criterion.
 - `criterion::MutualMajority`: majority criterion object 
 - `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
-function satisfies(::Fails, system::VotingSystem, criterion::MutualMajority, rankings::Ranks; _...)
+function satisfies(
+    ::Fails,
+    system::VotingSystem,
+    criterion::MutualMajority,
+    rankings::Ranks;
+    _...,
+)
     winner_id = evaluate_winner(system, rankings)
     majority_set = get_majority_set(rankings)
     # maybe ties should be checked in majority_set
@@ -37,7 +43,13 @@ Counts the number of violations of the majority criterion for a given voting sys
 - `criterion::Majority`: majority criterion object 
 - `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
-function count_violations(T::Fails, system::VotingSystem, criterion::MutualMajority, rankings::Ranks; _...)
+function count_violations(
+    T::Fails,
+    system::VotingSystem,
+    criterion::MutualMajority,
+    rankings::Ranks;
+    _...,
+)
     return satisfies(T, system, criterion, rankings) ? 0 : 1
 end
 
@@ -58,10 +70,10 @@ function find_majority_set(top_sets::Vector{Set{T}}, counts) where {T}
         uset_count = 0
         i = 1
         for set ∈ top_sets
-            if uset == set 
+            if uset == set
                 uset_count += counts[i]
             end
-            uset_count > n_half ? (return uset) : nothing 
+            uset_count > n_half ? (return uset) : nothing
             i += 1
         end
     end
@@ -85,7 +97,7 @@ function get_majority_set(counts, uranks::Vector{Vector{T}}) where {T}
     for c ∈ 1:n_candidates
         top_sets = get_top_sets(uranks, c)
         majority_set = find_majority_set(top_sets, counts)
-        !isempty(majority_set) ? (return majority_set) : nothing 
+        !isempty(majority_set) ? (return majority_set) : nothing
     end
     return Set(T[])
 end

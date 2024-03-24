@@ -17,8 +17,8 @@ Returns the id of the winning candiate using the Bucklin voting system.
 - `system`: a Bucklin voting system object
 """
 function evaluate_winner(system::Bucklin, rankings::Ranks)
-    ranks,candidates = compute_ranks(system, rankings)
-    return candidates[ranks .== 1]
+    ranks, candidates = compute_ranks(system, rankings)
+    return candidates[ranks.==1]
 end
 
 """
@@ -33,8 +33,8 @@ Ranks candidates using the Bucklin system.
 """
 function compute_ranks(system::Bucklin, rankings::Ranks)
     scores = score(system, rankings)
-    sort!(scores, byvalue=true, rev=true)
-    ranks = denserank(collect(values(scores)), rev=true)
+    sort!(scores, byvalue = true, rev = true)
+    ranks = denserank(collect(values(scores)), rev = true)
     candidates = collect(keys(scores))
     return ranks, candidates
 end
@@ -49,8 +49,8 @@ function score(system::Bucklin, rankings::Ranks)
     scores = OrderedDict(c => 0 for c ∈ candidates)
     for r ∈ 1:max_iter
         score!(scores, counts, uranks, r)
-        max_score,winner = findmax(scores)
-        (max_score / n_votes) ≥ .50 ? break : nothing
+        max_score, winner = findmax(scores)
+        (max_score / n_votes) ≥ 0.50 ? break : nothing
     end
     return scores
 end

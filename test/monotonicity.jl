@@ -3,26 +3,26 @@
         using RankChoiceVoting
         using Test
 
-        data = [[:a,:b,:c] for _ ∈ 1:37]
-        push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
-        push!(data, [[:b,:a,:c] for _ ∈ 1:12]...)
-        push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
+        data = [[:a, :b, :c] for _ ∈ 1:37]
+        push!(data, [[:b, :c, :a] for _ ∈ 1:22]...)
+        push!(data, [[:b, :a, :c] for _ ∈ 1:12]...)
+        push!(data, [[:c, :a, :b] for _ ∈ 1:29]...)
         rankings = Ranks(data)
 
         system = InstantRunOff()
         winner1 = evaluate_winner(system, rankings)
 
-        data = [[:a,:b,:c] for _ ∈ 1:47]
-        push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
-        push!(data, [[:b,:a,:c] for _ ∈ 1:2]...)
-        push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
+        data = [[:a, :b, :c] for _ ∈ 1:47]
+        push!(data, [[:b, :c, :a] for _ ∈ 1:22]...)
+        push!(data, [[:b, :a, :c] for _ ∈ 1:2]...)
+        push!(data, [[:c, :a, :b] for _ ∈ 1:29]...)
         rankings = Ranks(data)
 
         system = InstantRunOff()
         winner2 = evaluate_winner(system, rankings)
-        @test winner1 ≠ winner2 
+        @test winner1 ≠ winner2
     end
-    
+
     @safetestset "instant runoff 1" begin
         using RankChoiceVoting
         using Test
@@ -30,8 +30,8 @@
 
         Random.seed!(4741)
 
-        data = [[:c,:a,:b],[:b,:a,:c],[:b,:c,:a],[:a,:b,:c],[:a,:c,:b]]
-        counts = [6,2,3,4,2]
+        data = [[:c, :a, :b], [:b, :a, :c], [:b, :c, :a], [:a, :b, :c], [:a, :c, :b]]
+        counts = [6, 2, 3, 4, 2]
         rankings = Ranks(counts, data)
 
         system = InstantRunOff()
@@ -48,10 +48,10 @@
 
         Random.seed!(8784)
 
-        data = [[:a,:b,:c] for _ ∈ 1:37]
-        push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
-        push!(data, [[:b,:a,:c] for _ ∈ 1:12]...)
-        push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
+        data = [[:a, :b, :c] for _ ∈ 1:37]
+        push!(data, [[:b, :c, :a] for _ ∈ 1:22]...)
+        push!(data, [[:b, :a, :c] for _ ∈ 1:12]...)
+        push!(data, [[:c, :a, :b] for _ ∈ 1:29]...)
         rankings = Ranks(data)
 
         system = InstantRunOff()
@@ -69,8 +69,8 @@
 
         Random.seed!(98)
 
-        data = [[:c,:b,:a],[:a,:c,:b],[:b,:a,:c]]
-        counts = [5,4,8]
+        data = [[:c, :b, :a], [:a, :c, :b], [:b, :a, :c]]
+        counts = [5, 4, 8]
         rankings = Ranks(counts, data)
 
         system = InstantRunOff()
@@ -88,7 +88,7 @@
         Random.seed!(1231)
         for _ ∈ 1:25
             n = rand(10:100)
-            data = [[1,2,3] for _ ∈ 1:n]
+            data = [[1, 2, 3] for _ ∈ 1:n]
             shuffle!.(data)
             rankings = Ranks(data)
             system = Borda()
@@ -109,7 +109,7 @@
 
         Random.seed!(8554)
         criterion = Monotonicity()
-        candidates = [:a,:b,:c]
+        candidates = [:a, :b, :c]
 
         for _ ∈ 1:100
             n = rand(50:500)
@@ -128,7 +128,7 @@
         Random.seed!(9854)
         for _ ∈ 1:25
             n = rand(10:100)
-            data = [[1,2,3] for _ ∈ 1:n]
+            data = [[1, 2, 3] for _ ∈ 1:n]
             shuffle!.(data)
             rankings = Ranks(data)
             system = Bucklin()
@@ -146,7 +146,7 @@
         using RankChoiceVoting: Fails
         using Random
 
-        candidates = [:a,:c,:b,:d] 
+        candidates = [:a, :c, :b, :d]
 
         for i ∈ 1:100
             Random.seed!(i)
@@ -165,7 +165,7 @@
         using Random
         using RankChoiceVoting: Fails
 
-        candidates = [:a,:b,:c]
+        candidates = [:a, :b, :c]
         criterion = Monotonicity()
 
         for _ ∈ 1:100

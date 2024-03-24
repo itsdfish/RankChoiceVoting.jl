@@ -23,26 +23,33 @@ Uses Monte Carlo simulation to test whether a voting system satisfies the Consis
 
 - `n_reps`: maximum Monte Carlo simulations to perform 
 """
-function satisfies(::Fails, system::VotingSystem, criterion::Consistency, rankings::Ranks; n_reps=1000, _...) 
+function satisfies(
+    ::Fails,
+    system::VotingSystem,
+    criterion::Consistency,
+    rankings::Ranks;
+    n_reps = 1000,
+    _...,
+)
     winner = evaluate_winner(system, rankings)
-    length(winner) > 1 ? (return true) : nothing 
-    for i ∈ 1:n_reps 
-        violates(system, winner, rankings) ? (return false) : nothing 
+    length(winner) > 1 ? (return true) : nothing
+    for i ∈ 1:n_reps
+        violates(system, winner, rankings) ? (return false) : nothing
     end
-    return true 
+    return true
 end
 
 function violates(system::V, winner, rankings) where {V<:VotingSystem}
     rankings = deepcopy(rankings)
-    (;counts,uranks) = rankings
-    c1,c2 = random_split(counts)
+    (; counts, uranks) = rankings
+    c1, c2 = random_split(counts)
     r1 = Ranks(c1, uranks)
     r2 = Ranks(c2, uranks)
     w1 = evaluate_winner(system, r1)
     w2 = evaluate_winner(system, r2)
     # check for violation if a winner can be determined 
     # in each split
-    if (length(w1) == 1) && (length(w2) == 1) 
+    if (length(w1) == 1) && (length(w2) == 1)
         return ((w1 == w2) && (winner ≠ w1))
     end
     return false
@@ -50,13 +57,13 @@ end
 
 function random_split(counts)
     c1 = @. rand(DiscreteUniform(counts))
-    c2 = counts .- c1 
+    c2 = counts .- c1
     # make sure c2 contains at least some votes
     while (sum(c1) == 0) || (sum(c2) == 0)
         c1 = @. rand(DiscreteUniform(counts))
-        c2 = counts .- c1 
+        c2 = counts .- c1
     end
-    return c1,c2
+    return c1, c2
 end
 
 """
@@ -74,13 +81,20 @@ Uses Monte Carlo simulation to count the number of violations of the consistency
 
 - `n_reps`: number of Monte Carlo simulations to perform 
 """
-function count_violations(::Fails, system::VotingSystem, criterion::Consistency, rankings::Ranks; n_reps=1000, _...)
+function count_violations(
+    ::Fails,
+    system::VotingSystem,
+    criterion::Consistency,
+    rankings::Ranks;
+    n_reps = 1000,
+    _...,
+)
     winner = evaluate_winner(system, rankings)
     cnt = 0
-    for i ∈ 1:n_reps 
+    for i ∈ 1:n_reps
         cnt += violates(system, winner, rankings) ? 1 : 0
     end
-    return cnt 
+    return cnt
 end
 
 property(::Borda, ::Consistency) = Holds()

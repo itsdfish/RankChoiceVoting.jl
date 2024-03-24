@@ -4,10 +4,10 @@
         using Test
         using Random
 
-        data = [[:a,:b,:c] for _ ∈ 1:37]
-        push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
-        push!(data, [[:b,:a,:c] for _ ∈ 1:12]...)
-        push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
+        data = [[:a, :b, :c] for _ ∈ 1:37]
+        push!(data, [[:b, :c, :a] for _ ∈ 1:22]...)
+        push!(data, [[:b, :a, :c] for _ ∈ 1:12]...)
+        push!(data, [[:c, :a, :b] for _ ∈ 1:29]...)
         rankings = Ranks(data)
 
         system = InstantRunOff()
@@ -23,7 +23,7 @@
         using RankChoiceVoting: Fails
         using Random
 
-        candidates = [:a,:c,:b,:d] 
+        candidates = [:a, :c, :b, :d]
 
         for _ ∈ 1:100
             n = rand(10:100)
@@ -40,10 +40,10 @@
         using Test
         using Random
 
-        data = [[:a,:b,:c] for _ ∈ 1:37]
-        push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
-        push!(data, [[:b,:a,:c] for _ ∈ 1:12]...)
-        push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
+        data = [[:a, :b, :c] for _ ∈ 1:37]
+        push!(data, [[:b, :c, :a] for _ ∈ 1:22]...)
+        push!(data, [[:b, :a, :c] for _ ∈ 1:12]...)
+        push!(data, [[:c, :a, :b] for _ ∈ 1:29]...)
         rankings = Ranks(data)
 
         system = Borda()
@@ -88,12 +88,12 @@
         using Test
         using Random
 
-        data =  [[1,2,3] for _ ∈ 1:1]
-        push!(data, [[2,1,3] for _ ∈ 1:3]...)
-        push!(data, [[3,1,2] for _ ∈ 1:3]...)
-        push!(data, [[1,3,2] for _ ∈ 1:1]...)
-        push!(data, [[2,3,1] for _ ∈ 1:2]...)
-        push!(data, [[3,2,1] for _ ∈ 1:1]...)
+        data = [[1, 2, 3] for _ ∈ 1:1]
+        push!(data, [[2, 1, 3] for _ ∈ 1:3]...)
+        push!(data, [[3, 1, 2] for _ ∈ 1:3]...)
+        push!(data, [[1, 3, 2] for _ ∈ 1:1]...)
+        push!(data, [[2, 3, 1] for _ ∈ 1:2]...)
+        push!(data, [[3, 2, 1] for _ ∈ 1:1]...)
         rankings = Ranks(data)
 
         system = Bucklin()
@@ -107,16 +107,18 @@
         # https://en.wikipedia.org/wiki/Condorcet_loser_criterion#Minimax
         using RankChoiceVoting
         using Test
-  
-        counts = [1,1,3,1,1,2]
-        ranks = [[:a,:b,:c,:l],
-                [:a,:b,:l,:c],
-                [:b,:c,:a,:l],
-                [:c,:l,:a,:b],
-                [:l,:a,:b,:c],
-                [:l,:c,:a,:b]]
+
+        counts = [1, 1, 3, 1, 1, 2]
+        ranks = [
+            [:a, :b, :c, :l],
+            [:a, :b, :l, :c],
+            [:b, :c, :a, :l],
+            [:c, :l, :a, :b],
+            [:l, :a, :b, :c],
+            [:l, :c, :a, :b],
+        ]
         rankings = Ranks(counts, ranks)
-        
+
         system = Minimax()
         criterion = CondorcetLoser()
 
@@ -131,12 +133,12 @@
         # https://en.wikipedia.org/wiki/Condorcet_loser_criterion#Plurality_voting
         using RankChoiceVoting
         using Test
-  
-        data = [[:m,:n,:c,:k] for _ ∈ 1:42]
-        push!(data, [[:n,:c,:k,:m] for _ ∈ 1:26]...)
-        push!(data, [[:c,:k,:n,:m] for _ ∈ 1:15]...)
-        push!(data, [[:k,:c,:n,:m] for _ ∈ 1:17]...)
-        
+
+        data = [[:m, :n, :c, :k] for _ ∈ 1:42]
+        push!(data, [[:n, :c, :k, :m] for _ ∈ 1:26]...)
+        push!(data, [[:c, :k, :n, :m] for _ ∈ 1:15]...)
+        push!(data, [[:k, :c, :n, :m] for _ ∈ 1:17]...)
+
         rankings = Ranks(data)
         system = Plurality()
         criterion = CondorcetLoser()
@@ -148,6 +150,3 @@
         @test !result
     end
 end
-
-
-

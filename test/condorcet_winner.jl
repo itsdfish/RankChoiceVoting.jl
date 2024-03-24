@@ -3,10 +3,10 @@
         using RankChoiceVoting
         using Test
 
-        data = [[:a,:b,:c] for _ ∈ 1:37]
-        push!(data, [[:b,:c,:a] for _ ∈ 1:22]...)
-        push!(data, [[:b,:a,:c] for _ ∈ 1:12]...)
-        push!(data, [[:c,:a,:b] for _ ∈ 1:29]...)
+        data = [[:a, :b, :c] for _ ∈ 1:37]
+        push!(data, [[:b, :c, :a] for _ ∈ 1:22]...)
+        push!(data, [[:b, :a, :c] for _ ∈ 1:12]...)
+        push!(data, [[:c, :a, :b] for _ ∈ 1:29]...)
 
         rankings = Ranks(data)
 
@@ -22,11 +22,11 @@
         using RankChoiceVoting
         using Test
 
-        data = [[:a,:c,:b,:d] for _ ∈ 1:10]
-        push!(data, [[:d,:b,:a,:c] for _ ∈ 1:7]...)
-        push!(data, [[:b,:c,:a,:d] for _ ∈ 1:5]...)
-        push!(data, [[:c,:d,:a,:b] for _ ∈ 1:5]...)
-        push!(data, [[:b,:c,:d,:a] for _ ∈ 1:4]...)
+        data = [[:a, :c, :b, :d] for _ ∈ 1:10]
+        push!(data, [[:d, :b, :a, :c] for _ ∈ 1:7]...)
+        push!(data, [[:b, :c, :a, :d] for _ ∈ 1:5]...)
+        push!(data, [[:c, :d, :a, :b] for _ ∈ 1:5]...)
+        push!(data, [[:b, :c, :d, :a] for _ ∈ 1:4]...)
         rankings = Ranks(data)
 
         system = InstantRunOff()
@@ -40,7 +40,7 @@
         using RankChoiceVoting
         using Test
         using Random
-        
+
         system = Minimax()
         criterion = CondorcetWinner()
 
@@ -53,7 +53,7 @@
         using RankChoiceVoting: Fails
         using Random
 
-        candidates = [:a,:c,:b,:d] 
+        candidates = [:a, :c, :b, :d]
 
         for _ ∈ 1:100
             n = rand(10:100)
@@ -70,8 +70,8 @@
         using RankChoiceVoting
         using Test
 
-        data = [[:a,:b,:c],[:c,:a,:b],[:b,:a,:c]]
-        counts = [3,3,4]
+        data = [[:a, :b, :c], [:c, :a, :b], [:b, :a, :c]]
+        counts = [3, 3, 4]
         rankings = Ranks(counts, data)
 
         system = Plurality()

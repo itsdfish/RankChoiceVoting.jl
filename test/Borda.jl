@@ -4,11 +4,11 @@
         using Test
         using RankChoiceVoting: score
 
-        data = [[:s,:t,:o,:p] for _ ∈ 1:51]
-        push!(data, [[:t,:p,:o,:s] for _ ∈ 1:25]...)
-        push!(data, [[:p,:t,:o,:s] for _ ∈ 1:10]...)
-        push!(data, [[:o,:t,:p,:s] for _ ∈ 1:14]...)
-        
+        data = [[:s, :t, :o, :p] for _ ∈ 1:51]
+        push!(data, [[:t, :p, :o, :s] for _ ∈ 1:25]...)
+        push!(data, [[:p, :t, :o, :s] for _ ∈ 1:10]...)
+        push!(data, [[:o, :t, :p, :s] for _ ∈ 1:14]...)
+
         rankings = Ranks(data)
         system = Borda()
         scores = score(system, rankings)
@@ -24,13 +24,13 @@
         using RankChoiceVoting
         using Test
 
-        data = [[:s,:t,:o,:p] for _ ∈ 1:51]
-        push!(data, [[:t,:p,:o,:s] for _ ∈ 1:25]...)
-        push!(data, [[:p,:t,:o,:s] for _ ∈ 1:10]...)
-        push!(data, [[:o,:t,:p,:s] for _ ∈ 1:14]...)
-        
+        data = [[:s, :t, :o, :p] for _ ∈ 1:51]
+        push!(data, [[:t, :p, :o, :s] for _ ∈ 1:25]...)
+        push!(data, [[:p, :t, :o, :s] for _ ∈ 1:10]...)
+        push!(data, [[:o, :t, :p, :s] for _ ∈ 1:14]...)
+
         rankings = Ranks(data)
-        
+
         system = Borda()
         winner_id = evaluate_winner(system, rankings)
 

@@ -19,9 +19,15 @@ Tests whether a voting system satisfies the Condorcet winner criterion.
 - `criterion::CondorcetWinner`: condorcet criterion object 
 - `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
-function satisfies(::Fails, system::VotingSystem, criterion::CondorcetWinner, rankings::Ranks{T}; _...) where {T}
+function satisfies(
+    ::Fails,
+    system::VotingSystem,
+    criterion::CondorcetWinner,
+    rankings::Ranks{T};
+    _...,
+) where {T}
     rankings = deepcopy(rankings)
-    (;counts,uranks) = rankings
+    (; counts, uranks) = rankings
     candidates = uranks[1]
     winner = evaluate_winner(system, rankings)
     length(winner) ≠ 1 ? (return true) : nothing
@@ -47,7 +53,13 @@ Counts the number of violations of the Condorcet for a given voting system. The 
 - `criterion::CondorcetWinner`: condorcet criterion object 
 - `rankings::Ranks`: a rank choice voting object consisting of rank counts and unique ranks 
 """
-function count_violations(T, system::VotingSystem, criterion::CondorcetWinner, rankings::Ranks; _...)
+function count_violations(
+    T,
+    system::VotingSystem,
+    criterion::CondorcetWinner,
+    rankings::Ranks;
+    _...,
+)
     return satisfies(T, system, criterion, rankings) ? 0 : 1
 end
 
@@ -73,7 +85,7 @@ function is_condorcet(counts, uranks, pairs, id; compare = >)
         id1 = head_to_head(counts, uranks, p...; compare)
         id1 ≠ id ? (return false) : nothing
     end
-    return true 
+    return true
 end
 
 """
@@ -87,7 +99,8 @@ Returns the winner of a pairwise election between two candidates
 - `id1`: candidate id 1
 - `id2`: candidate id 2
 """
-head_to_head(rankings::Ranks, id1, id2; compare = >) = head_to_head(rankings.counts, rankings.uranks, id1, id2; compare)
+head_to_head(rankings::Ranks, id1, id2; compare = >) =
+    head_to_head(rankings.counts, rankings.uranks, id1, id2; compare)
 
 """
     head_to_head(counts, uranks, id1, id2)
@@ -109,7 +122,7 @@ function head_to_head(counts, uranks, id1, id2; compare = >)
     cnt = 0
     for i ∈ 1:length(counts)
         r = findfirst(x -> x == id1 || x == id2, uranks[i])
-        cnt += uranks[i][r] == id1 ? counts[i] : -counts[i] 
+        cnt += uranks[i][r] == id1 ? counts[i] : -counts[i]
     end
     return compare(cnt, 0) ? id1 : id2
 end

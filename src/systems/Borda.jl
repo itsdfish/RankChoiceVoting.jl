@@ -20,8 +20,8 @@ Returns the id of the winning candiate in Borda count system.
 - `rankings::Ranks`: an object containing counts and unique rank orders 
 """
 function evaluate_winner(system::Borda, rankings::Ranks)
-    ranks,candidates = compute_ranks(system, rankings)
-    return candidates[ranks .== 1]
+    ranks, candidates = compute_ranks(system, rankings)
+    return candidates[ranks.==1]
 end
 
 """
@@ -36,14 +36,14 @@ Ranks candidates using Borda count system.
 """
 function compute_ranks(system::Borda, rankings::Ranks)
     scores = score(system, rankings)
-    sort!(scores, byvalue=true, rev=true)
-    ranks = denserank(collect(values(scores)), rev=true)
+    sort!(scores, byvalue = true, rev = true)
+    ranks = denserank(collect(values(scores)), rev = true)
     candidates = collect(keys(scores))
     return ranks, candidates
 end
 
 function score(system::Borda, rankings::Ranks)
-    (;counts,uranks) = rankings
+    (; counts, uranks) = rankings
     candidates = uranks[1]
     scores = OrderedDict(c => 0 for c ∈ candidates)
     n_candidates = length(candidates)
@@ -52,5 +52,5 @@ function score(system::Borda, rankings::Ranks)
         points = n_candidates - i + 1
         scores[c] += counts[r] * points
     end
-    return scores 
+    return scores
 end

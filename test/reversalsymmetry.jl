@@ -3,9 +3,9 @@
         using RankChoiceVoting
         using Test
 
-        data = [[:a,:b,:c] for _ ∈ 1:4]
-        push!(data, [[:b,:c,:a] for _ ∈ 1:3]...)
-        push!(data, [[:c,:a,:b] for _ ∈ 1:2]...)
+        data = [[:a, :b, :c] for _ ∈ 1:4]
+        push!(data, [[:b, :c, :a] for _ ∈ 1:3]...)
+        push!(data, [[:c, :a, :b] for _ ∈ 1:2]...)
         rankings = Ranks(data)
         system = InstantRunOff()
         criterion = ReversalSymmetry()
@@ -18,9 +18,9 @@
         using RankChoiceVoting
         using Test
 
-        data = [[:a,:b,:c] for _ ∈ 1:10]
-        push!(data, [[:b,:c,:a] for _ ∈ 1:3]...)
-        push!(data, [[:c,:a,:b] for _ ∈ 1:2]...)
+        data = [[:a, :b, :c] for _ ∈ 1:10]
+        push!(data, [[:b, :c, :a] for _ ∈ 1:3]...)
+        push!(data, [[:c, :a, :b] for _ ∈ 1:2]...)
         rankings = Ranks(data)
 
         system = InstantRunOff()
@@ -38,7 +38,7 @@
         Random.seed!(5601)
         for _ ∈ 1:25
             n = rand(10:100)
-            data = map(_ -> shuffle([:a,:b,:c]), 1:n)
+            data = map(_ -> shuffle([:a, :b, :c]), 1:n)
             rankings = Ranks(data)
             system = Borda()
             criterion = ReversalSymmetry()
@@ -52,14 +52,16 @@
     @safetestset "Minimax" begin
         using RankChoiceVoting
         using Test
-  
-        counts = [4,4,2,1,1,2]
-        ranks = [[:a,:b,:d,:c],
-                [:b,:c,:a,:d],
-                [:c,:d,:a,:b],
-                [:d,:a,:b,:c],
-                [:d,:b,:c,:a],
-                [:d,:c,:a,:b]]
+
+        counts = [4, 4, 2, 1, 1, 2]
+        ranks = [
+            [:a, :b, :d, :c],
+            [:b, :c, :a, :d],
+            [:c, :d, :a, :b],
+            [:d, :a, :b, :c],
+            [:d, :b, :c, :a],
+            [:d, :c, :a, :b],
+        ]
         rankings = Ranks(counts, ranks)
 
         system = Minimax()
@@ -76,7 +78,7 @@
         using RankChoiceVoting
         using Test
 
-        data = [[:a,:b,:c],[:c,:b,:a],[:b,:a,:c],[:c,:a,:b]]
+        data = [[:a, :b, :c], [:c, :b, :a], [:b, :a, :c], [:c, :a, :b]]
         counts = fill(1, 4)
         rankings = Ranks(counts, data)
 
@@ -87,4 +89,3 @@
         @test !satisfies(system, criterion, rankings)
     end
 end
-

@@ -4,8 +4,8 @@
         using Test
         using Random
 
-        data = [[:a,:b,:c],[:b,:c,:a],[:b,:a,:c],[:c,:a,:b]]
-        counts = [37,22,12,29]
+        data = [[:a, :b, :c], [:b, :c, :a], [:b, :a, :c], [:c, :a, :b]]
+        counts = [37, 22, 12, 29]
         rankings = Ranks(counts, data)
 
         system = InstantRunOff()
@@ -59,8 +59,8 @@
         push!(data, [[:b, :a, :c] for _ ∈ 1:4]...)
         push!(data, [[:a, :c, :b] for _ ∈ 1:3]...)
         push!(data, [[:c, :a, :b] for _ ∈ 1:1]...)
-        rankings =  Ranks(data)
-        
+        rankings = Ranks(data)
+
         system = Borda()
         criterion = IIA()
         @test satisfies(system, criterion, rankings)
@@ -83,7 +83,7 @@
     end
 
     # @safetestset "plurality" begin
-        ## for less strict version https://www.yorku.ca/bucovets/4080/choice/2.pdf
+    ## for less strict version https://www.yorku.ca/bucovets/4080/choice/2.pdf
     #     using RankChoiceVoting
     #     using Test
     #     using Random
