@@ -177,7 +177,7 @@ function Base.show(io::IO, ::MIME"text/plain", model::Ranks)
         title = model_name,
         compact_printing = false,
         header = ["Counts", "Ranks"],
-        row_name_alignment = :l,
+        row_label_alignment = :l,
         alignment = :l
     )
 end
