@@ -1,7 +1,7 @@
 name = "RankChoiceVoting"
 uuid = "ab51d771-9e38-4464-b0a7-bec5bf4029bc"
 authors = ["itsdfish"]
-version = "0.1.1"
+version = "0.1.2"
 
 [deps]
 Combinatorics = "861a8166-3701-5b0c-9a16-15d98fcdc6aa"
