@@ -21,7 +21,7 @@ Returns the id of the winning candiate in Borda count system.
 """
 function evaluate_winner(system::Borda, rankings::Ranks)
     ranks, candidates = compute_ranks(system, rankings)
-    return candidates[ranks.==1]
+    return candidates[ranks .== 1]
 end
 
 """

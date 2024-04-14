@@ -50,7 +50,7 @@
             [:b, :c, :d, :a],
             [:c, :b, :d, :a],
             [:c, :d, :b, :a],
-            [:d, :c, :b, :a],
+            [:d, :c, :b, :a]
         ]
         counts = [1, 8, 6, 2, 5, 9, 6, 6]
         rankings = Ranks(counts, ranks)

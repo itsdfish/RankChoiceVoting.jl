@@ -6,7 +6,6 @@ According to the IIA criterion, the winner of an election should not depend on t
 Although there are several variations in the implimentation of IIA, RankChoiceVoting.jl tests for violations of IIA by removing subsets of lossing candidates.
 """
 mutable struct IIA <: Criterion
-
 end
 
 """
@@ -27,7 +26,7 @@ rank order changes. The current method is less strict compared to alternative me
 function satisfies(::Fails, system::VotingSystem, criterion::IIA, rankings::Ranks; _...)
     winner = evaluate_winner(system, rankings)
     losers = setdiff(rankings.uranks[1], winner)
-    for i ∈ 1:(length(losers)-1)
+    for i ∈ 1:(length(losers) - 1)
         for comb ∈ combinations(losers, i)
             _rankings = deepcopy(rankings)
             violates(winner, system, _rankings, comb) ? (return false) : nothing
@@ -55,12 +54,12 @@ function count_violations(
     system::VotingSystem,
     criterion::IIA,
     rankings::Ranks;
-    _...,
+    _...
 )
     winner = evaluate_winner(system, rankings)
     losers = setdiff(rankings.uranks[1], winner)
     cnt = 0
-    for i ∈ 1:(length(losers)-1)
+    for i ∈ 1:(length(losers) - 1)
         for comb ∈ combinations(losers, i)
             _rankings = deepcopy(rankings)
             cnt += violates(winner, system, _rankings, comb)

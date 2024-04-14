@@ -8,5 +8,5 @@ const ALL_CRITERIA = [
     Majority(),
     Monotonicity(),
     MutualMajority(),
-    ReversalSymmetry(),
+    ReversalSymmetry()
 ]

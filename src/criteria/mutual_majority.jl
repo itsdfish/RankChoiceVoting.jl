@@ -4,7 +4,6 @@
 An object for the mutual majority. The mutual majority criterion requires a system to select a candidate from the smallest set of the k highest ranked candidates whose combined support exceeds 50%. 
 """
 struct MutualMajority <: Criterion
-
 end
 
 """
@@ -23,7 +22,7 @@ function satisfies(
     system::VotingSystem,
     criterion::MutualMajority,
     rankings::Ranks;
-    _...,
+    _...
 )
     winner_id = evaluate_winner(system, rankings)
     majority_set = get_majority_set(rankings)
@@ -48,7 +47,7 @@ function count_violations(
     system::VotingSystem,
     criterion::MutualMajority,
     rankings::Ranks;
-    _...,
+    _...
 )
     return satisfies(T, system, criterion, rankings) ? 0 : 1
 end

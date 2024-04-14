@@ -5,7 +5,6 @@ A Condorcet winner criterion object. The Condorcet criterion states that a candi
 pairwise elections must also win the election using a given voting system.
 """
 struct CondorcetWinner <: Condorcet
-
 end
 
 """
@@ -24,7 +23,7 @@ function satisfies(
     system::VotingSystem,
     criterion::CondorcetWinner,
     rankings::Ranks{T};
-    _...,
+    _...
 ) where {T}
     rankings = deepcopy(rankings)
     (; counts, uranks) = rankings
@@ -58,7 +57,7 @@ function count_violations(
     system::VotingSystem,
     criterion::CondorcetWinner,
     rankings::Ranks;
-    _...,
+    _...
 )
     return satisfies(T, system, criterion, rankings) ? 0 : 1
 end

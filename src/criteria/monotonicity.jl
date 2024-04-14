@@ -7,7 +7,6 @@ In other words, redistributing more votes to the winner (without otherwise chang
 from winning. 
 """
 struct Monotonicity <: Criterion
-
 end
 
 """
@@ -32,7 +31,7 @@ function satisfies(
     criteria::Monotonicity,
     rankings::Ranks;
     n_reps = 1000,
-    _...,
+    _...
 )
     rankings = deepcopy(rankings)
     add_zero_counts!(rankings)
@@ -77,7 +76,7 @@ function count_violations(
     criteria::Monotonicity,
     rankings::Ranks;
     n_reps = 1000,
-    _...,
+    _...
 )
     rankings = deepcopy(rankings)
     add_zero_counts!(rankings)

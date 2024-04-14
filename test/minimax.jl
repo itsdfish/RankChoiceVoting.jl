@@ -19,7 +19,6 @@
         using Test
         using RankChoiceVoting: score_pairwise
 
-
         data = [[:m, :n, :c, :k] for _ ∈ 1:42]
         push!(data, [[:n, :c, :k, :m] for _ ∈ 1:26]...)
         push!(data, [[:c, :k, :n, :m] for _ ∈ 1:15]...)

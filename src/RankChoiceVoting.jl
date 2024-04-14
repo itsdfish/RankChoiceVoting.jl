@@ -32,7 +32,6 @@ export MutualMajority
 export Ranks
 export ReversalSymmetry
 
-
 include("common.jl")
 include("systems/instant_runoff.jl")
 include("systems/Borda.jl")

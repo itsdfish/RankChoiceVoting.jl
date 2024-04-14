@@ -28,7 +28,7 @@ Rank of votes
 - `uranks`: a vector of unique rankings. Each ranking is a vector in which index represents rank and value represents candidate id.
 - `counts`: a vector of frequency counts corresponding to each unique ranking 
 """
-struct Ranks{T,I<:Integer}
+struct Ranks{T, I <: Integer}
     counts::Vector{I}
     uranks::Vector{Vector{T}}
 end
@@ -61,7 +61,7 @@ function satisfies(
     system::VotingSystem,
     criterion::Criterion,
     rankings::Ranks;
-    _...,
+    _...
 )
     return true
 end
@@ -96,7 +96,7 @@ function count_violations(
     system::VotingSystem,
     criterion::Criterion,
     rankings::Ranks;
-    _...,
+    _...
 )
     return 0
 end
@@ -178,7 +178,7 @@ function Base.show(io::IO, ::MIME"text/plain", model::Ranks)
         compact_printing = false,
         header = ["Counts", "Ranks"],
         row_name_alignment = :l,
-        alignment = :l,
+        alignment = :l
     )
 end
 

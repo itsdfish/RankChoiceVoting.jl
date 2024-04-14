@@ -5,7 +5,6 @@ A Consistency criterion object. According to the consistency criterion, if the v
 the same candidate wins each subset, the system must select the same winner for the whole set of votes.
 """
 struct Consistency <: Criterion
-
 end
 
 """
@@ -29,7 +28,7 @@ function satisfies(
     criterion::Consistency,
     rankings::Ranks;
     n_reps = 1000,
-    _...,
+    _...
 )
     winner = evaluate_winner(system, rankings)
     length(winner) > 1 ? (return true) : nothing
@@ -39,7 +38,7 @@ function satisfies(
     return true
 end
 
-function violates(system::V, winner, rankings) where {V<:VotingSystem}
+function violates(system::V, winner, rankings) where {V <: VotingSystem}
     rankings = deepcopy(rankings)
     (; counts, uranks) = rankings
     c1, c2 = random_split(counts)
@@ -87,7 +86,7 @@ function count_violations(
     criterion::Consistency,
     rankings::Ranks;
     n_reps = 1000,
-    _...,
+    _...
 )
     winner = evaluate_winner(system, rankings)
     cnt = 0

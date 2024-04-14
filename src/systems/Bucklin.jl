@@ -18,7 +18,7 @@ Returns the id of the winning candiate using the Bucklin voting system.
 """
 function evaluate_winner(system::Bucklin, rankings::Ranks)
     ranks, candidates = compute_ranks(system, rankings)
-    return candidates[ranks.==1]
+    return candidates[ranks .== 1]
 end
 
 """

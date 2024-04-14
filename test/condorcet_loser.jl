@@ -78,7 +78,6 @@
 
         # 1 is the winner 
 
-
         # 1 vs. 2: 5, 6  
         # 1 vs. 3: 5, 6 
         # 2 vs. 3: 6, 5
@@ -115,7 +114,7 @@
             [:b, :c, :a, :l],
             [:c, :l, :a, :b],
             [:l, :a, :b, :c],
-            [:l, :c, :a, :b],
+            [:l, :c, :a, :b]
         ]
         rankings = Ranks(counts, ranks)
 

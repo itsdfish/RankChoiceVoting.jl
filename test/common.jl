@@ -95,7 +95,6 @@ end
             tidx = findfirst(x -> x == target_ranks, rankings.uranks)
             sidx = findfirst(x -> x == swapped_ranks, rankings.uranks)
 
-
             redistribute!(_rankings, target_ranks)
 
             @test sum(rankings.counts) == sum(_rankings.counts)
@@ -123,7 +122,7 @@ end
             [:b, :a, :c],
             [:b, :c, :a],
             [:c, :a, :b],
-            [:c, :b, :a],
+            [:c, :b, :a]
         ]
 
         @test length(unique(rankings.uranks)) == 6
@@ -148,7 +147,7 @@ end
             [:a, :c, :b],
             [:b, :a, :c],
             [:b, :c, :a],
-            [:c, :a, :b],
+            [:c, :a, :b]
         ]
 
         @test length(unique(rankings.uranks)) == 6
@@ -167,7 +166,7 @@ end
             [:a, :c, :b],
             [:b, :a, :c],
             [:b, :c, :a],
-            [:c, :a, :b],
+            [:c, :a, :b]
         ]
         counts = fill(1, 6)
 
@@ -180,7 +179,7 @@ end
             [:a, :c, :b],
             [:b, :a, :c],
             [:b, :c, :a],
-            [:c, :a, :b],
+            [:c, :a, :b]
         ]
 
         @test length(unique(rankings.uranks)) == 6

@@ -5,7 +5,6 @@ A Condorcet loser criterion object. The Condorcet loser criterion states that a 
 acandiate who loses all pairwise comparisons cannot be selected.
 """
 struct CondorcetLoser <: Condorcet
-
 end
 
 """
@@ -24,7 +23,7 @@ function satisfies(
     system::VotingSystem,
     criterion::CondorcetLoser,
     rankings::Ranks{T};
-    _...,
+    _...
 ) where {T}
     rankings = deepcopy(rankings)
     (; counts, uranks) = rankings
@@ -59,7 +58,7 @@ function count_violations(
     system::VotingSystem,
     criterion::CondorcetLoser,
     rankings::Ranks;
-    _...,
+    _...
 )
     return satisfies(T, system, criterion, rankings) ? 0 : 1
 end

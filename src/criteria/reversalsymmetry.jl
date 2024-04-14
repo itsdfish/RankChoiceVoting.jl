@@ -5,7 +5,6 @@ An object for the fairness criterion reversal symmetry. According to the reversa
 a winner of an election cannot win if each voter's rankings are reversed.
 """
 struct ReversalSymmetry <: Criterion
-
 end
 
 """
@@ -24,7 +23,7 @@ function satisfies(
     system::VotingSystem,
     criterion::ReversalSymmetry,
     rankings::Ranks;
-    kwargs...,
+    kwargs...
 )
     winner = evaluate_winner(system, rankings)
     _rankings = deepcopy(rankings)
@@ -50,7 +49,7 @@ function count_violations(
     system::VotingSystem,
     criterion::ReversalSymmetry,
     rankings::Ranks;
-    _...,
+    _...
 )
     return satisfies(T, system, criterion, rankings) ? 0 : 1
 end

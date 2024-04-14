@@ -16,7 +16,7 @@ Returns the id of the winning candiate in an instant runoff election.
 """
 function evaluate_winner(system::InstantRunOff, rankings::Ranks)
     rank, candidates = compute_ranks(system, rankings)
-    return candidates[rank.==1]
+    return candidates[rank .== 1]
 end
 
 """

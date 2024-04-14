@@ -60,7 +60,7 @@
             [:c, :d, :a, :b],
             [:d, :a, :b, :c],
             [:d, :b, :c, :a],
-            [:d, :c, :a, :b],
+            [:d, :c, :a, :b]
         ]
         rankings = Ranks(counts, ranks)
 

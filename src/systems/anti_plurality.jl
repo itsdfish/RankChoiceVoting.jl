@@ -17,7 +17,7 @@ Returns the id of the winning candiate in Plurality system.
 """
 function evaluate_winner(system::Plurality, rankings::Ranks)
     ranks, candidates = compute_ranks(system, rankings)
-    return candidates[ranks.==1]
+    return candidates[ranks .== 1]
 end
 
 """

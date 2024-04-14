@@ -5,7 +5,6 @@ An object for the fairness criterion, majority. A voting system satisfies the ma
 recieves more than 50% first preferences. 
 """
 struct Majority <: Criterion
-
 end
 
 """
@@ -24,7 +23,7 @@ function satisfies(
     system::VotingSystem,
     criterion::Majority,
     rankings::Ranks;
-    _...,
+    _...
 )
     winner_id = evaluate_winner(system, rankings)
     majority_id = get_majority_id(rankings)
@@ -49,7 +48,7 @@ function count_violations(
     system::VotingSystem,
     criterion::Majority,
     rankings::Ranks;
-    _...,
+    _...
 )
     return satisfies(T, system, criterion, rankings) ? 0 : 1
 end
