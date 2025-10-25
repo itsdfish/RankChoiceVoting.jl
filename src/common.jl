@@ -174,10 +174,11 @@ function Base.show(io::IO, ::MIME"text/plain", model::Ranks)
     return pretty_table(
         io,
         values;
-        title = model_name,
+        #title = model_name,
+        column_labels = ["Counts", "Ranks"],
         compact_printing = false,
-        header = ["Counts", "Ranks"],
-        row_label_alignment = :l,
+        row_label_column_alignment = :l,
+        formatters = [fmt__printf("%5.2f", [2,])],
         alignment = :l
     )
 end
