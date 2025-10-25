@@ -1,6 +1,12 @@
 # RankChoiceVoting.jl
-[![](docs/logo/logo.png)](https://itsdfish.github.io/RankChoiceVoting.jl/dev/)
-[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://itsdfish.github.io/RankChoiceVoting.jl/dev/) [![CI](https://github.com/itsdfish/RankChoiceVoting.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/itsdfish/RankChoiceVoting.jl/actions/workflows/CI.yml)
+
+[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://itsdfish.github.io/RankChoiceVoting.jl/dev/) [![CI](https://github.com/itsdfish/RankChoiceVoting.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/itsdfish/RankChoiceVoting.jl/actions/workflows/CI.yml) [![CodeCov][codecov-img]][codecov-url] 
+
+[codecov-img]: https://codecov.io/github/itsdfish/RankChoiceVoting.jl/badge.svg?branch=master
+[codecov-url]: https://codecov.io/github/itsdfish/RankChoiceVoting.jl?branch=master
+
+
+
 
 This package provides a framework for simulating and evaluating rank choice voting systems. See the [documentation](https://itsdfish.github.io/RankChoiceVoting.jl/dev/) for details. 
 
